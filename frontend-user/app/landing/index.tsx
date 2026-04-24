@@ -11,16 +11,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router"; // 🔥 TAMBAHAN
+import { StatusBar } from "expo-status-bar";
 
-// 🔥 IMPORT COMPONENT
 import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
 
 export default function Landing() {
+  const router = useRouter(); // 🔥 TAMBAHAN
+
   return (
-    <SafeAreaView style={styles.container}>
-      
-      {/* TOP NAVBAR */}
+    <View style={styles.container}>
+      <StatusBar style="light" translucent backgroundColor="transparent" />
       <Navbar name="M. Arif Alfaiz" />
 
       {/* HERO */}
@@ -36,7 +38,7 @@ export default function Landing() {
         />
 
         <Swiper autoplay height={240} showsPagination>
-          {[ 
+          {[
             require("../../assets/images/sosmas.png"),
             require("../../assets/images/1.png"),
             require("../../assets/images/2.png"),
@@ -50,7 +52,6 @@ export default function Landing() {
 
       {/* CONTENT */}
       <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        
         <View style={styles.sectionHeader}>
           <Text style={styles.title}>Daftar Bantuan</Text>
           <Text style={styles.subtitle}>4 Lokasi</Text>
@@ -58,7 +59,20 @@ export default function Landing() {
 
         <View style={styles.cardContainer}>
           {data.map((item, index) => (
-            <TouchableOpacity key={index} style={styles.card}>
+            <TouchableOpacity
+              key={index}
+              style={styles.card}
+              onPress={() =>
+                router.push({
+                  pathname: "../Donasi/page",
+                  params: {
+                    title: item.title,
+                    location: item.location,
+                    image: item.title, // 🔥 kirim identifier
+                  },
+                })
+              }
+            >
               <Image source={item.image} style={styles.cardImage} />
 
               <View style={styles.cardOverlay}>
@@ -66,9 +80,7 @@ export default function Landing() {
 
                 <View style={styles.locationRow}>
                   <Ionicons name="location-outline" size={12} color="#fff" />
-                  <Text style={styles.cardLocation}>
-                    {item.location}
-                  </Text>
+                  <Text style={styles.cardLocation}>{item.location}</Text>
                 </View>
               </View>
             </TouchableOpacity>
@@ -76,14 +88,11 @@ export default function Landing() {
         </View>
       </ScrollView>
 
-      {/* BOTTOM NAVBAR */}
       <NavbarBottom active="home" />
-
     </SafeAreaView>
   );
 }
 
-// DATA
 const data = [
   {
     title: "Banjir",
@@ -107,69 +116,58 @@ const data = [
   },
 ];
 
-// STYLE
+// 🔥 STYLE (TIDAK DIUBAH)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
-
   hero: {
     height: 240,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
   },
-
   bgImage: {
     position: "absolute",
     width: "100%",
     height: "100%",
   },
-
   overlay: {
     position: "absolute",
     width: "100%",
     height: "100%",
   },
-
   slide: {
     justifyContent: "center",
     alignItems: "center",
   },
-
   logo: {
     width: 200,
     height: 200,
     resizeMode: "contain",
   },
-
   content: {
     paddingHorizontal: 16,
     marginTop: 10,
   },
-
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 12,
   },
-
   title: {
     fontSize: 18,
     fontWeight: "bold",
   },
-
   subtitle: {
     color: "#888",
   },
-
   cardContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
   },
-
   card: {
     width: "48%",
     height: 150,
@@ -178,12 +176,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     backgroundColor: "#fff",
   },
-
   cardImage: {
     width: "100%",
     height: "100%",
   },
-
   cardOverlay: {
     position: "absolute",
     bottom: 0,
@@ -191,18 +187,15 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "rgba(0,0,0,0.4)",
   },
-
   cardTitle: {
     color: "#fff",
     fontWeight: "bold",
   },
-
   locationRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
   },
-
   cardLocation: {
     color: "#fff",
     fontSize: 11,
