@@ -11,7 +11,7 @@ export default function Navbar({ name = "User" }: { name?: string }) {
         
         {/* LOGO */}
         <Image
-          source={require("../assets/images/SOSMAS.png")}
+          source={require("../assets/images/sosmas.png")}
           style={styles.logo}
         />
 
@@ -20,7 +20,6 @@ export default function Navbar({ name = "User" }: { name?: string }) {
           <Text style={styles.smallText}>Hi, Selamat Datang</Text>
           <Text style={styles.nameText}>{name}</Text>
         </View>
-
       </View>
 
       {/* MENU */}

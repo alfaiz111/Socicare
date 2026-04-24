@@ -35,9 +35,9 @@ export default function Landing() {
           style={styles.overlay}
         />
 
-        <Swiper autoplay height={220} showsPagination>
+        <Swiper autoplay height={240} showsPagination>
           {[ 
-            require("../../assets/images/SOSMAS.png"),
+            require("../../assets/images/sosmas.png"),
             require("../../assets/images/1.png"),
             require("../../assets/images/2.png"),
           ].map((img, index) => (
@@ -139,8 +139,8 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 160,
-    height: 160,
+    width: 200,
+    height: 200,
     resizeMode: "contain",
   },
 
