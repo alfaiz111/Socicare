@@ -19,11 +19,9 @@ import {
   LayoutDashboardIcon,
   FolderIcon,
   UsersIcon,
-  CameraIcon,
   FileTextIcon,
   Settings2Icon,
   CircleHelpIcon,
-  SearchIcon,
   CommandIcon,
 } from "lucide-react"
 
@@ -40,51 +38,44 @@ const data = {
       url: "/dashboard",
       icon: <LayoutDashboardIcon />,
     },
-  ],
-
-  navCampaign: [
     {
-      title: "Manajemen Campaign",
+      title: "Donatur",
+      url: "/donatur",
+      icon: <UsersIcon />,
+    },
+    {
+      title: "Pegawai",
+      url: "/pegawai",
+      icon: <UsersIcon />,
+    },
+    {
+      title: "Penggalang Dana",
       icon: <FolderIcon />,
       url: "#",
       items: [
-        { title: "Semua Campaign", url: "/campaign" },
-        { title: "Tambah Campaign", url: "/campaign/create" },
-        { title: "Campaign Aktif", url: "/campaign/active" },
-        { title: "Campaign Selesai", url: "/campaign/finished" },
+        { title: "Penggalang Dana", url: "/penggalang-dana" },
+        { title: "Verifikasi Akun", url: "/penggalang-dana/verifikasi" },
       ],
     },
-  ],
-
-  navDonation: [
     {
-      title: "Donasi",
+      title: "Campaign",
+      icon: <FolderIcon />,
+      url: "#",
+      items: [
+        { title: "Campaign", url: "/campaign" },
+        { title: "Berita", url: "/berita" },
+        { title: "Kategori", url: "/kategori" },
+      ],
+    },
+    {
+      title: "Transaksi Donasi",
+      url: "/transaksi",
       icon: <FileTextIcon />,
-      url: "#",
-      items: [
-        { title: "List Donasi", url: "/donasi" },
-        { title: "Verifikasi Donasi", url: "/donasi/verifikasi" },
-      ],
     },
-  ],
-
-  navDistribution: [
     {
-      title: "Penyaluran",
-      icon: <CameraIcon />,
-      url: "#",
-      items: [
-        { title: "Input Penyaluran", url: "/penyaluran/create" },
-        { title: "Laporan Penyaluran", url: "/penyaluran" },
-      ],
-    },
-  ],
-
-  navUsers: [
-    {
-      title: "Users",
-      url: "/users",
-      icon: <UsersIcon />,
+      title: "Artikel Blog",
+      url: "/blog",
+      icon: <FileTextIcon />,
     },
   ],
 
@@ -99,43 +90,40 @@ const data = {
       url: "#",
       icon: <CircleHelpIcon />,
     },
-    {
-      title: "Search",
-      url: "#",
-      icon: <SearchIcon />,
-    },
   ],
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
+      
+      {/* HEADER */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton asChild>
-              <a href="#">
+              <a href="/dashboard" className="flex items-center gap-2">
                 <CommandIcon className="size-5" />
-                <span className="text-base font-semibold">Socicare CMS</span>
+                <span className="text-base font-semibold">
+                  Socicare CMS
+                </span>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
+      {/* CONTENT */}
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavMain items={data.navCampaign} />
-        <NavMain items={data.navDonation} />
-        <NavMain items={data.navDistribution} />
-        <NavMain items={data.navUsers} />
-
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
 
+      {/* FOOTER */}
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
+
     </Sidebar>
   )
 }
