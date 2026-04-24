@@ -10,7 +10,7 @@ export default function NavbarBottom({ active = "home" }: Props) {
   return (
     <View style={styles.container}>
       <NavItem icon="home" label="Home" active={active === "home"} />
-      <NavItem icon="gift" label="Donasi" active={active === "donasi"} />
+      <NavItem icon="alert-circle" label="Lapor" active={active === "lapor"} />
       <NavItem icon="file-text" label="Riwayat" active={active === "riwayat"} />
       <NavItem icon="user" label="Profile" active={active === "profile"} />
     </View>
