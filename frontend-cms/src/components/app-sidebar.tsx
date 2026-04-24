@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavMain } from "@/components/nav-main";
+import { NavSecondary } from "@/components/nav-secondary";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -13,117 +13,140 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
 import {
-  LayoutDashboardIcon,
-  FolderIcon,
-  UsersIcon,
-  FileTextIcon,
-  Settings2Icon,
-  CircleHelpIcon,
-  CommandIcon,
-} from "lucide-react"
+  LayoutDashboard,
+  Megaphone,
+  ShieldCheck,
+  Truck,
+  Users,
+  PieChart,
+  Settings2,
+  CircleHelp,
+  Search,
+  Command,
+} from "lucide-react";
 
 const data = {
   user: {
     name: "Admin CMS",
-    email: "admin@example.com",
+    email: "admin@socicare.id",
     avatar: "/avatars/admin.jpg",
   },
 
   navMain: [
     {
       title: "Dashboard",
-      url: "/dashboard",
-      icon: <LayoutDashboardIcon />,
+      url: "/",
+      icon: <LayoutDashboard className="size-4" />,
     },
     {
-      title: "Donatur",
-      url: "/donatur",
-      icon: <UsersIcon />,
-    },
-    {
-      title: "Pegawai",
-      url: "/pegawai",
-      icon: <UsersIcon />,
-    },
-    {
-      title: "Penggalang Dana",
-      icon: <FolderIcon />,
-      url: "#",
+      title: "Manajemen Campaign",
+      icon: <Megaphone className="size-4" />,
+      url: "/campaign",
       items: [
-        { title: "Penggalang Dana", url: "/penggalang-dana" },
-        { title: "Verifikasi Akun", url: "/penggalang-dana/verifikasi" },
+        { title: "Semua Campaign", url: "/campaign" },
+        { title: "Tambah Campaign", url: "/campaign/create" },
       ],
     },
     {
-      title: "Campaign",
-      icon: <FolderIcon />,
-      url: "#",
+      title: "Verifikasi Donasi",
+      icon: <ShieldCheck className="size-4" />,
+      url: "/donasi/verifikasi",
       items: [
-        { title: "Campaign", url: "/campaign" },
-        { title: "Berita", url: "/berita" },
-        { title: "Kategori", url: "/kategori" },
+        { title: "Menunggu Verifikasi", url: "/donasi/verifikasi" },
+        { title: "List Donasi Masuk", url: "/donasi" },
       ],
     },
     {
-      title: "Transaksi Donasi",
-      url: "/transaksi",
-      icon: <FileTextIcon />,
+      title: "Penyaluran Bantuan",
+      icon: <Truck className="size-4" />,
+      url: "/penyaluran",
+      items: [
+        { title: "Input Laporan", url: "/penyaluran/create" },
+        { title: "Laporan Distribusi", url: "/penyaluran" },
+        { title: "Tracking Dana", url: "/penyaluran/tracking" },
+      ],
     },
     {
-      title: "Artikel Blog",
-      url: "/blog",
-      icon: <FileTextIcon />,
+      title: "Manajemen User",
+      url: "#",
+      icon: <Users className="size-4" />,
+      items: [
+        { title: "Data Pengguna", url: "/users" },
+        { title: "Riwayat Donasi", url: "/users/riwayat" },
+      ],
+    },
+    {
+      title: "Laporan & Transparansi",
+      url: "#",
+      icon: <PieChart className="size-4" />,
+      items: [
+        { title: "Rekap Donasi", url: "/laporan/rekap" },
+        { title: "Laporan Publik", url: "/laporan/publik" },
+        { title: "Export Data", url: "/laporan/export" },
+      ],
     },
   ],
 
   navSecondary: [
     {
       title: "Settings",
-      url: "#",
-      icon: <Settings2Icon />,
+      url: "/settings",
+      icon: <Settings2 className="size-4" />,
     },
     {
-      title: "Help",
+      title: "Help & Support",
+      url: "/help",
+      icon: <CircleHelp className="size-4" />,
+    },
+    {
+      title: "Search",
       url: "#",
-      icon: <CircleHelpIcon />,
+      icon: <Search className="size-4" />,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="offcanvas" {...props}>
-      
-      {/* HEADER */}
-      <SidebarHeader>
+    <Sidebar collapsible="icon" variant="inset" {...props}>
+      <SidebarHeader className="border-b border-border/40 pb-4 pt-4 mb-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <a href="/dashboard" className="flex items-center gap-2">
-                <CommandIcon className="size-5" />
-                <span className="text-base font-semibold">
-                  Socicare CMS
-                </span>
+            <SidebarMenuButton
+              size="lg"
+              asChild
+              className="hover:bg-transparent cursor-pointer"
+            >
+              <a href="#">
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                  <Command className="size-4" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight ml-2">
+                  <span className="truncate font-semibold text-base tracking-tight text-foreground">
+                    Socicare CMS
+                  </span>
+                  <span className="truncate text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-0.5">
+                    Admin Base
+                  </span>
+                </div>
               </a>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
-      {/* CONTENT */}
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
 
-      {/* FOOTER */}
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>
-
     </Sidebar>
-  )
+  );
 }
+  
