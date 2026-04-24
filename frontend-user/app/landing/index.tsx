@@ -20,7 +20,7 @@ export default function Landing() {
         
         {/* Background */}
         <Image
-          source={require("../../assets/sosial.png")}
+          source={require("../../assets/SOSMAS.png")}
           style={styles.bgImage}
         />
 
