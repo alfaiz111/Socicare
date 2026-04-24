@@ -24,7 +24,7 @@ export default function Navbar({ name = "User" }: { name?: string }) {
 
       {/* MENU */}
       <TouchableOpacity style={styles.menuBtn}>
-        <Feather name="menu" size={22} color="#000" />
+        <Feather name="menu" size={22} color="#fff" />
       </TouchableOpacity>
 
     </View>
@@ -38,13 +38,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 16,
+    paddingBottom: 10,
+    backgroundColor: "#800000", // 🔥 MAROON
   },
 
-  // 🔥 LEFT SIDE (logo + text)
   leftSection: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10, // jarak logo & teks
+    gap: 10,
   },
 
   logo: {
@@ -54,12 +55,12 @@ const styles = StyleSheet.create({
   },
 
   smallText: {
-    color: "#000",
+    color: "#fff", // 🔥 PUTIH
     fontSize: 12,
   },
 
   nameText: {
-    color: "#000",
+    color: "#fff", // 🔥 PUTIH
     fontSize: 16,
     fontWeight: "bold",
   },
