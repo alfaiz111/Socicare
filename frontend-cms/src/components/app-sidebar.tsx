@@ -35,63 +35,19 @@ navMain: [
     icon: <FolderIcon />,
   },
 ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: (
-        <CameraIcon
-        />
-      ),
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: (
-        <FileTextIcon
-        />
-      ),
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: (
-        <FileTextIcon
-        />
-      ),
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
+navCampaign: [
+  {
+    title: "Manajemen Campaign",
+    icon: <FolderIcon />,
+    url: "#",
+    items: [
+      { title: "Semua Campaign", url: "/campaign" },
+      { title: "Tambah Campaign", url: "/campaign/create" },
+      { title: "Campaign Aktif", url: "/campaign/active" },
+      { title: "Campaign Selesai", url: "/campaign/finished" },
+    ],
+  },
+],
   navSecondary: [
     {
       title: "Settings",
