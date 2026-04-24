@@ -94,8 +94,7 @@ export default function DonasiPage() {
 
           <TouchableOpacity style={styles.button}>
             <Text style={styles.btnText}>Donasi Sekarang</Text>
-            <Ionicons name="arrow-forward" size={18} color="#fff" />
-          </TouchableOpacity>
+        </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
 
@@ -185,10 +184,12 @@ const styles = StyleSheet.create({
   },
 
   badges: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 6,
-  },
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "center", // 🔥 INI KUNCI
+  alignItems: "center",
+  gap: 6,
+},
 
   badge: {
     backgroundColor: "#eee",
