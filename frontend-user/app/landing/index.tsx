@@ -10,39 +10,32 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+
+// 🔥 IMPORT COMPONENT
+import Navbar from "../../components/Navbar";
+import NavbarBottom from "../../components/BottomNavbar";
 
 export default function Landing() {
   return (
     <SafeAreaView style={styles.container}>
       
-      {/* HEADER */}
-      <View style={styles.header}>
-        
+      {/* TOP NAVBAR */}
+      <Navbar name="M. Arif Alfaiz" />
+
+      {/* HERO */}
+      <View style={styles.hero}>
         <Image
           source={require("../../assets/images/bg.jpeg")}
           style={styles.bgImage}
         />
 
         <LinearGradient
-          colors={["rgba(128,0,0,0.8)", "rgba(128,0,0,0.95)"]}
+          colors={["rgba(128,0,0,0.85)", "rgba(128,0,0,0.95)"]}
           style={styles.overlay}
         />
 
-        {/* TOP NAVBAR */}
-        <View style={styles.topBar}>
-          <View>
-            <Text style={styles.smallText}>Hi, Selamat Datang</Text>
-            <Text style={styles.nameText}>M. Arif Alfaiz</Text>
-          </View>
-
-          <TouchableOpacity>
-            <Feather name="menu" size={22} color="#fff" />
-          </TouchableOpacity>
-        </View>
-
-        {/* SLIDER */}
-        <Swiper autoplay height={180} showsPagination>
+        <Swiper autoplay height={220} showsPagination>
           {[ 
             require("../../assets/images/SOSMAS.png"),
             require("../../assets/images/1.png"),
@@ -70,6 +63,7 @@ export default function Landing() {
 
               <View style={styles.cardOverlay}>
                 <Text style={styles.cardTitle}>{item.title}</Text>
+
                 <View style={styles.locationRow}>
                   <Ionicons name="location-outline" size={12} color="#fff" />
                   <Text style={styles.cardLocation}>
@@ -83,30 +77,11 @@ export default function Landing() {
       </ScrollView>
 
       {/* BOTTOM NAVBAR */}
-      <View style={styles.navbar}>
-        <NavItem icon="home" label="Home" active />
-        <NavItem icon="gift" label="Donasi" />
-        <NavItem icon="receipt" label="Riwayat" />
-        <NavItem icon="user" label="Profile" />
-      </View>
+      <NavbarBottom active="home" />
 
     </SafeAreaView>
   );
 }
-
-// 🔥 COMPONENT NAV ITEM
-const NavItem = ({ icon, label, active = false }: any) => (
-  <TouchableOpacity style={styles.navItem}>
-    <Feather
-      name={icon}
-      size={20}
-      color={active ? "#800000" : "#888"}
-    />
-    <Text style={[styles.navText, active && styles.activeText]}>
-      {label}
-    </Text>
-  </TouchableOpacity>
-);
 
 // DATA
 const data = [
@@ -132,16 +107,15 @@ const data = [
   },
 ];
 
-
-// ================= STYLE =================
+// STYLE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
 
-  header: {
-    height: 260,
+  hero: {
+    height: 240,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
@@ -159,45 +133,26 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 
-  topBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    paddingTop: 16,
-    alignItems: "center",
-  },
-
-  smallText: {
-    color: "#eee",
-    fontSize: 12,
-  },
-
-  nameText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-
   slide: {
     justifyContent: "center",
     alignItems: "center",
   },
 
   logo: {
-    width: 120,
-    height: 120,
+    width: 160,
+    height: 160,
     resizeMode: "contain",
   },
 
   content: {
     paddingHorizontal: 16,
-    marginTop: -30,
+    marginTop: 10,
   },
 
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 62,
+    marginBottom: 12,
   },
 
   title: {
@@ -251,30 +206,5 @@ const styles = StyleSheet.create({
   cardLocation: {
     color: "#fff",
     fontSize: 11,
-  },
-
-  navbar: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    paddingVertical: 12,
-    backgroundColor: "#fff",
-    borderTopWidth: 0.5,
-    borderColor: "#ddd",
-    elevation: 10,
-  },
-
-  navItem: {
-    alignItems: "center",
-  },
-
-  navText: {
-    fontSize: 11,
-    color: "#888",
-    marginTop: 2,
-  },
-
-  activeText: {
-    color: "#800000",
-    fontWeight: "600",
   },
 });
