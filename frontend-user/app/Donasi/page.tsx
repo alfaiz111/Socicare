@@ -5,13 +5,16 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  Platform,
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar"; // 🔥 TAMBAHAN
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
-import Swiper from "react-native-swiper"; // 🔥 TAMBAHAN
+import Swiper from "react-native-swiper";
+
 
 import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
@@ -29,13 +32,12 @@ export default function DonasiPage() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      {/* NAVBAR */}
-      <Navbar name="M. Arif Alfaiz" />
+    <View style={styles.container}>
+      {/* 🔥 STATUS BAR */}
+      <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* 🔥 HERO (SAMA SEPERTI HOME) */}
+      {/* 🔥 HERO FULL */}
       <View style={styles.hero}>
-        {/* BACKGROUND DINAMIS */}
         <Image source={data.image} style={styles.bgImage} />
 
         <LinearGradient
@@ -43,8 +45,11 @@ export default function DonasiPage() {
           style={styles.overlay}
         />
 
-        {/* SLIDER LOGO */}
-        <Swiper autoplay height={220} showsPagination>
+        {/* 🔥 NAVBAR OVERLAY */}
+        <Navbar name="M. Arif Alfaiz" />
+
+        {/* 🔥 SLIDER LOGO */}
+        <Swiper autoplay height={260} showsPagination>
           {[
             require("../../assets/images/sosmas.png"),
             require("../../assets/images/1.png"),
@@ -57,42 +62,45 @@ export default function DonasiPage() {
         </Swiper>
       </View>
 
-      {/* CONTENT */}
-      <ScrollView style={styles.content}>
-        <Text style={styles.title}>{data.title}</Text>
+      {/* 🔥 CONTENT AMAN */}
+      <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
+        <ScrollView style={styles.content}>
+          <Text style={styles.title}>{data.title}</Text>
 
-        <View style={styles.locationRow}>
-          <Ionicons name="location-outline" size={14} color="#555" />
-          <Text style={styles.locationText}>{data.location}</Text>
-        </View>
+          <View style={styles.locationRow}>
+            <Ionicons name="location-outline" size={14} color="#555" />
+            <Text style={styles.locationText}>{data.location}</Text>
+          </View>
 
-        <Text style={styles.section}>Donasi Diterima</Text>
+          <Text style={styles.section}>Donasi Diterima</Text>
 
-        <View style={styles.badges}>
+          <View style={styles.badges}>
+            {data.kebutuhan.map((item, i) => (
+              <View key={i} style={styles.badge}>
+                <Text style={styles.badgeText}>{item}</Text>
+              </View>
+            ))}
+          </View>
+
+          <Text style={styles.section}>Deskripsi</Text>
+          <Text style={styles.desc}>{data.description}</Text>
+
+          <Text style={styles.section}>Keperluan</Text>
           {data.kebutuhan.map((item, i) => (
-            <View key={i} style={styles.badge}>
-              <Text style={styles.badgeText}>{item}</Text>
-            </View>
+            <Text key={i} style={styles.listItem}>
+              • {item}
+            </Text>
           ))}
-        </View>
 
-        <Text style={styles.section}>Deskripsi</Text>
-        <Text style={styles.desc}>{data.description}</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.btnText}>Donasi Sekarang</Text>
+            <Ionicons name="arrow-forward" size={18} color="#fff" />
+          </TouchableOpacity>
+        </ScrollView>
+      </SafeAreaView>
 
-        <Text style={styles.section}>Keperluan</Text>
-        {data.kebutuhan.map((item, i) => (
-          <Text key={i} style={styles.listItem}>• {item}</Text>
-        ))}
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.btnText}>Donasi Sekarang</Text>
-          <Ionicons name="arrow-forward" size={18} color="#fff" />
-        </TouchableOpacity>
-      </ScrollView>
-
-      {/* BOTTOM NAVBAR */}
       <NavbarBottom active="donasi" />
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -120,7 +128,7 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 220,
+    height: 260, // 🔥 FULL KE ATAS
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
