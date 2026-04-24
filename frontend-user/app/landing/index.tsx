@@ -20,7 +20,7 @@ export default function Landing() {
         
         {/* Background */}
         <Image
-          source={require("../../assets/SOSMAS.png")}
+          source={require("../../assets/images/bg.jpeg")}
           style={styles.bgImage}
         />
 
@@ -44,21 +44,21 @@ export default function Landing() {
         <Swiper autoplay height={200} showsPagination>
           <View style={styles.slide}>
             <Image
-              source={require("../../assets/SOSMAS.png")}
+              source={require("../../assets/images/SOSMAS.png")}
               style={styles.logo}
             />
           </View>
 
           <View style={styles.slide}>
             <Image
-              source={require("../../assets/SOSMAS.png")}
+              source={require("../../assets/images/1.png")}
               style={styles.logo}
             />
           </View>
 
           <View style={styles.slide}>
             <Image
-              source={require("../../assets/SOSMAS.png")}
+              source={require("../../assets/images/2.png")}
               style={styles.logo}
             />
           </View>
@@ -120,22 +120,22 @@ const data = [
   {
     title: "Banjir",
     location: "Kalianda, Lampung",
-    image: require("../../assets/sosial.png"),
+    image: require("../../assets/images/banjir.jpg"),
   },
   {
     title: "Tanah Longsor",
     location: "Kalianda, Lampung",
-    image: require("../../assets/sosial.png"),
+    image: require("../../assets/images/longsor.jpeg"),
   },
   {
-    title: "Kekeringan",
+    title: "Tsunami",
     location: "Lampung Selatan",
-    image: require("../../assets/sosial.png"),
+    image: require("../../assets/images/tsunami.jpg"),
   },
   {
-    title: "Konflik",
+    title: "Palestina",
     location: "Indonesia",
-    image: require("../../assets/sosial.png"),
+    image: require("../../assets/images/palestina.jpg"),
   },
 ];
 
