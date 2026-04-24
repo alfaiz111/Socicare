@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons, Feather } from "@expo/vector-icons";
 
 export default function Landing() {
   return (
@@ -18,104 +19,96 @@ export default function Landing() {
       {/* HEADER */}
       <View style={styles.header}>
         
-        {/* Background */}
         <Image
           source={require("../../assets/images/bg.jpeg")}
           style={styles.bgImage}
         />
 
-        {/* Overlay */}
         <LinearGradient
-          colors={["rgba(128,0,0,0.8)", "rgba(128,0,0,0.9)"]}
+          colors={["rgba(128,0,0,0.8)", "rgba(128,0,0,0.95)"]}
           style={styles.overlay}
         />
 
-        {/* Top Bar */}
+        {/* TOP NAVBAR */}
         <View style={styles.topBar}>
           <View>
             <Text style={styles.smallText}>Hi, Selamat Datang</Text>
-            <Text style={styles.nameText}>m. arif alfaiz</Text>
+            <Text style={styles.nameText}>M. Arif Alfaiz</Text>
           </View>
 
-          <Text style={styles.menuText}>ID ☰</Text>
+          <TouchableOpacity>
+            <Feather name="menu" size={22} color="#fff" />
+          </TouchableOpacity>
         </View>
 
         {/* SLIDER */}
-        <Swiper autoplay height={200} showsPagination>
-          <View style={styles.slide}>
-            <Image
-              source={require("../../assets/images/SOSMAS.png")}
-              style={styles.logo}
-            />
-          </View>
-
-          <View style={styles.slide}>
-            <Image
-              source={require("../../assets/images/1.png")}
-              style={styles.logo}
-            />
-          </View>
-
-          <View style={styles.slide}>
-            <Image
-              source={require("../../assets/images/2.png")}
-              style={styles.logo}
-            />
-          </View>
+        <Swiper autoplay height={180} showsPagination>
+          {[ 
+            require("../../assets/images/SOSMAS.png"),
+            require("../../assets/images/1.png"),
+            require("../../assets/images/2.png"),
+          ].map((img, index) => (
+            <View key={index} style={styles.slide}>
+              <Image source={img} style={styles.logo} />
+            </View>
+          ))}
         </Swiper>
       </View>
 
       {/* CONTENT */}
-      <ScrollView style={styles.content}>
+      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
         
-        {/* Title */}
         <View style={styles.sectionHeader}>
           <Text style={styles.title}>Daftar Bantuan</Text>
-          <Text style={styles.subtitle}>4 Location</Text>
+          <Text style={styles.subtitle}>4 Lokasi</Text>
         </View>
 
-        {/* CARD LIST */}
         <View style={styles.cardContainer}>
           {data.map((item, index) => (
-            <View key={index} style={styles.card}>
+            <TouchableOpacity key={index} style={styles.card}>
               <Image source={item.image} style={styles.cardImage} />
 
               <View style={styles.cardOverlay}>
                 <Text style={styles.cardTitle}>{item.title}</Text>
-                <Text style={styles.cardLocation}>📍 {item.location}</Text>
+                <View style={styles.locationRow}>
+                  <Ionicons name="location-outline" size={12} color="#fff" />
+                  <Text style={styles.cardLocation}>
+                    {item.location}
+                  </Text>
+                </View>
               </View>
-            </View>
+            </TouchableOpacity>
           ))}
         </View>
       </ScrollView>
 
-      {/* BOTTOM NAV */}
+      {/* BOTTOM NAVBAR */}
       <View style={styles.navbar}>
-        <TouchableOpacity>
-          <Text style={styles.activeNav}>🏠</Text>
-          <Text style={styles.activeNavText}>Home</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Text style={styles.navIcon}>🎁</Text>
-          <Text style={styles.navText}>Donasi</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Text style={styles.navIcon}>🧾</Text>
-          <Text style={styles.navText}>Riwayat</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity>
-          <Text style={styles.navIcon}>👤</Text>
-          <Text style={styles.navText}>Profile</Text>
-        </TouchableOpacity>
+        <NavItem icon="home" label="Home" active />
+        <NavItem icon="gift" label="Donasi" />
+        <NavItem icon="receipt" label="Riwayat" />
+        <NavItem icon="user" label="Profile" />
       </View>
 
     </SafeAreaView>
   );
 }
 
+// 🔥 COMPONENT NAV ITEM
+const NavItem = ({ icon, label, active = false }: any) => (
+  <TouchableOpacity style={styles.navItem}>
+    <Feather
+      name={icon}
+      size={20}
+      color={active ? "#800000" : "#888"}
+    />
+    <Text style={[styles.navText, active && styles.activeText]}>
+      {label}
+    </Text>
+  </TouchableOpacity>
+);
+
+// DATA
 const data = [
   {
     title: "Banjir",
@@ -134,30 +127,30 @@ const data = [
   },
   {
     title: "Palestina",
-    location: "Indonesia",
+    location: "Global",
     image: require("../../assets/images/palestina.jpg"),
   },
 ];
 
 
-// ================= CSS =================
+// ================= STYLE =================
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f3f4f6",
+    backgroundColor: "#f5f5f5",
   },
 
   header: {
-    height: 280,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    height: 260,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
     overflow: "hidden",
   },
 
   bgImage: {
+    position: "absolute",
     width: "100%",
     height: "100%",
-    position: "absolute",
   },
 
   overlay: {
@@ -169,23 +162,20 @@ const styles = StyleSheet.create({
   topBar: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
+    paddingHorizontal: 20,
     paddingTop: 16,
+    alignItems: "center",
   },
 
   smallText: {
-    color: "#fff",
+    color: "#eee",
     fontSize: 12,
   },
 
   nameText: {
     color: "#fff",
+    fontSize: 16,
     fontWeight: "bold",
-    fontSize: 14,
-  },
-
-  menuText: {
-    color: "#fff",
   },
 
   slide: {
@@ -194,20 +184,20 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 140,
-    height: 140,
+    width: 120,
+    height: 120,
     resizeMode: "contain",
   },
 
   content: {
     paddingHorizontal: 16,
-    marginTop: -40,
+    marginTop: -30,
   },
 
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 62,
   },
 
   title: {
@@ -216,7 +206,7 @@ const styles = StyleSheet.create({
   },
 
   subtitle: {
-    color: "gray",
+    color: "#888",
   },
 
   cardContainer: {
@@ -227,10 +217,11 @@ const styles = StyleSheet.create({
 
   card: {
     width: "48%",
-    height: 140,
-    borderRadius: 12,
+    height: 150,
+    borderRadius: 15,
     overflow: "hidden",
     marginBottom: 12,
+    backgroundColor: "#fff",
   },
 
   cardImage: {
@@ -242,8 +233,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    padding: 8,
-    backgroundColor: "rgba(0,0,0,0.3)",
+    padding: 10,
+    backgroundColor: "rgba(0,0,0,0.4)",
   },
 
   cardTitle: {
@@ -251,40 +242,39 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
+  locationRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+
   cardLocation: {
     color: "#fff",
-    fontSize: 12,
+    fontSize: 11,
   },
 
   navbar: {
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingVertical: 10,
+    paddingVertical: 12,
     backgroundColor: "#fff",
-    borderTopWidth: 1,
+    borderTopWidth: 0.5,
     borderColor: "#ddd",
+    elevation: 10,
   },
 
-  activeNav: {
-    fontSize: 18,
-    textAlign: "center",
-  },
-
-  activeNavText: {
-    color: "maroon",
-    fontWeight: "bold",
-    fontSize: 12,
-    textAlign: "center",
-  },
-
-  navIcon: {
-    fontSize: 18,
-    textAlign: "center",
+  navItem: {
+    alignItems: "center",
   },
 
   navText: {
-    fontSize: 12,
-    textAlign: "center",
-    color: "gray",
+    fontSize: 11,
+    color: "#888",
+    marginTop: 2,
+  },
+
+  activeText: {
+    color: "#800000",
+    fontWeight: "600",
   },
 });
