@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
 
   navWrapper: {
     position: "absolute",
-    top: 40, // 🔥 biar turun dari status bar
+    top: 0, // 🔥 biar turun dari status bar
     left: 0,
     right: 0,
     zIndex: 10,
@@ -172,6 +172,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 55, // 🔥 kasih jarak ke bawah biar logo gak nempel
   },
 
   logo: {

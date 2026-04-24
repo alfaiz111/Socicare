@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 55, // 🔥 kasih jarak ke bawah biar logo gak nempel
   },
 
   logo: {
