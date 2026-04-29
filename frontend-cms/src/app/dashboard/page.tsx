@@ -3,32 +3,54 @@ import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { DataTable } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
 import { SiteHeader } from "@/components/site-header"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import {
+  SidebarInset,
+  SidebarProvider,
+} from "@/components/ui/sidebar"
 
 import data from "./data.json"
+
+const mappedData = data.map((item, index) => ({
+  id: item.id ?? index + 1,
+  nama: item.header || "Anonim",
+  email: `${item.reviewer
+    ?.toLowerCase()
+    .replace(/\s/g, "")}@gmail.com`,
+  jumlah: Number(item.target) * 100000 || 500000,
+  metode: item.type || "Transfer Bank",
+  status:
+    item.status === "Done"
+      ? "Sukses"
+      : item.status === "In Process"
+      ? "Pending"
+      : "Gagal",
+  tanggal: "29 Apr 2026",
+}))
 
 export default function Page() {
   return (
     <SidebarProvider
       style={
         {
-          "--sidebar-width": "calc(var(--spacing) * 72)",
-          "--header-height": "calc(var(--spacing) * 12)",
+          "--sidebar-width": "18rem",
+          "--header-height": "4rem",
         } as React.CSSProperties
       }
     >
-      <AppSidebar variant="inset" />
+      <AppSidebar />
+
       <SidebarInset>
         <SiteHeader />
-        <div className="flex flex-1 flex-col">
-          <div className="@container/main flex flex-1 flex-col gap-2">
-            <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-              <SectionCards />
-              <div className="px-4 lg:px-6">
-                <ChartAreaInteractive />
-              </div>
-              <DataTable data={data} />
-            </div>
+
+        <div className="flex flex-1 flex-col gap-6 p-6 bg-red-50 min-h-screen">
+          <SectionCards />
+
+          <div className="rounded-2xl bg-white shadow-md p-4">
+            <ChartAreaInteractive />
+          </div>
+
+          <div className="rounded-2xl bg-white shadow-md p-4">
+            <DataTable data={mappedData} />
           </div>
         </div>
       </SidebarInset>
