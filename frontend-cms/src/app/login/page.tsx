@@ -1,45 +1,49 @@
 "use client"
 
-import { LoginForm } from "@/components/login-form"
-import Image from "next/image"
 import { motion } from "framer-motion"
+import Image from "next/image"
+import { LoginForm } from "@/components/login-form"
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen grid lg:grid-cols-2 bg-[#0a0a0a]">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-[#2a0f14] via-[#1a0a0d] to-[#0b0b0b] relative overflow-hidden">
 
-      {/* LEFT - BRANDING */}
-      <div className="hidden lg:flex relative items-center justify-center overflow-hidden bg-black">
-        
-        {/* Glow */}
-        <div className="absolute w-150 h-150 bg-[#800000]/30 blur-[150px] rounded-full" />
+      {/* background glow */}
+      <div className="absolute w-125 h-125 bg-red-800/20 blur-3xl rounded-full -top-30 -left-30" />
+      <div className="absolute w-100 h-100 bg-rose-900/20 blur-3xl rounded-full -bottom-30 -right-30" />
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative z-10 text-center space-y-6"
-        >
-          {/* LOGO BESAR */}
-          <div className="flex justify-center">
-            <div className="">
-              <Image src="/images/SOSMAS.png" alt="logo" width={200} height={200} />
-            </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-md relative"
+      >
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl p-8">
+
+          {/* HEADER */}
+          <div className="flex flex-col items-center text-center mb-6">
+            <Image
+              src="/images/SOSMAS.png"
+              alt="SOSMAS"
+              width={90}
+              height={90}
+              className="mb-3"
+            />
+
+            <h1 className="text-white text-2xl font-semibold">
+              Selamat Datang
+            </h1>
+
+            <p className="text-gray-400 text-sm mt-1">
+              Masuk untuk melanjutkan ke dashboard
+            </p>
           </div>
 
-          <h1 className="text-4xl font-bold text-white">
-            Welcome Back
-          </h1>
+          {/* FORM COMPONENT */}
+          <LoginForm />
+        </div>
+      </motion.div>
 
-          <p className="text-gray-400 max-w-sm">
-            Manage your system with a modern dashboard experience.
-          </p>
-        </motion.div>
-      </div>
-
-      {/* RIGHT - FORM */}
-      <div className="flex items-center justify-center p-6">
-        <LoginForm />
-      </div>
     </div>
   )
 }
