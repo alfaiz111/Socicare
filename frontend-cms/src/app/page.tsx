@@ -7,12 +7,14 @@ export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
-    router.push("/dashboard")
+    const isLogin = localStorage.getItem("isLogin")
+
+    if (isLogin === "true") {
+      router.replace("/dashboard")
+    } else {
+      router.replace("/login")
+    }
   }, [router])
 
-  return (
-    <div className="flex h-screen items-center justify-center">
-      <p className="text-lg">Loading dashboard...</p>
-    </div>
-  )
+  return null
 }
