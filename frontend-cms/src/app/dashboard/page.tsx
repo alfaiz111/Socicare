@@ -1,3 +1,6 @@
+"use client"
+
+import * as React from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { DataTable } from "@/components/data-table"
@@ -8,26 +11,28 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar"
 
-import data from "./data.json"
-
-const mappedData = data.map((item, index) => ({
-  id: item.id ?? index + 1,
-  nama: item.header || "Anonim",
-  email: `${item.reviewer
-    ?.toLowerCase()
-    .replace(/\s/g, "")}@gmail.com`,
-  jumlah: Number(item.target) * 100000 || 500000,
-  metode: item.type || "Transfer Bank",
-  status:
-    item.status === "Done"
-      ? "Sukses"
-      : item.status === "In Process"
-      ? "Pending"
-      : "Gagal",
-  tanggal: "29 Apr 2026",
-}))
+import rawData from "./data.json"
 
 export default function Page() {
+  const mappedData = React.useMemo(() => {
+    return rawData.map((item, index) => ({
+      id: item.id ?? index + 1,
+      nama: item.header || "Anonim",
+      email: `${item.reviewer
+        ?.toLowerCase()
+        .replace(/\s/g, "")}@gmail.com`,
+      jumlah: Number(item.target) * 100000 || 500000,
+      metode: item.type || "Transfer Bank",
+      status:
+        item.status === "Done"
+          ? "Sukses"
+          : item.status === "In Process"
+          ? "Pending"
+          : "Gagal",
+      tanggal: "29 Apr 2026",
+    }))
+  }, [])
+
   return (
     <SidebarProvider
       style={

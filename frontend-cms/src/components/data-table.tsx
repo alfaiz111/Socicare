@@ -6,6 +6,7 @@ import {
   closestCenter,
   MouseSensor,
   TouchSensor,
+  KeyboardSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
@@ -36,8 +37,19 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { Card, CardHeader, CardContent } from "@/components/ui/card"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
+import {
+  Card,
+  CardHeader,
+  CardContent,
+} from "@/components/ui/card"
+
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/ui/tabs"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { GripVerticalIcon } from "lucide-react"
@@ -58,22 +70,39 @@ function DragHandle({ id }: { id: number }) {
   const { attributes, listeners } = useSortable({ id })
 
   return (
-    <Button {...attributes} {...listeners} variant="ghost" size="icon">
-      <GripVerticalIcon className="size-3 text-maroon-600" />
+    <Button
+      {...attributes}
+      {...listeners}
+      variant="ghost"
+      size="icon"
+      className="size-7 hover:bg-red-100"
+    >
+      <GripVerticalIcon className="size-4 text-red-700" />
     </Button>
   )
 }
 
 /* ================= COLUMNS ================= */
 const columns: ColumnDef<Donasi>[] = [
-  { id: "drag", cell: ({ row }) => <DragHandle id={row.original.id} /> },
-  { accessorKey: "nama", header: "Donatur" },
-  { accessorKey: "email", header: "Email" },
+  {
+    id: "drag",
+    cell: ({ row }) => <DragHandle id={row.original.id} />,
+  },
+  {
+    accessorKey: "nama",
+    header: "Donatur",
+    cell: ({ row }) => (
+      <div>
+        <p className="font-semibold text-gray-800">{row.original.nama}</p>
+        <p className="text-xs text-gray-500">{row.original.email}</p>
+      </div>
+    ),
+  },
   {
     accessorKey: "jumlah",
     header: () => <div className="text-right">Jumlah</div>,
     cell: ({ row }) => (
-      <div className="text-right font-semibold text-maroon-700">
+      <div className="text-right font-bold text-red-700 text-base">
         Rp {row.original.jumlah.toLocaleString("id-ID")}
       </div>
     ),
@@ -82,7 +111,7 @@ const columns: ColumnDef<Donasi>[] = [
     accessorKey: "metode",
     header: "Metode",
     cell: ({ row }) => (
-      <Badge className="bg-maroon-100 text-maroon-700">
+      <Badge className="bg-red-100 text-red-700 border-none">
         {row.original.metode}
       </Badge>
     ),
@@ -92,6 +121,7 @@ const columns: ColumnDef<Donasi>[] = [
     header: "Status",
     cell: ({ row }) => {
       const status = row.original.status
+
       return (
         <Badge
           className={
@@ -107,7 +137,10 @@ const columns: ColumnDef<Donasi>[] = [
       )
     },
   },
-  { accessorKey: "tanggal", header: "Tanggal" },
+  {
+    accessorKey: "tanggal",
+    header: "Tanggal",
+  },
 ]
 
 /* ================= ROW ================= */
@@ -119,8 +152,11 @@ function DraggableRow({ row }: { row: Row<Donasi> }) {
   return (
     <TableRow
       ref={setNodeRef}
-      style={{ transform: CSS.Transform.toString(transform), transition }}
-      className="hover:bg-maroon-50"
+      style={{
+        transform: CSS.Transform.toString(transform),
+        transition,
+      }}
+      className="hover:bg-red-50 even:bg-gray-50 transition"
     >
       {row.getVisibleCells().map((cell) => (
         <TableCell key={cell.id}>
@@ -137,14 +173,15 @@ export function DataTable({ data }: { data: Donasi[] }) {
 
   const sensors = useSensors(
     useSensor(MouseSensor),
-    useSensor(TouchSensor)
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor)
   )
 
   const dataIds = React.useMemo<UniqueIdentifier[]>(
     () => tableData.map((d) => d.id),
     [tableData]
   )
-
+ // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: tableData,
     columns,
@@ -152,30 +189,43 @@ export function DataTable({ data }: { data: Donasi[] }) {
   })
 
   function handleDragEnd(event: DragEndEvent) {
-    const { active, over }
-
- = event
-    if (!over || active.id === over.id) return
-
-    setTableData((items) => {
-      const oldIndex = dataIds.indexOf(active.id)
-      const newIndex = dataIds.indexOf(over.id)
-      return arrayMove(items, oldIndex, newIndex)
-    })
+    const { active, over } = event
+    if (active.id !== over?.id) {
+      setTableData((items) => {
+        const oldIndex = dataIds.indexOf(active.id)
+        const newIndex = dataIds.indexOf(over!.id)
+        return arrayMove(items, oldIndex, newIndex)
+      })
+    }
   }
 
   return (
-    <Card className="shadow-xl border-none">
+    <Card className="shadow-xl border-0 rounded-2xl">
       <CardHeader>
+
+        {/* TABS */}
         <Tabs defaultValue="donasi">
-          <TabsList className="bg-maroon-100">
-            <TabsTrigger value="donasi">Donasi Masuk</TabsTrigger>
-            <TabsTrigger value="laporan">Laporan</TabsTrigger>
+          <TabsList className="bg-red-100 p-1 rounded-lg">
+            <TabsTrigger
+              value="donasi"
+              className="data-[state=active]:bg-red-700 data-[state=active]:text-white"
+            >
+              Donasi Masuk
+            </TabsTrigger>
+            <TabsTrigger
+              value="laporan"
+              className="data-[state=active]:bg-red-700 data-[state=active]:text-white"
+            >
+              Laporan
+            </TabsTrigger>
           </TabsList>
 
+          {/* TABLE */}
           <TabsContent value="donasi">
-            <CardContent className="p-0 mt-4">
-              <div className="rounded-xl border border-maroon-200 overflow-hidden">
+            <CardContent className="p-0 mt-5">
+
+              <div className="rounded-xl border border-red-200 overflow-hidden">
+
                 <DndContext
                   collisionDetection={closestCenter}
                   modifiers={[restrictToVerticalAxis]}
@@ -183,11 +233,16 @@ export function DataTable({ data }: { data: Donasi[] }) {
                   sensors={sensors}
                 >
                   <Table>
-                    <TableHeader className="bg-maroon-800">
+
+                    {/* HEADER */}
+                    <TableHeader className="bg-red-800">
                       {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
                           {headerGroup.headers.map((header) => (
-                            <TableHead key={header.id} className="text-white">
+                            <TableHead
+                              key={header.id}
+                              className="text-white font-semibold"
+                            >
                               {flexRender(
                                 header.column.columnDef.header,
                                 header.getContext()
@@ -198,6 +253,7 @@ export function DataTable({ data }: { data: Donasi[] }) {
                       ))}
                     </TableHeader>
 
+                    {/* BODY */}
                     <TableBody>
                       <SortableContext
                         items={dataIds}
@@ -208,18 +264,23 @@ export function DataTable({ data }: { data: Donasi[] }) {
                         ))}
                       </SortableContext>
                     </TableBody>
+
                   </Table>
                 </DndContext>
+
               </div>
+
             </CardContent>
           </TabsContent>
 
           <TabsContent value="laporan">
-            <CardContent className="py-6 text-sm text-muted-foreground">
-              Laporan donasi akan ditampilkan di sini...
+            <CardContent className="py-10 text-center text-gray-500">
+              Laporan donasi akan tampil di sini
             </CardContent>
           </TabsContent>
+
         </Tabs>
+
       </CardHeader>
     </Card>
   )
