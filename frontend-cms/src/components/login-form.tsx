@@ -1,9 +1,8 @@
 "use client"
-
-import Image from "next/image"
 import { motion } from "framer-motion"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { FcGoogle } from "react-icons/fc"
 
 export function LoginForm() {
   return (
@@ -12,25 +11,34 @@ export function LoginForm() {
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-sm space-y-6"
     >
-      {/* LOGO */}
-      <div className="flex items-center gap-2">
-        <div className="bg-[#800000] p-2 rounded-lg">
-          <Image src="/logo.png" alt="logo" width={24} height={24} />
-        </div>
-        <span className="text-white font-semibold">YourBrand</span>
-      </div>
 
       {/* TITLE */}
       <div>
         <h2 className="text-2xl font-semibold text-white">
-          Sign in
+          Sign in to your account
         </h2>
         <p className="text-sm text-gray-400">
-          Enter your email and password
+          Enter your details below
         </p>
       </div>
 
-      {/* FORM */}
+      {/* GOOGLE LOGIN */}
+      <Button
+        variant="outline"
+        className="w-full bg-white text-black hover:bg-gray-100 flex items-center justify-center gap-2"
+      >
+        <FcGoogle size={18} />
+        Continue with Google
+      </Button>
+
+      {/* DIVIDER */}
+      <div className="flex items-center gap-2">
+        <div className="flex-1 h-px bg-white/10" />
+        <span className="text-xs text-gray-400">OR</span>
+        <div className="flex-1 h-px bg-white/10" />
+      </div>
+
+      {/* INPUT */}
       <div className="space-y-4">
         <Input
           placeholder="Email"
@@ -48,9 +56,9 @@ export function LoginForm() {
         Sign in
       </Button>
 
-      {/* EXTRA */}
+      {/* FOOTER */}
       <div className="flex justify-between text-sm text-gray-400">
-        <a href="#" className="hover:text-white">Forgot</a>
+        <a href="#" className="hover:text-white">Forgot password</a>
         <a href="#" className="hover:text-white">Sign up</a>
       </div>
     </motion.div>
