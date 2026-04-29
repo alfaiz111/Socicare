@@ -21,8 +21,8 @@ export default function LoginPage() {
         >
           {/* LOGO BESAR */}
           <div className="flex justify-center">
-            <div className="bg-[#800000] p-6 rounded-3xl shadow-2xl">
-              <Image src="/logo.png" alt="logo" width={80} height={80} />
+            <div className="">
+              <Image src="/images/SOSMAS.png" alt="logo" width={200} height={200} />
             </div>
           </div>
 
