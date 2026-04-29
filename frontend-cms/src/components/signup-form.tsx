@@ -1,27 +1,26 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { motion } from "framer-motion"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff } from "lucide-react";
 
 export function SignupForm() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-sm space-y-6"
     >
-
       {/* TITLE */}
       <div className="text-center space-y-1">
-        <h1 className="text-2xl font-semibold text-white">
-          Create account
-        </h1>
-        <p className="text-sm text-gray-400">
-          Fill in the form to get started
-        </p>
+        <h1 className="text-2xl font-semibold text-white">Create account</h1>
+        <p className="text-sm text-gray-400">Fill in the form to get started</p>
       </div>
 
       {/* GOOGLE */}
@@ -42,7 +41,6 @@ export function SignupForm() {
 
       {/* FORM */}
       <div className="space-y-4">
-
         <Input
           placeholder="Full Name"
           className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus-visible:ring-[#800000]"
@@ -54,17 +52,47 @@ export function SignupForm() {
           className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus-visible:ring-[#800000]"
         />
 
-        <Input
-          type="password"
-          placeholder="Password"
-          className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus-visible:ring-[#800000]"
-        />
+        {/* PASSWORD */}
+        <div className="relative">
+          <Input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="bg-white/5 border-white/10 text-white pr-10 placeholder:text-gray-500 focus-visible:ring-[#800000]"
+          />
 
-        <Input
-          type="password"
-          placeholder="Confirm Password"
-          className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus-visible:ring-[#800000]"
-        />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-200 transition-colors cursor-pointer"
+          >
+            {showPassword ? (
+              <EyeOff size={17} className="opacity-80" />
+            ) : (
+              <Eye size={17} className="opacity-70" />
+            )}
+          </button>
+        </div>
+
+        {/* CONFIRM PASSWORD */}
+        <div className="relative">
+          <Input
+            type={showConfirm ? "text" : "password"}
+            placeholder="Confirm Password"
+            className="bg-white/5 border-white/10 text-white pr-10 placeholder:text-gray-500 focus-visible:ring-[#800000]"
+          />
+
+          <button
+            type="button"
+            onClick={() => setShowConfirm(!showConfirm)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-200 transition-colors cursor-pointer"
+          >
+            {showConfirm ? (
+              <EyeOff size={17} className="opacity-80" />
+            ) : (
+              <Eye size={17} className="opacity-70" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* BUTTON */}
@@ -79,7 +107,6 @@ export function SignupForm() {
           Sign in
         </a>
       </p>
-
     </motion.div>
-  )
+  );
 }
