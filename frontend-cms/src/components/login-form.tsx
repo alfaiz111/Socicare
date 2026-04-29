@@ -1,14 +1,15 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { motion } from "framer-motion"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { FcGoogle } from "react-icons/fc"
-import { Eye, EyeOff } from "lucide-react"
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { FcGoogle } from "react-icons/fc";
+import { Eye, EyeOff } from "lucide-react";
+import Link from "next/link";
 
 export function LoginForm() {
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <motion.div
@@ -16,7 +17,6 @@ export function LoginForm() {
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-sm space-y-8"
     >
-
       {/* GOOGLE LOGIN */}
       <Button
         variant="outline"
@@ -35,7 +35,6 @@ export function LoginForm() {
 
       {/* INPUT */}
       <div className="space-y-4">
-
         {/* EMAIL */}
         <Input
           placeholder="Email"
@@ -58,7 +57,6 @@ export function LoginForm() {
             {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
         </div>
-
       </div>
 
       {/* BUTTON */}
@@ -71,11 +69,13 @@ export function LoginForm() {
         <a href="#" className="hover:text-white cursor-pointer transition">
           Forgot password
         </a>
-        <a href="#" className="hover:text-white cursor-pointer transition">
+        <Link
+          href="/signup"
+          className="hover:text-white cursor-pointer transition"
+        >
           Sign up
-        </a>
+        </Link>
       </div>
-
     </motion.div>
-  )
+  );
 }
