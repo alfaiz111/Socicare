@@ -1,18 +1,14 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { NavMain } from "@/components/nav-main";
-import { NavSecondary } from "@/components/nav-secondary";
-import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
 import {
@@ -22,131 +18,123 @@ import {
   Truck,
   Users,
   PieChart,
-  Settings2,
-  CircleHelp,
-  Search,
-  Command,
+  Settings,
+  LogOut,
 } from "lucide-react";
 
-const data = {
-  user: {
-    name: "Admin CMS",
-    email: "admin@socicare.id",
-    avatar: "/avatars/admin.jpg",
+const menu = [
+  {
+    group: "MAIN",
+    items: [
+      { title: "Dashboard", href: "/", icon: LayoutDashboard },
+    ],
   },
+  {
+    group: "MANAGEMENT",
+    items: [
+      { title: "Campaign", href: "/campaign", icon: Megaphone },
+      { title: "Verifikasi Donasi", href: "/donasi/verifikasi", icon: ShieldCheck },
+      { title: "Penyaluran", href: "/penyaluran", icon: Truck },
+    ],
+  },
+  {
+    group: "USER",
+    items: [{ title: "Pengguna", href: "/users", icon: Users }],
+  },
+  {
+    group: "REPORT",
+    items: [{ title: "Laporan", href: "/laporan", icon: PieChart }],
+  },
+];
 
-  navMain: [
-    {
-      title: "Dashboard",
-      url: "/",
-      icon: <LayoutDashboard className="size-4" />,
-    },
-    {
-      title: "Manajemen Campaign",
-      icon: <Megaphone className="size-4" />,
-      url: "/campaign",
-      items: [
-        { title: "Semua Campaign", url: "/campaign" },
-        { title: "Tambah Campaign", url: "/campaign/create" },
-      ],
-    },
-    {
-      title: "Verifikasi Donasi",
-      icon: <ShieldCheck className="size-4" />,
-      url: "/donasi/verifikasi",
-      items: [
-        { title: "Menunggu Verifikasi", url: "/donasi/verifikasi" },
-        { title: "List Donasi Masuk", url: "/donasi" },
-      ],
-    },
-    {
-      title: "Penyaluran Bantuan",
-      icon: <Truck className="size-4" />,
-      url: "/penyaluran",
-      items: [
-        { title: "Input Laporan", url: "/penyaluran/create" },
-        { title: "Laporan Distribusi", url: "/penyaluran" },
-        { title: "Tracking Dana", url: "/penyaluran/tracking" },
-      ],
-    },
-    {
-      title: "Manajemen User",
-      url: "#",
-      icon: <Users className="size-4" />,
-      items: [
-        { title: "Data Pengguna", url: "/users" },
-        { title: "Riwayat Donasi", url: "/users/riwayat" },
-      ],
-    },
-    {
-      title: "Laporan & Transparansi",
-      url: "#",
-      icon: <PieChart className="size-4" />,
-      items: [
-        { title: "Rekap Donasi", url: "/laporan/rekap" },
-        { title: "Laporan Publik", url: "/laporan/publik" },
-        { title: "Export Data", url: "/laporan/export" },
-      ],
-    },
-  ],
+export function AppSidebar() {
+  const pathname = usePathname();
 
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "/settings",
-      icon: <Settings2 className="size-4" />,
-    },
-    {
-      title: "Help & Support",
-      url: "/help",
-      icon: <CircleHelp className="size-4" />,
-    },
-    {
-      title: "Search",
-      url: "#",
-      icon: <Search className="size-4" />,
-    },
-  ],
-};
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" variant="inset" {...props}>
-      <SidebarHeader className="border-b border-border/40 pb-4 pt-4 mb-2">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              size="lg"
-              asChild
-              className="hover:bg-transparent cursor-pointer"
-            >
-              <a href="#">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-                  <Command className="size-4" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight ml-2">
-                  <span className="truncate font-semibold text-base tracking-tight text-foreground">
-                    Socicare CMS
-                  </span>
-                  <span className="truncate text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-0.5">
-                    Admin Base
-                  </span>
-                </div>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+    <Sidebar className="w-64 border-none bg-transparent">
+      
+      {/* WRAPPER UTAMA (INI YANG NGILANGIN PUTIH) */}
+      <div className="h-full flex flex-col bg-linear-to-b from-[#800000] via-[#6b0f1a] to-[#4a0000] text-white shadow-2xl">
+        
+        {/* HEADER */}
+        <SidebarHeader className="p-5 border-b border-white/10 bg-transparent">
+          <div className="flex flex-col items-center">
+            <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center mb-2">
+              <span className="font-bold text-lg">S</span>
+            </div>
+            <h1 className="text-lg font-bold">Socicare</h1>
+            <p className="text-xs opacity-70">Admin Dashboard</p>
+          </div>
+        </SidebarHeader>
 
-      <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
-      </SidebarContent>
+        {/* CONTENT */}
+        <SidebarContent className="px-3 py-4 bg-transparent overflow-y-auto">
+          {menu.map((section) => (
+            <div key={section.group} className="mb-5">
+              
+              <p className="text-[10px] uppercase text-white/50 px-2 mb-2">
+                {section.group}
+              </p>
 
-      <SidebarFooter>
-        <NavUser user={data.user} />
-      </SidebarFooter>
+              <div className="flex flex-col gap-1">
+                {section.items.map((item) => {
+                  const Icon = item.icon;
+                  const active = pathname === item.href;
+
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${
+                        active
+                          ? "bg-white text-[#800000] shadow-lg"
+                          : "hover:bg-white/10"
+                      }`}
+                    >
+                      <Icon
+                        size={18}
+                        className={
+                          active ? "text-[#800000]" : "text-white/80"
+                        }
+                      />
+                      <span className="text-sm font-medium">
+                        {item.title}
+                      </span>
+
+                      {active && (
+                        <div className="ml-auto w-1.5 h-5 bg-[#800000] rounded-full"></div>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </SidebarContent>
+
+        {/* FOOTER */}
+        <SidebarFooter className="p-4 border-t border-white/10 bg-transparent">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center">
+              A
+            </div>
+            <div>
+              <p className="text-sm font-semibold">Admin</p>
+              <p className="text-xs opacity-60">admin@socicare.id</p>
+            </div>
+          </div>
+
+          <div className="flex gap-2">
+            <button className="flex-1 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 py-2 rounded-lg text-xs">
+              <Settings size={14} /> Settings
+            </button>
+            <button className="flex-1 flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 py-2 rounded-lg text-xs">
+              <LogOut size={14} /> Logout
+            </button>
+          </div>
+        </SidebarFooter>
+
+      </div>
     </Sidebar>
   );
 }
-  
