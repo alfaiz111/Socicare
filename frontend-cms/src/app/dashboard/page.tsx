@@ -18,9 +18,7 @@ export default function Page() {
     return rawData.map((item, index) => ({
       id: item.id ?? index + 1,
       nama: item.header || "Anonim",
-      email: `${item.reviewer
-        ?.toLowerCase()
-        .replace(/\s/g, "")}@gmail.com`,
+      email: `${item.reviewer?.toLowerCase().replace(/\s/g, "")}@gmail.com`,
       jumlah: Number(item.target) * 100000 || 500000,
       metode: item.type || "Transfer Bank",
       status:
@@ -47,17 +45,24 @@ export default function Page() {
       <SidebarInset>
         <SiteHeader />
 
-        <div className="flex flex-1 flex-col gap-6 p-6 bg-red-50 min-h-screen">
+        {/* MAIN CONTENT */}
+        <div className="flex flex-1 flex-col gap-6 p-6 bg-[#120306] min-h-screen">
+
+          {/* CARDS */}
           <SectionCards />
 
-          <div className="rounded-2xl bg-white shadow-md p-4">
+          {/* CHART */}
+          <div className="rounded-2xl bg-[#1a0b0d] border border-white/5 shadow-xl p-4">
             <ChartAreaInteractive />
           </div>
 
-          <div className="rounded-2xl bg-white shadow-md p-4">
+          {/* TABLE */}
+          <div className="rounded-2xl bg-[#1a0b0d] border border-white/5 shadow-xl p-4">
             <DataTable data={mappedData} />
           </div>
+
         </div>
+
       </SidebarInset>
     </SidebarProvider>
   )
