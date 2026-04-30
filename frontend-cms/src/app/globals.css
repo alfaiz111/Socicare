@@ -91,6 +91,10 @@
   --maroon-700: #b91c1c;
   --maroon-800: #7f1d1d;
   --maroon-900: #4c0519;
+   --bg-main: #120306;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --accent: #800000;
 }
 
 .dark {
