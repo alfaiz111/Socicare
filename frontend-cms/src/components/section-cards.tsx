@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowUpRight,
   ArrowDownRight,
@@ -5,7 +7,9 @@ import {
   Users,
   Megaphone,
   DollarSign,
+  LucideIcon,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function SectionCards() {
   return (
@@ -16,6 +20,7 @@ export function SectionCards() {
         change="+12.5%"
         up
         icon={DollarSign}
+        delay={0}
       />
 
       <Card
@@ -24,6 +29,7 @@ export function SectionCards() {
         change="+8.2%"
         up
         icon={Wallet}
+        delay={0.1}
       />
 
       <Card
@@ -32,6 +38,7 @@ export function SectionCards() {
         change="+5.1%"
         up
         icon={Users}
+        delay={0.2}
       />
 
       <Card
@@ -40,6 +47,7 @@ export function SectionCards() {
         change="-2.3%"
         up={false}
         icon={Megaphone}
+        delay={0.3}
       />
     </div>
   );
@@ -51,42 +59,57 @@ function Card({
   change,
   up,
   icon: Icon,
+  delay,
 }: {
   title: string;
   value: string;
   change: string;
   up: boolean;
-  icon: React.ComponentType<{ size: number }>;
+  icon: LucideIcon;
+  delay: number;
 }) {
   return (
-    <div className="bg-white p-5 rounded-2xl shadow-sm hover:shadow-md transition border border-gray-100">
-      
-      {/* Header */}
+    <motion.div
+      initial={{ opacity: 0, y: 25 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay }}
+      whileHover={{ scale: 1.03, y: -3 }}
+      className="p-5 rounded-2xl border border-[#f3e8e8] 
+                 bg-linear-to-b from-[#fffafa] to-[#fdf2f2]
+                 shadow-sm hover:shadow-lg transition-all duration-300"
+    >
+      {/* HEADER */}
       <div className="flex items-center justify-between">
-        <p className="text-gray-500 text-sm">{title}</p>
+        <p className="text-gray-600 text-sm">{title}</p>
 
-        <div className="p-2 rounded-lg bg-gray-100">
-          <Icon size={16} />
+        <div className="p-2 rounded-xl bg-linear-to-br from-[#f3d6d6] to-[#f8eaea]">
+          <Icon size={18} className="text-[#800000]" />
         </div>
       </div>
 
-      {/* Value */}
-      <h2 className="text-2xl font-semibold mt-3">{value}</h2>
+      {/* VALUE */}
+      <h2 className="text-2xl font-semibold mt-4 tracking-tight text-gray-800">
+        {value}
+      </h2>
 
-      {/* Change */}
-      <div className="flex items-center gap-1 mt-2 text-sm">
+      {/* CHANGE */}
+      <div className="flex items-center gap-1 mt-3 text-sm">
         {up ? (
-          <ArrowUpRight className="text-green-500" size={16} />
+          <ArrowUpRight className="text-green-600" size={16} />
         ) : (
-          <ArrowDownRight className="text-red-500" size={16} />
+          <ArrowDownRight className="text-red-600" size={16} />
         )}
 
-        <span className={up ? "text-green-500" : "text-red-500"}>
+        <span
+          className={`font-medium ${
+            up ? "text-green-600" : "text-red-600"
+          }`}
+        >
           {change}
         </span>
 
-        <span className="text-gray-400">dari bulan lalu</span>
+        <span className="text-gray-400">bulan ini</span>
       </div>
-    </div>
+    </motion.div>
   );
 }
