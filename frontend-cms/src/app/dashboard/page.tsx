@@ -5,7 +5,6 @@ import { AppSidebar } from "@/components/app-sidebar"
 import { ChartAreaInteractive } from "@/components/chart-area-interactive"
 import { DataTable } from "@/components/data-table"
 import { SectionCards } from "@/components/section-cards"
-import { SiteHeader } from "@/components/site-header"
 import {
   SidebarInset,
   SidebarProvider,
@@ -32,38 +31,33 @@ export default function Page() {
   }, [])
 
   return (
-    <SidebarProvider
-      style={
-        {
-          "--sidebar-width": "18rem",
-          "--header-height": "4rem",
-        } as React.CSSProperties
-      }
-    >
-      <AppSidebar />
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full bg-[#120306] text-white">
 
-      <SidebarInset>
-        <SiteHeader />
+        <AppSidebar />
 
-        {/* MAIN CONTENT */}
-        <div className="flex flex-1 flex-col gap-6 p-6 bg-[#120306] min-h-screen">
+        <SidebarInset className="flex-1 flex flex-col bg-transparent">
 
-          {/* CARDS */}
-          <SectionCards />
+          <div className="flex-1 p-6 space-y-6">
 
-          {/* CHART */}
-          <div className="rounded-2xl bg-[#1a0b0d] border border-white/5 shadow-xl p-4">
-            <ChartAreaInteractive />
+            {/* CARDS */}
+            <SectionCards />
+
+            {/* CHART GLASS */}
+            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5 hover:scale-[1.01] transition">
+              <ChartAreaInteractive />
+            </div>
+
+            {/* TABLE GLASS */}
+            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5">
+              <DataTable data={mappedData} />
+            </div>
+
           </div>
 
-          {/* TABLE */}
-          <div className="rounded-2xl bg-[#1a0b0d] border border-white/5 shadow-xl p-4">
-            <DataTable data={mappedData} />
-          </div>
+        </SidebarInset>
 
-        </div>
-
-      </SidebarInset>
+      </div>
     </SidebarProvider>
   )
 }
