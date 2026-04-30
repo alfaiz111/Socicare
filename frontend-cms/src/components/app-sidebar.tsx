@@ -26,10 +26,12 @@ import {
 const menu = [
   {
     group: "MAIN",
-    items: [{ title: "Dashboard", href: "/dashboard", icon: LayoutDashboard }],
+    items: [
+      { title: "Dashboard", href: "/", icon: LayoutDashboard },
+    ],
   },
   {
-    group: "MANAGEMENT",
+    group: "DONASI",
     items: [
       { title: "Campaign", href: "/campaign", icon: Megaphone },
       {
@@ -42,11 +44,15 @@ const menu = [
   },
   {
     group: "USER",
-    items: [{ title: "Pengguna", href: "/users", icon: Users }],
+    items: [
+      { title: "Donatur", href: "/donatur", icon: Users },
+    ],
   },
   {
     group: "REPORT",
-    items: [{ title: "Laporan", href: "/laporan", icon: PieChart }],
+    items: [
+      { title: "Laporan", href: "/laporan", icon: PieChart },
+    ],
   },
 ];
 
@@ -55,27 +61,27 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="w-64 border-none">
-      {/* CONTAINER */}
-     <div className="h-full flex flex-col bg-[#2a0b0f] text-white border-r border-white/5">
+      <div className="h-full flex flex-col bg-[#2a0b0f] text-white border-r border-white/5">
+
         {/* HEADER */}
         <SidebarHeader className="p-4 border-b border-white/10">
           <div className="flex items-center gap-3">
             <Image
               src="/images/SOSMAS.png"
               alt="Socicare Logo"
-              width={50}  
-              height={50}
-             className="object-contain drop-shadow-sm"
+              width={42}
+              height={42}
+              className="object-contain"
             />
 
             <div>
               <h1 className="text-sm font-semibold">Socicare</h1>
-              <p className="text-xs text-white/50">Admin Dashboard</p>
+              <p className="text-xs text-white/50">CMS Donasi</p>
             </div>
           </div>
         </SidebarHeader>
 
-        {/* CONTENT */}
+        {/* MENU */}
         <SidebarContent className="flex-1 px-3 py-5 space-y-6 overflow-y-auto">
           {menu.map((section) => (
             <div key={section.group} className="space-y-2">
@@ -86,7 +92,10 @@ export function AppSidebar() {
               <div className="space-y-1">
                 {section.items.map((item) => {
                   const Icon = item.icon;
-                  const active = pathname === item.href;
+
+                  const active =
+                    pathname === item.href ||
+                    pathname.startsWith(item.href + "/");
 
                   return (
                     <Link
@@ -97,7 +106,7 @@ export function AppSidebar() {
                         transition-all duration-200
                         ${
                           active
-                            ? "bg-white text-[#800000] font-medium shadow-md"
+                            ? "bg-white text-[#800000] font-medium shadow"
                             : "text-white/70 hover:text-white hover:bg-white/5"
                         }
                       `}
@@ -106,6 +115,7 @@ export function AppSidebar() {
                         size={17}
                         className={active ? "text-[#800000]" : ""}
                       />
+
                       {item.title}
 
                       {active && (
@@ -122,13 +132,15 @@ export function AppSidebar() {
         {/* FOOTER */}
         <SidebarFooter className="p-4 border-t border-white/10">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold">
               A
             </div>
 
             <div className="leading-tight">
               <p className="text-sm font-medium">Admin</p>
-              <p className="text-xs text-white/50">admin@socicare.id</p>
+              <p className="text-xs text-white/50">
+                admin@socicare.id
+              </p>
             </div>
           </div>
 

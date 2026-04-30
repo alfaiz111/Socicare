@@ -1,32 +1,7 @@
 "use client"
 
 import * as React from "react"
-import {
-  DndContext,
-  closestCenter,
-  MouseSensor,
-  TouchSensor,
-  KeyboardSensor,
-  useSensor,
-  useSensors,
-  type DragEndEvent,
-  type UniqueIdentifier,
-} from "@dnd-kit/core"
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers"
-import {
-  arrayMove,
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-import {
-  flexRender,
-  getCoreRowModel,
-  useReactTable,
-  type ColumnDef,
-  type Row,
-} from "@tanstack/react-table"
+import { Search } from "lucide-react"
 
 import {
   Table,
@@ -43,16 +18,9 @@ import {
   CardContent,
 } from "@/components/ui/card"
 
-import {
-  Tabs,
-  TabsList,
-  TabsTrigger,
-  TabsContent,
-} from "@/components/ui/tabs"
-
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { GripVerticalIcon } from "lucide-react"
 
 /* ================= TYPE ================= */
 type Donasi = {
@@ -61,227 +29,120 @@ type Donasi = {
   email: string
   jumlah: number
   metode: string
-  status: string
+  status: "Sukses" | "Pending" | "Gagal"
   tanggal: string
 }
 
-/* ================= DRAG ================= */
-function DragHandle({ id }: { id: number }) {
-  const { attributes, listeners } = useSortable({ id })
-
-  return (
-    <Button
-      {...attributes}
-      {...listeners}
-      variant="ghost"
-      size="icon"
-      className="size-7 hover:bg-red-100"
-    >
-      <GripVerticalIcon className="size-4 text-red-700" />
-    </Button>
-  )
-}
-
-/* ================= COLUMNS ================= */
-const columns: ColumnDef<Donasi>[] = [
-  {
-    id: "drag",
-    cell: ({ row }) => <DragHandle id={row.original.id} />,
-  },
-  {
-    accessorKey: "nama",
-    header: "Donatur",
-    cell: ({ row }) => (
-      <div>
-        <p className="font-semibold text-gray-800">{row.original.nama}</p>
-        <p className="text-xs text-gray-500">{row.original.email}</p>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "jumlah",
-    header: () => <div className="text-right">Jumlah</div>,
-    cell: ({ row }) => (
-      <div className="text-right font-bold text-red-700 text-base">
-        Rp {row.original.jumlah.toLocaleString("id-ID")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "metode",
-    header: "Metode",
-    cell: ({ row }) => (
-      <Badge className="bg-red-100 text-red-700 border-none">
-        {row.original.metode}
-      </Badge>
-    ),
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.original.status
-
-      return (
-        <Badge
-          className={
-            status === "Sukses"
-              ? "bg-green-500 text-white"
-              : status === "Pending"
-              ? "bg-yellow-500 text-white"
-              : "bg-red-500 text-white"
-          }
-        >
-          {status}
-        </Badge>
-      )
-    },
-  },
-  {
-    accessorKey: "tanggal",
-    header: "Tanggal",
-  },
-]
-
-/* ================= ROW ================= */
-function DraggableRow({ row }: { row: Row<Donasi> }) {
-  const { transform, transition, setNodeRef } = useSortable({
-    id: row.original.id,
-  })
-
-  return (
-    <TableRow
-      ref={setNodeRef}
-      style={{
-        transform: CSS.Transform.toString(transform),
-        transition,
-      }}
-      className="hover:bg-red-50 even:bg-gray-50 transition"
-    >
-      {row.getVisibleCells().map((cell) => (
-        <TableCell key={cell.id}>
-          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-        </TableCell>
-      ))}
-    </TableRow>
-  )
-}
-
-/* ================= MAIN ================= */
+/* ================= COMPONENT ================= */
 export function DataTable({ data }: { data: Donasi[] }) {
-  const [tableData, setTableData] = React.useState(data)
+  return (
+    <Card className="border border-gray-100 shadow-sm rounded-2xl">
 
-  const sensors = useSensors(
-    useSensor(MouseSensor),
-    useSensor(TouchSensor),
-    useSensor(KeyboardSensor)
+      {/* HEADER */}
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+          <h2 className="text-lg font-semibold">Transaksi Donasi</h2>
+          <p className="text-sm text-gray-500">
+            Data donasi terbaru dari aplikasi
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <Search className="absolute left-3 top-2.5 text-gray-400" size={16} />
+            <Input
+              placeholder="Cari donatur..."
+              className="pl-9 w-56"
+            />
+          </div>
+
+          <Button className="bg-[#7c3aed] hover:bg-[#6d28d9] text-white">
+            Export
+          </Button>
+        </div>
+      </CardHeader>
+
+      {/* TABLE */}
+      <CardContent className="pt-0">
+        <div className="rounded-xl border overflow-hidden">
+          <Table>
+
+            {/* HEADER */}
+            <TableHeader className="bg-gray-50">
+              <TableRow>
+                <TableHead>Donatur</TableHead>
+                <TableHead className="text-right">Jumlah</TableHead>
+                <TableHead>Metode</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Tanggal</TableHead>
+              </TableRow>
+            </TableHeader>
+
+            {/* BODY */}
+            <TableBody>
+              {data.map((item) => (
+                <TableRow
+                  key={item.id}
+                  className="hover:bg-gray-50 transition"
+                >
+                  <TableCell>
+                    <div>
+                      <p className="font-medium">{item.nama}</p>
+                      <p className="text-xs text-gray-500">
+                        {item.email}
+                      </p>
+                    </div>
+                  </TableCell>
+
+                  <TableCell className="text-right font-semibold text-[#7c3aed]">
+                    Rp {item.jumlah.toLocaleString("id-ID")}
+                  </TableCell>
+
+                  <TableCell>
+                    <Badge variant="secondary">
+                      {item.metode}
+                    </Badge>
+                  </TableCell>
+
+                  <TableCell>
+                    <StatusBadge status={item.status} />
+                  </TableCell>
+
+                  <TableCell className="text-gray-500 text-sm">
+                    {item.tanggal}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
   )
+}
 
-  const dataIds = React.useMemo<UniqueIdentifier[]>(
-    () => tableData.map((d) => d.id),
-    [tableData]
-  )
- // eslint-disable-next-line react-hooks/incompatible-library
-  const table = useReactTable({
-    data: tableData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  })
+/* ================= STATUS BADGE ================= */
+function StatusBadge({ status }: { status: string }) {
+  if (status === "Sukses") {
+    return (
+      <Badge className="bg-green-100 text-green-600">
+        Sukses
+      </Badge>
+    )
+  }
 
-  function handleDragEnd(event: DragEndEvent) {
-    const { active, over } = event
-    if (active.id !== over?.id) {
-      setTableData((items) => {
-        const oldIndex = dataIds.indexOf(active.id)
-        const newIndex = dataIds.indexOf(over!.id)
-        return arrayMove(items, oldIndex, newIndex)
-      })
-    }
+  if (status === "Pending") {
+    return (
+      <Badge className="bg-yellow-100 text-yellow-600">
+        Pending
+      </Badge>
+    )
   }
 
   return (
-    <Card className="shadow-xl border-0 rounded-2xl">
-      <CardHeader>
-
-        {/* TABS */}
-        <Tabs defaultValue="donasi">
-          <TabsList className="bg-red-100 p-1 rounded-lg">
-            <TabsTrigger
-              value="donasi"
-              className="data-[state=active]:bg-red-700 data-[state=active]:text-white"
-            >
-              Donasi Masuk
-            </TabsTrigger>
-            <TabsTrigger
-              value="laporan"
-              className="data-[state=active]:bg-red-700 data-[state=active]:text-white"
-            >
-              Laporan
-            </TabsTrigger>
-          </TabsList>
-
-          {/* TABLE */}
-          <TabsContent value="donasi">
-            <CardContent className="p-0 mt-5">
-
-              <div className="rounded-xl border border-red-200 overflow-hidden">
-
-                <DndContext
-                  collisionDetection={closestCenter}
-                  modifiers={[restrictToVerticalAxis]}
-                  onDragEnd={handleDragEnd}
-                  sensors={sensors}
-                >
-                  <Table>
-
-                    {/* HEADER */}
-                    <TableHeader className="bg-red-800">
-                      {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id}>
-                          {headerGroup.headers.map((header) => (
-                            <TableHead
-                              key={header.id}
-                              className="text-white font-semibold"
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                            </TableHead>
-                          ))}
-                        </TableRow>
-                      ))}
-                    </TableHeader>
-
-                    {/* BODY */}
-                    <TableBody>
-                      <SortableContext
-                        items={dataIds}
-                        strategy={verticalListSortingStrategy}
-                      >
-                        {table.getRowModel().rows.map((row) => (
-                          <DraggableRow key={row.id} row={row} />
-                        ))}
-                      </SortableContext>
-                    </TableBody>
-
-                  </Table>
-                </DndContext>
-
-              </div>
-
-            </CardContent>
-          </TabsContent>
-
-          <TabsContent value="laporan">
-            <CardContent className="py-10 text-center text-gray-500">
-              Laporan donasi akan tampil di sini
-            </CardContent>
-          </TabsContent>
-
-        </Tabs>
-
-      </CardHeader>
-    </Card>
+    <Badge className="bg-red-100 text-red-600">
+      Gagal
+    </Badge>
   )
 }
