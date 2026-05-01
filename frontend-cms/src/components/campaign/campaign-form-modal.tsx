@@ -2,14 +2,7 @@
 
 import * as React from "react"
 import { motion } from "framer-motion"
-
-/* TYPE */
-type Campaign = {
-  id: number
-  title: string
-  target: number
-  terkumpul: number
-}
+import { Campaign } from "@/types/campaign"
 
 type Props = {
   open: boolean
@@ -25,11 +18,14 @@ export function CampaignFormModal({
   initialData,
 }: Props) {
 
-  /* STATE INIT SEKALI (TANPA useEffect) */
   const [form, setForm] = React.useState(() => ({
     title: initialData?.title ?? "",
+    description: initialData?.description ?? "",
+    category: initialData?.category ?? "",
     target: initialData?.target?.toString() ?? "",
     terkumpul: initialData?.terkumpul?.toString() ?? "",
+    deadline: initialData?.deadline ?? "",
+    image: initialData?.image ?? "",
   }))
 
   if (!open) return null
@@ -38,22 +34,51 @@ export function CampaignFormModal({
     <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
 
       <motion.div
-        key={initialData?.id ?? "new"} // 🔥 INI KUNCI NYA
+        key={initialData?.id ?? "new"}
         initial={{ scale: 0.9, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        className="bg-white p-6 rounded-2xl w-96 shadow-xl"
+        className="bg-white p-6 rounded-2xl w-105 shadow-xl"
       >
+
         <h2 className="text-lg font-semibold mb-4">
           {initialData ? "Edit Campaign" : "Tambah Campaign"}
         </h2>
 
         <div className="space-y-3">
+
           <input
             value={form.title}
             onChange={(e) =>
               setForm({ ...form, title: e.target.value })
             }
             placeholder="Judul"
+            className="w-full border p-2 rounded-lg"
+          />
+
+          <input
+            value={form.description}
+            onChange={(e) =>
+              setForm({ ...form, description: e.target.value })
+            }
+            placeholder="Deskripsi"
+            className="w-full border p-2 rounded-lg"
+          />
+
+          <input
+            value={form.category}
+            onChange={(e) =>
+              setForm({ ...form, category: e.target.value })
+            }
+            placeholder="Kategori"
+            className="w-full border p-2 rounded-lg"
+          />
+
+          <input
+            type="date"
+            value={form.deadline}
+            onChange={(e) =>
+              setForm({ ...form, deadline: e.target.value })
+            }
             className="w-full border p-2 rounded-lg"
           />
 
@@ -74,6 +99,16 @@ export function CampaignFormModal({
             placeholder="Terkumpul"
             className="w-full border p-2 rounded-lg"
           />
+
+          <input
+            value={form.image}
+            onChange={(e) =>
+              setForm({ ...form, image: e.target.value })
+            }
+            placeholder="Image URL"
+            className="w-full border p-2 rounded-lg"
+          />
+
         </div>
 
         <div className="flex justify-end gap-2 mt-4">
@@ -84,8 +119,12 @@ export function CampaignFormModal({
               onSubmit({
                 id: initialData?.id ?? 0,
                 title: form.title,
+                description: form.description,
+                category: form.category,
                 target: Number(form.target),
                 terkumpul: Number(form.terkumpul),
+                deadline: form.deadline,
+                image: form.image,
               })
             }
             className="bg-[#800000] text-white px-3 py-1 rounded"
@@ -93,6 +132,7 @@ export function CampaignFormModal({
             Simpan
           </button>
         </div>
+
       </motion.div>
     </div>
   )
