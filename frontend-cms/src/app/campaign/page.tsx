@@ -23,43 +23,32 @@ import { Loader2 } from "lucide-react"
 export default function CampaignPage() {
   /* ================= STATE ================= */
   const [campaigns, setCampaigns] = useState<Campaign[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const [openForm, setOpenForm] = useState(false)
   const [editData, setEditData] = useState<Campaign | null>(null)
   const [deleteId, setDeleteId] = useState<number | null>(null)
 
   /* ================= FETCH ================= */
-  async function getData() {
+
+useEffect(() => {
+  const fetchData = async () => {
     try {
       setLoading(true)
 
-      // 🔥 dummy dulu (nanti API)
-      const dummy: Campaign[] = [
-        {
-          id: 1,
-          title: "Bantu Banjir",
-          description: "Donasi korban banjir",
-          category: "Sosial",
-          target: 50000000,
-          terkumpul: 20000000,
-          deadline: "2026-06-01",
-          image:
-            "https://images.unsplash.com/photo-1509099836639-18ba1795216d",
-        },
-      ]
+      const res = await fetch("/api/campaign")
+      const data = await res.json()
+      setCampaigns(data)
 
-      setCampaigns(dummy)
-    } catch {
-      setCampaigns([])
+    } catch (err) {
+      console.error(err)
     } finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => {
-    getData()
-  }, [])
+  fetchData()
+}, [])
 
   /* ================= HANDLER ================= */
   const handleCreate = () => {
