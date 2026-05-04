@@ -5,21 +5,22 @@ import {
   Image,
   StyleSheet,
   ScrollView,
+  Platform,
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
+import { StatusBar } from "expo-status-bar"; // 🔥 TAMBAHAN
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router"; // 🔥 TAMBAH router
+import { useLocalSearchParams } from "expo-router";
 import Swiper from "react-native-swiper";
+
 
 import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
 
 export default function DonasiPage() {
   const params = useLocalSearchParams();
-  const router = useRouter(); // 🔥 INIT ROUTER
 
   const data = {
     title: params.title,
@@ -32,8 +33,10 @@ export default function DonasiPage() {
 
   return (
     <View style={styles.container}>
+      {/* 🔥 STATUS BAR */}
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
+      {/* 🔥 HERO FULL */}
       <View style={styles.hero}>
         <Image source={data.image} style={styles.bgImage} />
 
@@ -42,8 +45,10 @@ export default function DonasiPage() {
           style={styles.overlay}
         />
 
+        {/* 🔥 NAVBAR OVERLAY */}
         <Navbar name="M. Arif Alfaiz" />
 
+        {/* 🔥 SLIDER LOGO */}
         <Swiper autoplay height={260} showsPagination>
           {[
             require("../../assets/images/sosmas.png"),
@@ -57,6 +62,7 @@ export default function DonasiPage() {
         </Swiper>
       </View>
 
+      {/* 🔥 CONTENT AMAN */}
       <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
           <Text style={styles.title}>{data.title}</Text>
@@ -86,22 +92,9 @@ export default function DonasiPage() {
             </Text>
           ))}
 
-          {/* 🔥 BUTTON NAVIGASI */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push({
-                pathname: "/DonasiSekarang/page",
-                params: {
-                  title: data.title,
-                  location: data.location,
-                  image: params.image,
-                },
-              })
-            }
-          >
+          <TouchableOpacity style={styles.button}>
             <Text style={styles.btnText}>Donasi Sekarang</Text>
-          </TouchableOpacity>
+        </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
 
@@ -126,7 +119,7 @@ const getImage = (name: any) => {
   }
 };
 
-// 🎨 STYLE (TIDAK DIUBAH)
+// 🎨 STYLE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -134,7 +127,7 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 260,
+    height: 260, // 🔥 FULL KE ATAS
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
@@ -156,7 +149,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 55,
+    marginTop: 55, // 🔥 kasih jarak ke bawah biar logo gak nempel
   },
 
   logo: {
@@ -191,12 +184,12 @@ const styles = StyleSheet.create({
   },
 
   badges: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 6,
-  },
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "center", // 🔥 INI KUNCI
+  alignItems: "center",
+  gap: 6,
+},
 
   badge: {
     backgroundColor: "#eee",
