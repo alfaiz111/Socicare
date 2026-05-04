@@ -8,22 +8,24 @@ import {
   StyleSheet,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar"; // 🔥 TAMBAHAN
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
-// 🔥 IMPORT COMPONENT
 import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
 
 export default function Landing() {
-  return (
-    <SafeAreaView style={styles.container}>
-      
-      {/* TOP NAVBAR */}
-      <Navbar name="M. Arif Alfaiz" />
+  const router = useRouter();
 
-      {/* HERO */}
+  return (
+    <View style={styles.container}>
+      {/* 🔥 STATUS BAR TRANSPARAN */}
+      <StatusBar style="light" translucent backgroundColor="transparent" />
+
+      {/* 🔥 HERO FULL SAMPAI ATAS */}
       <View style={styles.hero}>
         <Image
           source={require("../../assets/images/bg.jpeg")}
@@ -35,8 +37,14 @@ export default function Landing() {
           style={styles.overlay}
         />
 
-        <Swiper autoplay height={240} showsPagination>
-          {[ 
+        {/* 🔥 NAVBAR DI ATAS HERO */}
+        <View style={styles.navWrapper}>
+          <Navbar name="M. Arif Alfaiz" />
+        </View>
+
+        {/* 🔥 SLIDER LOGO */}
+        <Swiper autoplay height={260} showsPagination>
+          {[
             require("../../assets/images/sosmas.png"),
             require("../../assets/images/1.png"),
             require("../../assets/images/2.png"),
@@ -48,42 +56,61 @@ export default function Landing() {
         </Swiper>
       </View>
 
-      {/* CONTENT */}
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        
-        <View style={styles.sectionHeader}>
-          <Text style={styles.title}>Daftar Bantuan</Text>
-          <Text style={styles.subtitle}>4 Lokasi</Text>
-        </View>
+      {/* 🔥 CONTENT AMAN (PAKAI SAFE AREA) */}
+      <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
+        <ScrollView
+          style={styles.content}
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.sectionHeader}>
+            <Text style={styles.title}>Daftar Bantuan</Text>
+            <Text style={styles.subtitle}>4 Lokasi</Text>
+          </View>
 
-        <View style={styles.cardContainer}>
-          {data.map((item, index) => (
-            <TouchableOpacity key={index} style={styles.card}>
-              <Image source={item.image} style={styles.cardImage} />
+          <View style={styles.cardContainer}>
+            {data.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.card}
+                onPress={() =>
+                  router.push({
+                    pathname: "../Donasi/page",
+                    params: {
+                      title: item.title,
+                      location: item.location,
+                      image: item.title,
+                    },
+                  })
+                }
+              >
+                <Image source={item.image} style={styles.cardImage} />
 
-              <View style={styles.cardOverlay}>
-                <Text style={styles.cardTitle}>{item.title}</Text>
+                <View style={styles.cardOverlay}>
+                  <Text style={styles.cardTitle}>{item.title}</Text>
 
-                <View style={styles.locationRow}>
-                  <Ionicons name="location-outline" size={12} color="#fff" />
-                  <Text style={styles.cardLocation}>
-                    {item.location}
-                  </Text>
+                  <View style={styles.locationRow}>
+                    <Ionicons
+                      name="location-outline"
+                      size={12}
+                      color="#fff"
+                    />
+                    <Text style={styles.cardLocation}>
+                      {item.location}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </ScrollView>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
 
-      {/* BOTTOM NAVBAR */}
+      {/* 🔥 BOTTOM NAVBAR */}
       <NavbarBottom active="home" />
-
-    </SafeAreaView>
+    </View>
   );
 }
 
-// DATA
 const data = [
   {
     title: "Banjir",
@@ -107,7 +134,7 @@ const data = [
   },
 ];
 
-// STYLE
+// 🎨 STYLE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -115,7 +142,7 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 240,
+    height: 260, // 🔥 FULL HEIGHT KE ATAS
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
@@ -133,9 +160,19 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 
+  navWrapper: {
+    position: "absolute",
+    top: 0, // 🔥 biar turun dari status bar
+    left: 0,
+    right: 0,
+    zIndex: 10,
+  },
+
   slide: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 55, // 🔥 kasih jarak ke bawah biar logo gak nempel
   },
 
   logo: {
@@ -172,7 +209,7 @@ const styles = StyleSheet.create({
 
   card: {
     width: "48%",
-    height: 150,
+    height: 230,
     borderRadius: 15,
     overflow: "hidden",
     marginBottom: 12,
