@@ -1,63 +1,95 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { AppSidebar } from "@/components/app-sidebar"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
-
-import rawData from "./data.json"
+import * as React from "react";
+import { ChartAreaInteractive } from "@/components/chart-area-interactive";
+import { SectionCards } from "@/components/section-cards";
 
 export default function Page() {
-  const mappedData = React.useMemo(() => {
-    return rawData.map((item, index) => ({
-      id: item.id ?? index + 1,
-      nama: item.header || "Anonim",
-      email: `${item.reviewer?.toLowerCase().replace(/\s/g, "")}@gmail.com`,
-      jumlah: Number(item.target) * 100000 || 500000,
-      metode: item.type || "Transfer Bank",
-      status:
-        item.status === "Done"
-          ? "Sukses"
-          : item.status === "In Process"
-          ? "Pending"
-          : "Gagal",
-      tanggal: "29 Apr 2026",
-    }))
-  }, [])
-
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-[#120306] text-white">
+    <div className="space-y-6">
 
-        <AppSidebar />
+      {/* HEADER */}
+      <div>
+        <h1 className="text-2xl font-bold text-white">
+          Dashboard Admin
+        </h1>
+        <p className="text-sm text-gray-400">
+          Selamat datang kembali! Berikut ringkasan data Anda.
+        </p>
+      </div>
 
-        <SidebarInset className="flex-1 flex flex-col bg-transparent">
+      {/* CARD STATISTIK */}
+      <SectionCards />
 
-          <div className="flex-1 p-6 space-y-6">
+      {/* CHART */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-            {/* CARDS */}
-            <SectionCards />
-
-            {/* CHART GLASS */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5 hover:scale-[1.01] transition">
-              <ChartAreaInteractive />
+        {/* CHART 1 */}
+        <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-semibold text-white">
+                Statistik Platform
+              </h2>
+              <p className="text-xs text-gray-400">
+                Distribusi data per kategori
+              </p>
             </div>
-
-            {/* TABLE GLASS */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5">
-              <DataTable data={mappedData} />
-            </div>
-
           </div>
 
-        </SidebarInset>
+          <ChartAreaInteractive />
+        </div>
+
+        {/* CHART 2 */}
+        <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-semibold text-white">
+                Tren Pertumbuhan
+              </h2>
+              <p className="text-xs text-gray-400">
+                Performa dalam periode waktu
+              </p>
+            </div>
+          </div>
+
+          <ChartAreaInteractive />
+        </div>
 
       </div>
-    </SidebarProvider>
-  )
+
+      {/* SUMMARY BAWAH */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <div className="bg-linear-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
+          <p className="text-sm opacity-80">
+            Rata-rata Pesanan/User
+          </p>
+          <h3 className="text-2xl font-bold mt-1">
+            2.5
+          </h3>
+        </div>
+
+        <div className="bg-liniear-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
+          <p className="text-sm opacity-80">
+            Total Transaksi
+          </p>
+          <h3 className="text-2xl font-bold mt-1">
+            48
+          </h3>
+        </div>
+
+        <div className="bg-liniear-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
+          <p className="text-sm opacity-80">
+            Destinasi/Wilayah
+          </p>
+          <h3 className="text-2xl font-bold mt-1">
+            0.5
+          </h3>
+        </div>
+
+      </div>
+
+    </div>
+  );
 }
