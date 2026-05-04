@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,16 +8,20 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
 export default function Navbar({ name = "User" }: { name?: string }) {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+
+  const [open, setOpen] = useState(false);
 
   return (
     <View
       style={[
         styles.container,
         {
-          paddingTop: insets.top + 15, // 🔥 INI KUNCI (samakan dengan home)
+          paddingTop: insets.top + 15,
         },
       ]}
     >
@@ -34,10 +38,29 @@ export default function Navbar({ name = "User" }: { name?: string }) {
         </View>
       </View>
 
-      {/* MENU */}
-      <TouchableOpacity style={styles.menuBtn}>
-        <Feather name="menu" size={22} color="#fff" />
-      </TouchableOpacity>
+      {/* RIGHT MENU */}
+      <View>
+        <TouchableOpacity
+          style={styles.menuBtn}
+          onPress={() => setOpen(!open)}
+        >
+          <Feather name="menu" size={22} color="#fff" />
+        </TouchableOpacity>
+
+        {/* 🔥 DROPDOWN */}
+        {open && (
+          <View style={styles.dropdown}>
+            <TouchableOpacity
+              onPress={() => {
+                setOpen(false);
+                router.replace("/auth/Login/page"); // 🔥 arahkan ke login
+              }}
+            >
+              <Text style={styles.logoutText}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -85,5 +108,22 @@ const styles = StyleSheet.create({
 
   menuBtn: {
     padding: 6,
+  },
+
+  // 🔥 DROPDOWN STYLE
+  dropdown: {
+    position: "absolute",
+    top: 40,
+    right: 0,
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    elevation: 5,
+  },
+
+  logoutText: {
+    color: "red",
+    fontWeight: "bold",
   },
 });
