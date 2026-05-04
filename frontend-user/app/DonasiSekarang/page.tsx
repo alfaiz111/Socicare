@@ -2,13 +2,17 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  TextInput,
+  Image,
   StyleSheet,
+  TextInput,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useLocalSearchParams } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
+import { useLocalSearchParams } from "expo-router";
+
+import Navbar from "../../components/Navbar";
 
 export default function Donasi() {
   const params = useLocalSearchParams();
@@ -18,84 +22,147 @@ export default function Donasi() {
 
   const nominalCepat = [100000, 200000, 500000, 1000000];
 
+  const data = {
+    title: params.title,
+    location: params.location,
+    image: getImage(params.image),
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.content}>
-        
-        {/* 🔥 INFO */}
-        <Text style={styles.title}>Donasi</Text>
-        <Text style={styles.sub}>{params.title}</Text>
+    <View style={styles.container}>
+      
+      {/* 🔥 HERO HEADER (TIDAK DIHILANGKAN) */}
+      <View style={styles.hero}>
+        <Image source={data.image} style={styles.bgImage} />
 
-        {/* 🔥 INPUT NAMA */}
-        <Text style={styles.label}>Nama Donatur</Text>
-        <TextInput
-          placeholder="Masukkan nama anda"
-          style={styles.input}
-          value={nama}
-          onChangeText={setNama}
+        <LinearGradient
+          colors={["rgba(128,0,0,0.85)", "rgba(128,0,0,0.95)"]}
+          style={styles.overlay}
         />
 
-        {/* 🔥 INPUT JUMLAH */}
-        <Text style={styles.label}>Jumlah Donasi</Text>
-        <TextInput
-          placeholder="Masukkan jumlah"
-          style={styles.input}
-          keyboardType="numeric"
-          value={jumlah}
-          onChangeText={setJumlah}
-        />
+        <Navbar name="M. Arif Alfaiz" />
 
-        {/* 🔥 PILIHAN CEPAT */}
-        <Text style={styles.label}>Pilih Nominal Cepat</Text>
-        <View style={styles.nominalContainer}>
-          {nominalCepat.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.nominalBtn}
-              onPress={() => setJumlah(item.toString())}
-            >
-              <Text style={styles.nominalText}>
-                Rp {item.toLocaleString("id-ID")}
-              </Text>
-            </TouchableOpacity>
-          ))}
+        <View style={styles.heroContent}>
+          <Text style={styles.heroTitle}>{data.title}</Text>
+          <Text style={styles.heroSub}>{data.location}</Text>
         </View>
+      </View>
 
-        {/* 🔥 BUTTON */}
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Bayar Sekarang</Text>
-        </TouchableOpacity>
+      {/* 🔥 FORM */}
+      <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
+        <ScrollView style={styles.content}>
 
-      </ScrollView>
-    </SafeAreaView>
+          <Text style={styles.section}>Nama Donatur</Text>
+          <TextInput
+            placeholder="Masukkan nama anda"
+            style={styles.input}
+            value={nama}
+            onChangeText={setNama}
+          />
+
+          <Text style={styles.section}>Jumlah Donasi</Text>
+          <TextInput
+            placeholder="Masukkan jumlah donasi"
+            style={styles.input}
+            keyboardType="numeric"
+            value={jumlah}
+            onChangeText={setJumlah}
+          />
+
+          <Text style={styles.section}>Pilih Nominal Cepat</Text>
+
+          <View style={styles.nominalContainer}>
+            {nominalCepat.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.nominalBtn}
+                onPress={() => setJumlah(item.toString())}
+              >
+                <Text style={styles.nominalText}>
+                  Rp {item.toLocaleString("id-ID")}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Bayar Sekarang</Text>
+          </TouchableOpacity>
+
+        </ScrollView>
+      </SafeAreaView>
+    </View>
   );
 }
 
+// 🔥 MAPPING GAMBAR (BIAR SAMA)
+const getImage = (name: any) => {
+  switch (name) {
+    case "Banjir":
+      return require("../../assets/images/banjir.jpg");
+    case "Tanah Longsor":
+      return require("../../assets/images/longsor.jpeg");
+    case "Tsunami":
+      return require("../../assets/images/tsunami.jpg");
+    case "Palestina":
+      return require("../../assets/images/palestina.jpg");
+    default:
+      return require("../../assets/images/bg.jpeg");
+  }
+};
+
+// 🎨 STYLE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
   },
 
-  content: {
-    padding: 20,
+  // 🔥 HERO
+  hero: {
+    height: 220,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
+    overflow: "hidden",
   },
 
-  title: {
-    fontSize: 22,
+  bgImage: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+
+  overlay: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+  },
+
+  heroContent: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+  },
+
+  heroTitle: {
+    color: "#fff",
+    fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 5,
   },
 
-  sub: {
-    color: "#777",
-    marginBottom: 20,
+  heroSub: {
+    color: "#ddd",
+    fontSize: 12,
   },
 
-  label: {
+  // 🔥 FORM
+  content: {
+    padding: 16,
+  },
+
+  section: {
     marginTop: 10,
-    marginBottom: 5,
-    fontWeight: "600",
+    fontWeight: "bold",
   },
 
   input: {
@@ -104,6 +171,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#ddd",
+    marginTop: 5,
   },
 
   nominalContainer: {
@@ -117,7 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingVertical: 10,
     paddingHorizontal: 15,
-    borderRadius: 25, // 🔥 OVAL
+    borderRadius: 25,
     borderWidth: 1,
     borderColor: "#1976D2",
   },
