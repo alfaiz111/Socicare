@@ -26,14 +26,7 @@ export default function TopBar() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-white shadow-sm">
-      <div className="flex h-16 items-center justify-between px-6">
-
-        {/* LEFT */}
-        <div>
-          <h1 className="text-lg font-semibold text-gray-800">
-            Dashboard
-          </h1>
-        </div>
+      <div className="flex h-16 items-center justify-end px-6">
 
         {/* RIGHT */}
         <div className="flex items-center gap-2">
