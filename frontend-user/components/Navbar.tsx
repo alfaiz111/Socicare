@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,16 +8,20 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
 
 export default function Navbar({ name = "User" }: { name?: string }) {
   const insets = useSafeAreaInsets();
+  const router = useRouter();
+
+  const [open, setOpen] = useState(false);
 
   return (
     <View
       style={[
         styles.container,
         {
-          paddingTop: insets.top + 15, // 🔥 INI KUNCI (samakan dengan home)
+          paddingTop: insets.top + 15,
         },
       ]}
     >
@@ -34,10 +38,38 @@ export default function Navbar({ name = "User" }: { name?: string }) {
         </View>
       </View>
 
-      {/* MENU */}
-      <TouchableOpacity style={styles.menuBtn}>
-        <Feather name="menu" size={22} color="#fff" />
-      </TouchableOpacity>
+      {/* RIGHT MENU */}
+      <View>
+        <TouchableOpacity
+          style={styles.menuBtn}
+          onPress={() => setOpen(!open)}
+        >
+          <Feather name="menu" size={22} color="#fff" />
+        </TouchableOpacity>
+      </View>
+
+      {/* 🔥 OVERLAY */}
+      {open && (
+        <TouchableOpacity
+          style={styles.overlayBg}
+          onPress={() => setOpen(false)}
+        />
+      )}
+
+      {/* 🔥 DROPDOWN FULL WIDTH */}
+      {open && (
+        <View style={styles.dropdown}>
+          <TouchableOpacity
+            style={styles.logoutBtn}
+            onPress={() => {
+              setOpen(false);
+              router.replace("/auth/Login/page");
+            }}
+          >
+            <Text style={styles.logoutText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 }
@@ -85,5 +117,43 @@ const styles = StyleSheet.create({
 
   menuBtn: {
     padding: 6,
+  },
+
+  // 🔥 OVERLAY
+  overlayBg: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0,0,0,0.3)",
+  },
+
+  // 🔥 DROPDOWN FULL WIDTH
+  dropdown: {
+    position: "absolute",
+    top: 70,
+    left: 0,
+    right: 0,
+    backgroundColor: "#fff",
+    paddingVertical: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    elevation: 5,
+    alignItems: "center",
+  },
+
+  logoutBtn: {
+    width: "90%",
+    backgroundColor: "#ffdddd",
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  logoutText: {
+    color: "red",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
