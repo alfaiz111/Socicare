@@ -59,7 +59,7 @@ export default function Login() {
         {/* FOOTER */}
         <View style={styles.footer}>
           <Text style={{ color: "#aaa" }}>Forgot password</Text>
-          <TouchableOpacity onPress={() => router.push("/sign")}>
+          <TouchableOpacity onPress={() => router.push("../Sign/page")}>
             <Text style={{ color: "#fff" }}>Sign up</Text>
           </TouchableOpacity>
         </View>
