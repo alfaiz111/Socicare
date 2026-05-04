@@ -11,8 +11,10 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { useLocalSearchParams } from "expo-router";
+import Swiper from "react-native-swiper";
 
 import Navbar from "../../components/Navbar";
+import NavbarBottom from "../../components/BottomNavbar";
 
 export default function Donasi() {
   const params = useLocalSearchParams();
@@ -31,7 +33,7 @@ export default function Donasi() {
   return (
     <View style={styles.container}>
       
-      {/* 🔥 HERO HEADER (TIDAK DIHILANGKAN) */}
+      {/* 🔥 HERO */}
       <View style={styles.hero}>
         <Image source={data.image} style={styles.bgImage} />
 
@@ -42,6 +44,19 @@ export default function Donasi() {
 
         <Navbar name="M. Arif Alfaiz" />
 
+        {/* 🔥 SWIPER */}
+        <Swiper autoplay height={220} showsPagination>
+          {[
+            require("../../assets/images/sosmas.png"),
+            require("../../assets/images/1.png"),
+            require("../../assets/images/2.png"),
+          ].map((img, index) => (
+            <View key={index} style={styles.slide}>
+              <Image source={img} style={styles.logo} />
+            </View>
+          ))}
+        </Swiper>
+
         <View style={styles.heroContent}>
           <Text style={styles.heroTitle}>{data.title}</Text>
           <Text style={styles.heroSub}>{data.location}</Text>
@@ -49,10 +64,10 @@ export default function Donasi() {
       </View>
 
       {/* 🔥 FORM */}
-      <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
 
-          <Text style={styles.section}>Nama Donatur</Text>
+          <Text style={styles.label}>Nama Donatur</Text>
           <TextInput
             placeholder="Masukkan nama anda"
             style={styles.input}
@@ -60,16 +75,16 @@ export default function Donasi() {
             onChangeText={setNama}
           />
 
-          <Text style={styles.section}>Jumlah Donasi</Text>
+          <Text style={styles.label}>Jumlah Donasi</Text>
           <TextInput
-            placeholder="Masukkan jumlah donasi"
+            placeholder="Masukkan jumlah"
             style={styles.input}
             keyboardType="numeric"
             value={jumlah}
             onChangeText={setJumlah}
           />
 
-          <Text style={styles.section}>Pilih Nominal Cepat</Text>
+          <Text style={styles.label}>Pilih Nominal Cepat</Text>
 
           <View style={styles.nominalContainer}>
             {nominalCepat.map((item, index) => (
@@ -91,12 +106,15 @@ export default function Donasi() {
 
         </ScrollView>
       </SafeAreaView>
+
+      {/* 🔥 BOTTOM NAVBAR */}
+      <NavbarBottom active="donasi" />
     </View>
   );
 }
 
-// 🔥 MAPPING GAMBAR (BIAR SAMA)
-const getImage = (name: any) => {
+// 🔥 IMAGE MAPPING
+const getImage = (name) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");
@@ -113,57 +131,34 @@ const getImage = (name: any) => {
 
 // 🎨 STYLE
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
-  },
+  container: { flex: 1, backgroundColor: "#f5f5f5" },
 
-  // 🔥 HERO
   hero: {
-    height: 220,
+    height: 260,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
   },
 
-  bgImage: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
+  bgImage: { position: "absolute", width: "100%", height: "100%" },
+  overlay: { position: "absolute", width: "100%", height: "100%" },
+
+  slide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
   },
 
-  overlay: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-  },
+  logo: { width: 180, height: 180, resizeMode: "contain" },
 
-  heroContent: {
-    position: "absolute",
-    bottom: 20,
-    left: 20,
-  },
+  heroContent: { position: "absolute", bottom: 20, left: 20 },
+  heroTitle: { color: "#fff", fontSize: 18, fontWeight: "bold" },
+  heroSub: { color: "#ddd", fontSize: 12 },
 
-  heroTitle: {
-    color: "#fff",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  content: { padding: 16 },
 
-  heroSub: {
-    color: "#ddd",
-    fontSize: 12,
-  },
-
-  // 🔥 FORM
-  content: {
-    padding: 16,
-  },
-
-  section: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
+  label: { marginTop: 10, fontWeight: "bold" },
 
   input: {
     backgroundColor: "#fff",
