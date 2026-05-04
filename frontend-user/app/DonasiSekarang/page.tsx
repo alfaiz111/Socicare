@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import Swiper from "react-native-swiper";
 
 import Navbar from "../../components/Navbar";
@@ -23,7 +23,7 @@ export default function Donasi() {
   const [jumlah, setJumlah] = useState("");
 
   const nominalCepat = [100000, 200000, 500000, 1000000];
-
+const router = useRouter();
   const data = {
     title: params.title,
     location: params.location,
@@ -100,9 +100,21 @@ export default function Donasi() {
             ))}
           </View>
 
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Bayar Sekarang</Text>
-          </TouchableOpacity>
+         <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+                router.push({
+                pathname: "/DonasiSekarang/page",
+                params: {
+                    title: data.title,
+                    location: data.location,
+                    image: params.image,
+                },
+                })
+            }
+            >
+            <Text style={styles.btnText}>Donasi Sekarang</Text>
+            </TouchableOpacity>
 
         </ScrollView>
       </SafeAreaView>
@@ -114,7 +126,7 @@ export default function Donasi() {
 }
 
 // 🔥 IMAGE MAPPING
-const getImage = (name) => {
+const getImage = (name: string | string[]) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");
