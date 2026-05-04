@@ -5,16 +5,14 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  Platform,
   TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar"; // 🔥 TAMBAHAN
+import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Swiper from "react-native-swiper";
-
 
 import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
@@ -22,10 +20,16 @@ import NavbarBottom from "../../components/BottomNavbar";
 export default function DonasiPage() {
   const params = useLocalSearchParams();
   const router = useRouter();
+
+  // 🔥 FIX PARAM (BIAR GAK ERROR)
+  const imageParam = Array.isArray(params.image)
+    ? params.image[0]
+    : params.image;
+
   const data = {
-    title: params.title,
-    location: params.location,
-    image: getImage(params.image),
+    title: params.title as string,
+    location: params.location as string,
+    image: getImage(imageParam),
     description:
       "Banjir melanda sejumlah wilayah akibat curah hujan tinggi yang terjadi dalam beberapa hari terakhir. Air merendam permukiman warga, jalan raya, serta fasilitas umum, sehingga mengganggu aktivitas masyarakat.",
     kebutuhan: ["Makanan & Air Bersih", "Pakaian & Selimut", "Obat-obatan"],
@@ -36,7 +40,7 @@ export default function DonasiPage() {
       {/* 🔥 STATUS BAR */}
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* 🔥 HERO FULL */}
+      {/* 🔥 HERO */}
       <View style={styles.hero}>
         <Image source={data.image} style={styles.bgImage} />
 
@@ -45,10 +49,9 @@ export default function DonasiPage() {
           style={styles.overlay}
         />
 
-        {/* 🔥 NAVBAR OVERLAY */}
         <Navbar name="M. Arif Alfaiz" />
 
-        {/* 🔥 SLIDER LOGO */}
+        {/* 🔥 SWIPER */}
         <Swiper autoplay height={260} showsPagination>
           {[
             require("../../assets/images/sosmas.png"),
@@ -62,7 +65,7 @@ export default function DonasiPage() {
         </Swiper>
       </View>
 
-      {/* 🔥 CONTENT AMAN */}
+      {/* 🔥 CONTENT */}
       <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
           <Text style={styles.title}>{data.title}</Text>
@@ -92,9 +95,22 @@ export default function DonasiPage() {
             </Text>
           ))}
 
-          <TouchableOpacity style={styles.button}>
+          {/* 🔥 BUTTON NAVIGASI (FIXED) */}
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              router.push({
+                pathname: "../DonasiSekarang",
+                params: {
+                  title: data.title,
+                  location: data.location,
+                  image: imageParam,
+                },
+              })
+            }
+          >
             <Text style={styles.btnText}>Donasi Sekarang</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
 
@@ -103,8 +119,8 @@ export default function DonasiPage() {
   );
 }
 
-// 🔥 MAPPING GAMBAR
-const getImage = (name: any) => {
+// 🔥 IMAGE MAPPING
+const getImage = (name?: string) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");
@@ -119,7 +135,7 @@ const getImage = (name: any) => {
   }
 };
 
-// 🎨 STYLE
+// 🎨 STYLE (TIDAK DIUBAH)
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -127,7 +143,7 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 260, // 🔥 FULL KE ATAS
+    height: 260,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
@@ -149,7 +165,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 55, // 🔥 kasih jarak ke bawah biar logo gak nempel
+    marginTop: 55,
   },
 
   logo: {
@@ -184,12 +200,12 @@ const styles = StyleSheet.create({
   },
 
   badges: {
-  flexDirection: "row",
-  flexWrap: "wrap",
-  justifyContent: "center", // 🔥 INI KUNCI
-  alignItems: "center",
-  gap: 6,
-},
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+  },
 
   badge: {
     backgroundColor: "#eee",

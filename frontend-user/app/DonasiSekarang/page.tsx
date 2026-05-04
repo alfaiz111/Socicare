@@ -11,25 +11,22 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import Swiper from "react-native-swiper";
 
 import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
 
-export default function Donasi() {
+export default function DonasiSekarang() {
   const params = useLocalSearchParams();
-  const router = useRouter();
 
-  const [nama, setNama] = useState("");
-  const [jumlah, setJumlah] = useState("");
-
-  const nominalCepat = [100000, 200000, 500000, 1000000];
-
-  // 🔥 FIX PARAMS
+  // 🔥 AMBIL DATA DARI HALAMAN SEBELUMNYA
   const imageParam = Array.isArray(params.image)
     ? params.image[0]
     : params.image;
+
+  const [nama, setNama] = useState(params.nama || "");
+  const [jumlah, setJumlah] = useState(params.jumlah || "");
 
   const data = {
     title: params.title as string,
@@ -89,49 +86,35 @@ export default function Donasi() {
             onChangeText={setJumlah}
           />
 
-          <Text style={styles.label}>Pilih Nominal Cepat</Text>
-
-          <View style={styles.nominalContainer}>
-            {nominalCepat.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.nominalBtn}
-                onPress={() => setJumlah(item.toString())}
-              >
-                <Text style={styles.nominalText}>
-                  Rp {item.toLocaleString("id-ID")}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          {/* 🔥 INFO RINGKAS */}
+          <View style={styles.summaryBox}>
+            <Text style={styles.summaryTitle}>Ringkasan Donasi</Text>
+            <Text>Program: {data.title}</Text>
+            <Text>Lokasi: {data.location}</Text>
+            <Text>Nama: {nama}</Text>
+            <Text>Jumlah: Rp {Number(jumlah).toLocaleString("id-ID")}</Text>
           </View>
 
-          {/* 🔥 BUTTON FIX */}
+          {/* 🔥 BUTTON BAYAR */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
               if (!nama || !jumlah) {
-                Alert.alert("Error", "Isi nama dan jumlah dulu ya!");
+                Alert.alert("Error", "Lengkapi data dulu ya!");
                 return;
               }
 
-              router.push({
-                pathname: "../DonasiSekarang",
-                params: {
-                  title: data.title,
-                  location: data.location,
-                  image: imageParam,
-                  nama,
-                  jumlah,
-                },
-              });
+              Alert.alert(
+                "Berhasil 🎉",
+                "Donasi kamu sedang diproses (simulasi pembayaran)"
+              );
             }}
           >
-            <Text style={styles.buttonText}>Donasi Sekarang</Text>
+            <Text style={styles.buttonText}>Bayar Sekarang</Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
 
-      {/* 🔥 BOTTOM NAVBAR */}
       <NavbarBottom active="donasi" />
     </View>
   );
@@ -193,25 +176,18 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  nominalContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-    marginTop: 10,
-  },
-
-  nominalBtn: {
+  summaryBox: {
+    marginTop: 20,
     backgroundColor: "#fff",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 25,
+    padding: 15,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#1976D2",
+    borderColor: "#eee",
   },
 
-  nominalText: {
-    color: "#1976D2",
-    fontWeight: "600",
+  summaryTitle: {
+    fontWeight: "bold",
+    marginBottom: 5,
   },
 
   button: {
