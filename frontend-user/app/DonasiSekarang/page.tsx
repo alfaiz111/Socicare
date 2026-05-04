@@ -20,17 +20,30 @@ import NavbarBottom from "../../components/BottomNavbar";
 export default function DonasiSekarang() {
   const params = useLocalSearchParams();
 
-  // 🔥 AMBIL DATA DARI HALAMAN SEBELUMNYA
+  // 🔥 FIX PARAM
   const imageParam = Array.isArray(params.image)
     ? params.image[0]
     : params.image;
 
-  const [nama, setNama] = useState(params.nama || "");
-  const [jumlah, setJumlah] = useState(params.jumlah || "");
+  const title = Array.isArray(params.title)
+    ? params.title[0]
+    : params.title || "";
+
+  const location = Array.isArray(params.location)
+    ? params.location[0]
+    : params.location || "";
+
+  const [nama, setNama] = useState(
+    Array.isArray(params.nama) ? params.nama[0] : params.nama || ""
+  );
+
+  const [jumlah, setJumlah] = useState(
+    Array.isArray(params.jumlah) ? params.jumlah[0] : params.jumlah || ""
+  );
 
   const data = {
-    title: params.title as string,
-    location: params.location as string,
+    title,
+    location,
     image: getImage(imageParam),
   };
 
@@ -86,16 +99,21 @@ export default function DonasiSekarang() {
             onChangeText={setJumlah}
           />
 
-          {/* 🔥 INFO RINGKAS */}
+          {/* 🔥 RINGKASAN */}
           <View style={styles.summaryBox}>
             <Text style={styles.summaryTitle}>Ringkasan Donasi</Text>
             <Text>Program: {data.title}</Text>
             <Text>Lokasi: {data.location}</Text>
             <Text>Nama: {nama}</Text>
-            <Text>Jumlah: Rp {Number(jumlah).toLocaleString("id-ID")}</Text>
+            <Text>
+              Jumlah: Rp{" "}
+              {jumlah
+                ? Number(jumlah).toLocaleString("id-ID")
+                : "0"}
+            </Text>
           </View>
 
-          {/* 🔥 BUTTON BAYAR */}
+          {/* 🔥 BUTTON */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -121,7 +139,7 @@ export default function DonasiSekarang() {
 }
 
 // 🔥 IMAGE MAPPING
-const getImage = (name?: string) => {
+const getImage = (name: string) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");
@@ -136,7 +154,7 @@ const getImage = (name?: string) => {
   }
 };
 
-// 🎨 STYLE
+// 🎨 STYLE (TIDAK DIUBAH)
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5" },
 
