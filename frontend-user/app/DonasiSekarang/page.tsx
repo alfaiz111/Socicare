@@ -20,7 +20,6 @@ import NavbarBottom from "../../components/BottomNavbar";
 export default function DonasiSekarang() {
   const params = useLocalSearchParams();
 
-  // 🔥 FIX PARAM
   const imageParam = Array.isArray(params.image)
     ? params.image[0]
     : params.image;
@@ -47,6 +46,8 @@ export default function DonasiSekarang() {
     image: getImage(imageParam),
   };
 
+  const quickAmounts = [10000, 25000, 50000, 100000];
+
   return (
     <View style={styles.container}>
       {/* 🔥 HERO */}
@@ -60,7 +61,6 @@ export default function DonasiSekarang() {
 
         <Navbar name="M. Arif Alfaiz" />
 
-        {/* 🔥 SWIPER */}
         <Swiper autoplay height={220} showsPagination>
           {[
             require("../../assets/images/sosmas.png"),
@@ -72,16 +72,16 @@ export default function DonasiSekarang() {
             </View>
           ))}
         </Swiper>
-
-        <View style={styles.heroContent}>
-          <Text style={styles.heroTitle}>{data.title}</Text>
-          <Text style={styles.heroSub}>{data.location}</Text>
-        </View>
       </View>
 
-      {/* 🔥 FORM */}
+      {/* 🔥 CONTENT */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
+          {/* ✅ PINDAHAN JUDUL */}
+          <Text style={styles.title}>{data.title}</Text>
+          <Text style={styles.location}>{data.location}</Text>
+
+          {/* 🔥 FORM */}
           <Text style={styles.label}>Nama Donatur</Text>
           <TextInput
             placeholder="Masukkan nama anda"
@@ -99,6 +99,22 @@ export default function DonasiSekarang() {
             onChangeText={setJumlah}
           />
 
+          {/* 🔥 NOMINAL CEPAT */}
+          <Text style={styles.label}>Pilih Nominal Cepat</Text>
+          <View style={styles.quickContainer}>
+            {quickAmounts.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.quickButton}
+                onPress={() => setJumlah(item.toString())}
+              >
+                <Text style={styles.quickText}>
+                  Rp {item.toLocaleString("id-ID")}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+
           {/* 🔥 RINGKASAN */}
           <View style={styles.summaryBox}>
             <Text style={styles.summaryTitle}>Ringkasan Donasi</Text>
@@ -107,9 +123,7 @@ export default function DonasiSekarang() {
             <Text>Nama: {nama}</Text>
             <Text>
               Jumlah: Rp{" "}
-              {jumlah
-                ? Number(jumlah).toLocaleString("id-ID")
-                : "0"}
+              {jumlah ? Number(jumlah).toLocaleString("id-ID") : "0"}
             </Text>
           </View>
 
@@ -154,7 +168,7 @@ const getImage = (name: string) => {
   }
 };
 
-// 🎨 STYLE (TIDAK DIUBAH)
+// 🎨 STYLE
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5" },
 
@@ -177,13 +191,23 @@ const styles = StyleSheet.create({
 
   logo: { width: 180, height: 180, resizeMode: "contain" },
 
-  heroContent: { position: "absolute", bottom: 20, left: 20 },
-  heroTitle: { color: "#fff", fontSize: 18, fontWeight: "bold" },
-  heroSub: { color: "#ddd", fontSize: 12 },
+  content: { padding: 16, marginTop: -20 },
 
-  content: { padding: 16 },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 0,
+  },
 
-  label: { marginTop: 10, fontWeight: "bold" },
+  location: {
+    color: "#555",
+    marginBottom: 10,
+  },
+
+  label: {
+    marginTop: 10,
+    fontWeight: "bold",
+  },
 
   input: {
     backgroundColor: "#fff",
@@ -192,6 +216,25 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     marginTop: 5,
+  },
+
+  quickContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginTop: 10,
+  },
+
+  quickButton: {
+    backgroundColor: "#eee",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+  },
+
+  quickText: {
+    fontSize: 12,
+    fontWeight: "bold",
   },
 
   summaryBox: {
