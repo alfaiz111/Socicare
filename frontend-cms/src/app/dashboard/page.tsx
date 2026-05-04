@@ -61,7 +61,7 @@ export default function Page() {
       {/* SUMMARY BAWAH */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-        <div className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
+        <div className="bg-linear-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
           <p className="text-sm opacity-80">
             Rata-rata Pesanan/User
           </p>
@@ -70,7 +70,7 @@ export default function Page() {
           </h3>
         </div>
 
-        <div className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
+        <div className="bg-liniear-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
           <p className="text-sm opacity-80">
             Total Transaksi
           </p>
@@ -79,7 +79,7 @@ export default function Page() {
           </h3>
         </div>
 
-        <div className="bg-gradient-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
+        <div className="bg-liniear-to-r from-indigo-500 to-blue-500 text-white rounded-2xl p-6 text-center shadow-lg">
           <p className="text-sm opacity-80">
             Destinasi/Wilayah
           </p>
