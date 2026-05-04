@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
@@ -18,21 +19,26 @@ import NavbarBottom from "../../components/BottomNavbar";
 
 export default function Donasi() {
   const params = useLocalSearchParams();
+  const router = useRouter();
 
   const [nama, setNama] = useState("");
   const [jumlah, setJumlah] = useState("");
 
   const nominalCepat = [100000, 200000, 500000, 1000000];
-const router = useRouter();
+
+  // 🔥 FIX PARAMS
+  const imageParam = Array.isArray(params.image)
+    ? params.image[0]
+    : params.image;
+
   const data = {
-    title: params.title,
-    location: params.location,
-    image: getImage(params.image),
+    title: params.title as string,
+    location: params.location as string,
+    image: getImage(imageParam),
   };
 
   return (
     <View style={styles.container}>
-      
       {/* 🔥 HERO */}
       <View style={styles.hero}>
         <Image source={data.image} style={styles.bgImage} />
@@ -66,7 +72,6 @@ const router = useRouter();
       {/* 🔥 FORM */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
-
           <Text style={styles.label}>Nama Donatur</Text>
           <TextInput
             placeholder="Masukkan nama anda"
@@ -100,22 +105,29 @@ const router = useRouter();
             ))}
           </View>
 
-         <TouchableOpacity
+          {/* 🔥 BUTTON FIX */}
+          <TouchableOpacity
             style={styles.button}
-            onPress={() =>
-                router.push({
-                pathname: "/DonasiSekarang/page",
-                params: {
-                    title: data.title,
-                    location: data.location,
-                    image: params.image,
-                },
-                })
-            }
-            >
-            <Text style={styles.btnText}>Donasi Sekarang</Text>
-            </TouchableOpacity>
+            onPress={() => {
+              if (!nama || !jumlah) {
+                Alert.alert("Error", "Isi nama dan jumlah dulu ya!");
+                return;
+              }
 
+              router.push({
+                pathname: "../DonasiSekarang",
+                params: {
+                  title: data.title,
+                  location: data.location,
+                  image: imageParam,
+                  nama,
+                  jumlah,
+                },
+              });
+            }}
+          >
+            <Text style={styles.buttonText}>Donasi Sekarang</Text>
+          </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
 
@@ -126,7 +138,7 @@ const router = useRouter();
 }
 
 // 🔥 IMAGE MAPPING
-const getImage = (name: string | string[]) => {
+const getImage = (name?: string) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");

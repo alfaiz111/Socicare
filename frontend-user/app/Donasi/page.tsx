@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar"; // 🔥 TAMBAHAN
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import Swiper from "react-native-swiper";
 
 
@@ -21,7 +21,7 @@ import NavbarBottom from "../../components/BottomNavbar";
 
 export default function DonasiPage() {
   const params = useLocalSearchParams();
-
+  const router = useRouter();
   const data = {
     title: params.title,
     location: params.location,
