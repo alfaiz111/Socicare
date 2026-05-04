@@ -53,7 +53,7 @@ export default function Login() {
 
         {/* BUTTON */}
         <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Sign in</Text>
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
         {/* FOOTER */}
