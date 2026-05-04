@@ -58,7 +58,7 @@ export default function Sign() {
 
         <TouchableOpacity
           style={{ marginTop: 15 }}
-          onPress={() => router.push("/login")}
+          onPress={() => router.push("../Login/page")}
         >
           <Text style={{ color: "#aaa", textAlign: "center" }}>
             Sudah punya akun? Login
