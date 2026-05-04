@@ -1,124 +1,120 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   Image,
   StyleSheet,
-  ScrollView,
+  TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router"; // 🔥 TAMBAH router
+import { useLocalSearchParams } from "expo-router";
 import Swiper from "react-native-swiper";
 
 import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
 
-export default function DonasiPage() {
+export default function Donasi() {
   const params = useLocalSearchParams();
-  const router = useRouter(); // 🔥 INIT ROUTER
+
+  const [nama, setNama] = useState("");
+  const [jumlah, setJumlah] = useState("");
+
+  const nominalCepat = [100000, 200000, 500000, 1000000];
 
   const data = {
     title: params.title,
     location: params.location,
     image: getImage(params.image),
-    description:
-      "Banjir melanda sejumlah wilayah akibat curah hujan tinggi yang terjadi dalam beberapa hari terakhir. Air merendam permukiman warga, jalan raya, serta fasilitas umum, sehingga mengganggu aktivitas masyarakat.",
-    kebutuhan: ["Makanan & Air Bersih", "Pakaian & Selimut", "Obat-obatan"],
   };
 
   return (
     <View style={styles.container}>
-      <StatusBar style="light" translucent backgroundColor="transparent" />
-
+      
+      {/* 🔥 HERO */}
       <View style={styles.hero}>
-      <Image source={data.image} style={styles.bgImage} />
+        <Image source={data.image} style={styles.bgImage} />
 
-      <LinearGradient
-        colors={["rgba(128,0,0,0.85)", "rgba(128,0,0,0.95)"]}
-        style={styles.overlay}
-      />
+        <LinearGradient
+          colors={["rgba(128,0,0,0.85)", "rgba(128,0,0,0.95)"]}
+          style={styles.overlay}
+        />
 
-      <Navbar name="M. Arif Alfaiz" />
+        <Navbar name="M. Arif Alfaiz" />
 
-      {/* 🔥 SWIPER (SAMA SEPERTI HALAMAN AWAL) */}
-      <Swiper autoplay height={220} showsPagination>
-        {[
-          require("../../assets/images/sosmas.png"),
-          require("../../assets/images/1.png"),
-          require("../../assets/images/2.png"),
-        ].map((img, index) => (
-          <View key={index} style={styles.slide}>
-            <Image source={img} style={styles.logo} />
-          </View>
-        ))}
-      </Swiper>
+        {/* 🔥 SWIPER */}
+        <Swiper autoplay height={220} showsPagination>
+          {[
+            require("../../assets/images/sosmas.png"),
+            require("../../assets/images/1.png"),
+            require("../../assets/images/2.png"),
+          ].map((img, index) => (
+            <View key={index} style={styles.slide}>
+              <Image source={img} style={styles.logo} />
+            </View>
+          ))}
+        </Swiper>
 
-      {/* 🔥 TEXT DI BAWAH */}
-      <View style={styles.heroContent}>
-        <Text style={styles.heroTitle}>{data.title}</Text>
-        <Text style={styles.heroSub}>{data.location}</Text>
+        <View style={styles.heroContent}>
+          <Text style={styles.heroTitle}>{data.title}</Text>
+          <Text style={styles.heroSub}>{data.location}</Text>
+        </View>
       </View>
-    </View>
 
-      <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
+      {/* 🔥 FORM */}
+      <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
-          <Text style={styles.title}>{data.title}</Text>
 
-          <View style={styles.locationRow}>
-            <Ionicons name="location-outline" size={14} color="#555" />
-            <Text style={styles.locationText}>{data.location}</Text>
-          </View>
+          <Text style={styles.label}>Nama Donatur</Text>
+          <TextInput
+            placeholder="Masukkan nama anda"
+            style={styles.input}
+            value={nama}
+            onChangeText={setNama}
+          />
 
-          <Text style={styles.section}>Donasi Diterima</Text>
+          <Text style={styles.label}>Jumlah Donasi</Text>
+          <TextInput
+            placeholder="Masukkan jumlah"
+            style={styles.input}
+            keyboardType="numeric"
+            value={jumlah}
+            onChangeText={setJumlah}
+          />
 
-          <View style={styles.badges}>
-            {data.kebutuhan.map((item, i) => (
-              <View key={i} style={styles.badge}>
-                <Text style={styles.badgeText}>{item}</Text>
-              </View>
+          <Text style={styles.label}>Pilih Nominal Cepat</Text>
+
+          <View style={styles.nominalContainer}>
+            {nominalCepat.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={styles.nominalBtn}
+                onPress={() => setJumlah(item.toString())}
+              >
+                <Text style={styles.nominalText}>
+                  Rp {item.toLocaleString("id-ID")}
+                </Text>
+              </TouchableOpacity>
             ))}
           </View>
 
-          <Text style={styles.section}>Deskripsi</Text>
-          <Text style={styles.desc}>{data.description}</Text>
-
-          <Text style={styles.section}>Keperluan</Text>
-          {data.kebutuhan.map((item, i) => (
-            <Text key={i} style={styles.listItem}>
-              • {item}
-            </Text>
-          ))}
-
-          {/* 🔥 BUTTON NAVIGASI */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push({
-                pathname: "/DonasiSekarang/page",
-                params: {
-                  title: data.title,
-                  location: data.location,
-                  image: params.image,
-                },
-              })
-            }
-          >
-            <Text style={styles.btnText}>Donasi Sekarang</Text>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Bayar Sekarang</Text>
           </TouchableOpacity>
+
         </ScrollView>
       </SafeAreaView>
 
+      {/* 🔥 BOTTOM NAVBAR */}
       <NavbarBottom active="donasi" />
     </View>
   );
 }
 
-// 🔥 MAPPING GAMBAR
-const getImage = (name: any) => {
+// 🔥 IMAGE MAPPING
+const getImage = (name: string | string[]) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");
@@ -133,12 +129,9 @@ const getImage = (name: any) => {
   }
 };
 
-// 🎨 STYLE (TIDAK DIUBAH)
+// 🎨 STYLE
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
-  },
+  container: { flex: 1, backgroundColor: "#f5f5f5" },
 
   hero: {
     height: 260,
@@ -147,30 +140,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
 
-  bgImage: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-  },
-
-  overlay: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-  },
-
-  slide: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 55,
-  },
-
-  logo: {
-    width: 200,
-    height: 200,
-    resizeMode: "contain",
-  },
+  bgImage: { position: "absolute", width: "100%", height: "100%" },
+  overlay: { position: "absolute", width: "100%", height: "100%" },
 
   slide: {
     flex: 1,
@@ -179,76 +150,55 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
 
-  logo: {
-    width: 180,
-    height: 180,
-    resizeMode: "contain",
-  },
-  content: {
-    padding: 16,
+  logo: { width: 180, height: 180, resizeMode: "contain" },
+
+  heroContent: { position: "absolute", bottom: 20, left: 20 },
+  heroTitle: { color: "#fff", fontSize: 18, fontWeight: "bold" },
+  heroSub: { color: "#ddd", fontSize: 12 },
+
+  content: { padding: 16 },
+
+  label: { marginTop: 10, fontWeight: "bold" },
+
+  input: {
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginTop: 5,
   },
 
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-
-  locationRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    marginBottom: 10,
-  },
-
-  locationText: {
-    color: "#555",
-  },
-
-  section: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
-
-  badges: {
+  nominalContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
-    alignItems: "center",
-    gap: 6,
+    gap: 10,
+    marginTop: 10,
   },
 
-  badge: {
-    backgroundColor: "#eee",
-    padding: 6,
-    borderRadius: 10,
+  nominalBtn: {
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: "#1976D2",
   },
 
-  badgeText: {
-    fontSize: 12,
-  },
-
-  desc: {
-    fontSize: 13,
-    color: "#555",
-  },
-
-  listItem: {
-    fontSize: 13,
-    color: "#333",
+  nominalText: {
+    color: "#1976D2",
+    fontWeight: "600",
   },
 
   button: {
-    marginTop: 20,
+    marginTop: 30,
     backgroundColor: "#1976D2",
-    padding: 14,
+    padding: 15,
     borderRadius: 25,
-    flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    gap: 6,
   },
 
-  btnText: {
+  buttonText: {
     color: "#fff",
     fontWeight: "bold",
   },
