@@ -70,3 +70,73 @@ export default function Donasi() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+  },
+
+  content: {
+    padding: 20,
+  },
+
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+
+  sub: {
+    color: "#777",
+    marginBottom: 20,
+  },
+
+  label: {
+    marginTop: 10,
+    marginBottom: 5,
+    fontWeight: "600",
+  },
+
+  input: {
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+  },
+
+  nominalContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginTop: 10,
+  },
+
+  nominalBtn: {
+    backgroundColor: "#fff",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 25, // 🔥 OVAL
+    borderWidth: 1,
+    borderColor: "#1976D2",
+  },
+
+  nominalText: {
+    color: "#1976D2",
+    fontWeight: "600",
+  },
+
+  button: {
+    marginTop: 30,
+    backgroundColor: "#1976D2",
+    padding: 15,
+    borderRadius: 25,
+    alignItems: "center",
+  },
+
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+});
