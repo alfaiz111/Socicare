@@ -1,63 +1,71 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { AppSidebar } from "@/components/app-sidebar"
-import { ChartAreaInteractive } from "@/components/chart-area-interactive"
-import { DataTable } from "@/components/data-table"
-import { SectionCards } from "@/components/section-cards"
-import {
-  SidebarInset,
-  SidebarProvider,
-} from "@/components/ui/sidebar"
+import * as React from "react";
+import { ChartAreaInteractive } from "@/components/chart-area-interactive";
+import { DataTable } from "@/components/data-table";
+import { SectionCards } from "@/components/section-cards";
 
-import rawData from "./data.json"
+import rawData from "./data.json";
+
+// ✅ type dari data.json
+type RawItem = {
+  id?: number;
+  header?: string;
+  reviewer?: string;
+  target?: number | string;
+  type?: string;
+  status?: string;
+};
+
+// ✅ type yang dibutuhkan DataTable
+type Status = "Sukses" | "Pending" | "Gagal";
+
+type Donasi = {
+  id: number;
+  nama: string;
+  email: string;
+  jumlah: number;
+  metode: string;
+  status: Status;
+  tanggal: string;
+};
 
 export default function Page() {
-  const mappedData = React.useMemo(() => {
-    return rawData.map((item, index) => ({
-      id: item.id ?? index + 1,
-      nama: item.header || "Anonim",
-      email: `${item.reviewer?.toLowerCase().replace(/\s/g, "")}@gmail.com`,
-      jumlah: Number(item.target) * 100000 || 500000,
-      metode: item.type || "Transfer Bank",
-      status:
-        item.status === "Done"
-          ? "Sukses"
-          : item.status === "In Process"
-          ? "Pending"
-          : "Gagal",
-      tanggal: "29 Apr 2026",
-    }))
-  }, [])
+  const mappedData = React.useMemo<Donasi[]>(() => {
+    return (rawData as RawItem[]).map((item, index) => {
+      let status: Status;
+
+      if (item.status === "Done") {
+        status = "Sukses";
+      } else if (item.status === "In Process") {
+        status = "Pending";
+      } else {
+        status = "Gagal";
+      }
+
+      return {
+        id: item.id ?? index + 1,
+        nama: item.header || "Anonim",
+        email: `${item.reviewer?.toLowerCase().replace(/\s/g, "")}@gmail.com`,
+        jumlah: Number(item.target) * 100000 || 500000,
+        metode: item.type || "Transfer Bank",
+        status,
+        tanggal: "29 Apr 2026",
+      };
+    });
+  }, []);
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-[#120306] text-white">
+    <div className="space-y-6">
+      <SectionCards />
 
-        <AppSidebar />
-
-        <SidebarInset className="flex-1 flex flex-col bg-transparent">
-
-          <div className="flex-1 p-6 space-y-6">
-
-            {/* CARDS */}
-            <SectionCards />
-
-            {/* CHART GLASS */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5 hover:scale-[1.01] transition">
-              <ChartAreaInteractive />
-            </div>
-
-            {/* TABLE GLASS */}
-            <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5">
-              <DataTable data={mappedData} />
-            </div>
-
-          </div>
-
-        </SidebarInset>
-
+      <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5">
+        <ChartAreaInteractive />
       </div>
-    </SidebarProvider>
-  )
+
+      <div className="rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-5">
+        <DataTable data={mappedData} />
+      </div>
+    </div>
+  );
 }
