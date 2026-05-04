@@ -100,7 +100,7 @@ export default function DonasiPage() {
             style={styles.button}
             onPress={() =>
               router.push({
-                pathname: "../DonasiSekarang",
+                pathname: "../DonasiSekarang/page",
                 params: {
                   title: data.title,
                   location: data.location,
