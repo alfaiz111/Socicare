@@ -35,27 +35,34 @@ export default function DonasiPage() {
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
       <View style={styles.hero}>
-        <Image source={data.image} style={styles.bgImage} />
+      <Image source={data.image} style={styles.bgImage} />
 
-        <LinearGradient
-          colors={["rgba(128,0,0,0.85)", "rgba(128,0,0,0.95)"]}
-          style={styles.overlay}
-        />
+      <LinearGradient
+        colors={["rgba(128,0,0,0.85)", "rgba(128,0,0,0.95)"]}
+        style={styles.overlay}
+      />
 
-        <Navbar name="M. Arif Alfaiz" />
+      <Navbar name="M. Arif Alfaiz" />
 
-        <Swiper autoplay height={260} showsPagination>
-          {[
-            require("../../assets/images/sosmas.png"),
-            require("../../assets/images/1.png"),
-            require("../../assets/images/2.png"),
-          ].map((img, index) => (
-            <View key={index} style={styles.slide}>
-              <Image source={img} style={styles.logo} />
-            </View>
-          ))}
-        </Swiper>
+      {/* 🔥 SWIPER (SAMA SEPERTI HALAMAN AWAL) */}
+      <Swiper autoplay height={220} showsPagination>
+        {[
+          require("../../assets/images/sosmas.png"),
+          require("../../assets/images/1.png"),
+          require("../../assets/images/2.png"),
+        ].map((img, index) => (
+          <View key={index} style={styles.slide}>
+            <Image source={img} style={styles.logo} />
+          </View>
+        ))}
+      </Swiper>
+
+      {/* 🔥 TEXT DI BAWAH */}
+      <View style={styles.heroContent}>
+        <Text style={styles.heroTitle}>{data.title}</Text>
+        <Text style={styles.heroSub}>{data.location}</Text>
       </View>
+    </View>
 
       <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
@@ -165,6 +172,18 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 
+  slide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 50,
+  },
+
+  logo: {
+    width: 180,
+    height: 180,
+    resizeMode: "contain",
+  },
   content: {
     padding: 16,
   },
