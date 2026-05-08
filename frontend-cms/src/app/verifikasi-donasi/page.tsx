@@ -1,5 +1,6 @@
 import VerificationTable from "@/components/verifikasi/verification-table"
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/layout/sidebar"
 
 export default function VerifikasiDonasiPage() {
   return (
@@ -16,6 +17,7 @@ export default function VerifikasiDonasiPage() {
         </div>
 
         <VerificationTable />
+        <AppSidebar />
       </div>
     </SidebarProvider>
   )
