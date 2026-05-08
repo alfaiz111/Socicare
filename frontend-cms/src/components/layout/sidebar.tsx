@@ -82,7 +82,6 @@ export function AppSidebar() {
   return (
     <Sidebar className="w-64 border-none">
       <div className="h-full flex flex-col bg-[#2a0b0f] text-white border-r border-white/5">
-
         {/* HEADER */}
         <SidebarHeader className="p-4 border-b border-white/10">
           <div className="flex items-center gap-3">
@@ -95,13 +94,9 @@ export function AppSidebar() {
             />
 
             <div>
-              <h1 className="text-lg font-bold tracking-wide">
-                Socicare
-              </h1>
+              <h1 className="text-lg font-bold tracking-wide">Socicare</h1>
 
-              <p className="text-xs text-white/50">
-                CMS Donasi
-              </p>
+              <p className="text-xs text-white/50">CMS Donasi</p>
             </div>
           </div>
         </SidebarHeader>
@@ -141,11 +136,7 @@ export function AppSidebar() {
                         size={18}
                         className={`
                           transition
-                          ${
-                            active
-                              ? "text-[#800000]"
-                              : "group-hover:scale-110"
-                          }
+                          ${active ? "text-[#800000]" : "group-hover:scale-110"}
                         `}
                       />
 
@@ -170,13 +161,9 @@ export function AppSidebar() {
             </div>
 
             <div className="leading-tight">
-              <p className="text-sm font-semibold">
-                Admin
-              </p>
+              <p className="text-sm font-semibold">Admin</p>
 
-              <p className="text-xs text-white/50">
-                admin@socicare.id
-              </p>
+              <p className="text-xs text-white/50">admin@socicare.id</p>
             </div>
           </div>
 
