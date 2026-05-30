@@ -12,6 +12,7 @@ export default function NavbarBottom({ active = "home" }: Props) {
 
   return (
     <View style={styles.container}>
+      
       <NavItem
         icon="home"
         label="Home"
@@ -23,22 +24,23 @@ export default function NavbarBottom({ active = "home" }: Props) {
         icon="alert-circle"
         label="Lapor"
         active={active === "lapor"}
-        onPress={() => router.replace("../app/Lapor")}
+        onPress={() => router.replace("../lapor")} // ✅ FIX DI SINI
       />
 
       <NavItem
         icon="file-text"
         label="Riwayat"
         active={active === "riwayat"}
-        onPress={() => router.replace("/riwayat")}
+        onPress={() => router.replace("../riwayat")}
       />
 
       <NavItem
         icon="user"
         label="Profile"
         active={active === "profile"}
-        onPress={() => router.replace("/profile")}
+        onPress={() => router.replace("../profile")}
       />
+
     </View>
   );
 }
@@ -54,7 +56,6 @@ const NavItem = ({ icon, label, active, onPress }: any) => (
       {label}
     </Text>
 
-    {/* 🔥 INDICATOR ACTIVE */}
     {active && <View style={styles.dot} />}
   </TouchableOpacity>
 );
