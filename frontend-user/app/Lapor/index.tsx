@@ -22,7 +22,6 @@ import NavbarBottom from "../../components/BottomNavbar";
 export default function LaporPage() {
   const [modalVisible, setModalVisible] = useState(false);
 
-  // ✅ FIX STATE (pakai string)
   const [nama, setNama] = useState("");
   const [usia, setUsia] = useState("");
   const [asal, setAsal] = useState("");
@@ -33,7 +32,7 @@ export default function LaporPage() {
   const [bukti, setBukti] = useState("");
   const [ktp, setKtp] = useState("");
 
-  // ✅ PICK IMAGE
+  // ✅ FIX (hapus TypeScript)
   const pickImage = async (setImage: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: string): void; }) => {
     const permission =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -53,7 +52,6 @@ export default function LaporPage() {
     }
   };
 
-  // ✅ VALIDASI
   const handleSubmit = () => {
     if (
       !nama ||
@@ -76,9 +74,9 @@ export default function LaporPage() {
     <View style={styles.container}>
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* ✅ NAVBAR */}
+      {/* ✅ NAVBAR (MODE TITLE) */}
       <View style={styles.navWrapper}>
-        <Navbar name="Lapor" />
+        <Navbar title="Lapor" isTitle />
       </View>
 
       {/* 🔥 HERO */}
@@ -104,15 +102,19 @@ export default function LaporPage() {
             </View>
           ))}
         </Swiper>
-
-        <View style={styles.heroText}>
-          <Text style={styles.heroTitle}>Form Laporan</Text>
-        </View>
       </View>
 
       {/* 🔥 FORM */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.content}>
+          {/* ✅ CARD HEADER */}
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>Form Laporan</Text>
+            <Text style={styles.cardSubtitle}>
+              Silakan isi data dengan benar
+            </Text>
+          </View>
+
           <Text style={styles.sectionTitle}>Data Diri</Text>
 
           <TextInput
@@ -161,7 +163,7 @@ export default function LaporPage() {
             onChangeText={setDeskripsi}
           />
 
-          {/* UPLOAD BUKTI */}
+          {/* Upload Bukti */}
           <TouchableOpacity
             style={styles.uploadBox}
             onPress={() => pickImage(setBukti)}
@@ -173,7 +175,7 @@ export default function LaporPage() {
             )}
           </TouchableOpacity>
 
-          {/* UPLOAD KTP */}
+          {/* Upload KTP */}
           <TouchableOpacity
             style={styles.uploadBox}
             onPress={() => pickImage(setKtp)}
@@ -231,7 +233,7 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 260,
+    height: 220,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
@@ -257,26 +259,36 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 200,
-    height: 200,
+    width: 180,
+    height: 180,
     resizeMode: "contain",
-  },
-
-  heroText: {
-    position: "absolute",
-    bottom: 10,
-    alignSelf: "center",
-  },
-
-  heroTitle: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
   },
 
   content: {
     padding: 16,
-    paddingBottom: 120, // ✅ biar tidak ketutup bottom navbar
+    paddingBottom: 120,
+  },
+
+  cardHeader: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 20,
+    marginTop: -60,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  cardSubtitle: {
+    color: "#666",
+    marginTop: 5,
   },
 
   sectionTitle: {
