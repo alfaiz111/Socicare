@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 220,
+    height: 260,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
