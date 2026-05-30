@@ -1,19 +1,24 @@
+"use client"
+
+import { SidebarProvider } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/layout/sidebar"
+import TopBar from "@/components/layout/topbar"
 import DistributionTable from "@/components/penyaluran/distribution-table"
 
 export default function PenyaluranPage() {
   return (
-    <div className="p-8">
-      <div className="mb-6">
-        <h1 className="text-4xl font-bold text-[#800000]">
-          Penyaluran Dana
-        </h1>
+    <SidebarProvider>
+      <div className="flex min-h-screen bg-[#f5f5f7]">
+        <AppSidebar />
 
-        <p className="text-gray-500 mt-2">
-          Kelola proses penyaluran dana donasi kepada penerima manfaat.
-        </p>
+        <div className="flex-1 flex flex-col">
+          <TopBar />
+
+          <main className="p-6">
+            <DistributionTable />
+          </main>
+        </div>
       </div>
-
-      <DistributionTable />
-    </div>
+    </SidebarProvider>
   )
 }
