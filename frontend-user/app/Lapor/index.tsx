@@ -273,12 +273,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 20,
-    marginTop: -60,
+    marginTop: -10,
     marginBottom: 15,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
+  
   },
 
   cardTitle: {
