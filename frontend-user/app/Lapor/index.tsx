@@ -16,9 +16,9 @@ import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 
-// ❌ HAPUS NAVBAR & BOTTOM NAVBAR
-// import Navbar from "../../components/Navbar";
-// import NavbarBottom from "../../components/BottomNavbar";
+
+import Navbar from "../../components/Navbar";
+import NavbarBottom from "../../components/BottomNavbar";
 
 export default function LaporPage() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -71,6 +71,7 @@ export default function LaporPage() {
   };
 
   return (
+
     <View style={styles.container}>
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
@@ -85,7 +86,7 @@ export default function LaporPage() {
           colors={["rgba(128,0,0,0.85)", "rgba(128,0,0,0.95)"]}
           style={styles.overlay}
         />
-
+<Navbar name="M. Arif Alfaiz" />
         <Swiper autoplay showsPagination dotColor="#ccc" activeDotColor="#fff">
           {[
             require("../../assets/images/sosmas.png"),
@@ -205,6 +206,7 @@ export default function LaporPage() {
           </View>
         </View>
       </Modal>
+      <NavbarBottom active="lapor" />
     </View>
   );
 }
