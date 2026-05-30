@@ -15,13 +15,14 @@ import { StatusBar } from "expo-status-bar";
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
+
 import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
 
 export default function LaporPage() {
   const [modalVisible, setModalVisible] = useState(false);
 
-  // 🔥 STATE FORM
+  // ✅ FIX STATE (pakai string)
   const [nama, setNama] = useState("");
   const [usia, setUsia] = useState("");
   const [asal, setAsal] = useState("");
@@ -29,11 +30,11 @@ export default function LaporPage() {
   const [lokasi, setLokasi] = useState("");
   const [deskripsi, setDeskripsi] = useState("");
 
-  const [bukti, setBukti] = useState(null);
-  const [ktp, setKtp] = useState(null);
+  const [bukti, setBukti] = useState("");
+  const [ktp, setKtp] = useState("");
 
-  // 🔥 PICK IMAGE
-  const pickImage = async (setImage) => {
+  // ✅ PICK IMAGE
+  const pickImage = async (setImage: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: string): void; }) => {
     const permission =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -52,7 +53,7 @@ export default function LaporPage() {
     }
   };
 
-  // 🔥 VALIDASI
+  // ✅ VALIDASI
   const handleSubmit = () => {
     if (
       !nama ||
@@ -75,6 +76,11 @@ export default function LaporPage() {
     <View style={styles.container}>
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
+      {/* ✅ NAVBAR */}
+      <View style={styles.navWrapper}>
+        <Navbar name="Lapor" />
+      </View>
+
       {/* 🔥 HERO */}
       <View style={styles.hero}>
         <Image
@@ -87,7 +93,6 @@ export default function LaporPage() {
           style={styles.overlay}
         />
 
-        {/* 🔥 SWIPER */}
         <Swiper autoplay showsPagination dotColor="#ccc" activeDotColor="#fff">
           {[
             require("../../assets/images/sosmas.png"),
@@ -100,7 +105,6 @@ export default function LaporPage() {
           ))}
         </Swiper>
 
-        {/* 🔥 TITLE */}
         <View style={styles.heroText}>
           <Text style={styles.heroTitle}>Form Laporan</Text>
         </View>
@@ -157,7 +161,7 @@ export default function LaporPage() {
             onChangeText={setDeskripsi}
           />
 
-          {/* 🔥 UPLOAD BUKTI */}
+          {/* UPLOAD BUKTI */}
           <TouchableOpacity
             style={styles.uploadBox}
             onPress={() => pickImage(setBukti)}
@@ -169,7 +173,7 @@ export default function LaporPage() {
             )}
           </TouchableOpacity>
 
-          {/* 🔥 UPLOAD KTP */}
+          {/* UPLOAD KTP */}
           <TouchableOpacity
             style={styles.uploadBox}
             onPress={() => pickImage(setKtp)}
@@ -181,14 +185,17 @@ export default function LaporPage() {
             )}
           </TouchableOpacity>
 
-          {/* 🔥 BUTTON */}
+          {/* BUTTON */}
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Laporkan</Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
 
-      {/* 🔥 MODAL SUCCESS */}
+      {/* ✅ BOTTOM NAVBAR */}
+      <NavbarBottom />
+
+      {/* MODAL */}
       <Modal transparent visible={modalVisible} animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
@@ -213,6 +220,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
+  },
+
+  navWrapper: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
   },
 
   hero: {
@@ -261,7 +276,7 @@ const styles = StyleSheet.create({
 
   content: {
     padding: 16,
-    paddingBottom: 40,
+    paddingBottom: 120, // ✅ biar tidak ketutup bottom navbar
   },
 
   sectionTitle: {
