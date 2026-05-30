@@ -13,9 +13,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
-import * as ImagePicker from "expo-image-picker";
+import * as ImagePicker from "expo-image-picker"; 
 
 import Navbar from "../../components/Navbar";
+import NavbarBottom from "../../components/BottomNavbar";
 
 export default function LaporPage() {
   const [modalVisible, setModalVisible] = useState(false);
