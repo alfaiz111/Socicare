@@ -8,28 +8,35 @@ import {
   TouchableOpacity,
   StyleSheet,
   Modal,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
-import * as ImagePicker from "expo-image-picker"; 
-
-import Navbar from "../../components/Navbar";
-import NavbarBottom from "../../components/BottomNavbar";
+import * as ImagePicker from "expo-image-picker";
 
 export default function LaporPage() {
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [bukti, setBukti] = useState<any>(null);
-  const [ktp, setKtp] = useState<any>(null);
+  // 🔥 STATE FORM
+  const [nama, setNama] = useState("");
+  const [usia, setUsia] = useState("");
+  const [asal, setAsal] = useState("");
+  const [donasi, setDonasi] = useState("");
+  const [lokasi, setLokasi] = useState("");
+  const [deskripsi, setDeskripsi] = useState("");
 
-  // 🔥 FUNCTION PICK IMAGE
-  const pickImage = async (setImage: any) => {
-    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  const [bukti, setBukti] = useState(null);
+  const [ktp, setKtp] = useState(null);
+
+  // 🔥 PICK IMAGE
+  const pickImage = async (setImage) => {
+    const permission =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (!permission.granted) {
-      alert("Izin akses galeri dibutuhkan!");
+      Alert.alert("Izin diperlukan", "Akses galeri dibutuhkan!");
       return;
     }
 
@@ -43,11 +50,30 @@ export default function LaporPage() {
     }
   };
 
+  // 🔥 VALIDASI
+  const handleSubmit = () => {
+    if (
+      !nama ||
+      !usia ||
+      !asal ||
+      !donasi ||
+      !lokasi ||
+      !deskripsi ||
+      !bukti ||
+      !ktp
+    ) {
+      Alert.alert("Error", "Harap isi semua data dan upload semua foto!");
+      return;
+    }
+
+    setModalVisible(true);
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* 🔥 HERO (SAMA PERSIS KAYAK LANDING) */}
+      {/* 🔥 HERO */}
       <View style={styles.hero}>
         <Image
           source={require("../../assets/images/bg.jpeg")}
@@ -59,12 +85,8 @@ export default function LaporPage() {
           style={styles.overlay}
         />
 
-        <View style={styles.navWrapper}>
-          <Navbar name="Lapor" />
-        </View>
-
         {/* 🔥 SWIPER */}
-        <Swiper autoplay height={260} showsPagination>
+        <Swiper autoplay showsPagination dotColor="#ccc" activeDotColor="#fff">
           {[
             require("../../assets/images/sosmas.png"),
             require("../../assets/images/1.png"),
@@ -75,27 +97,62 @@ export default function LaporPage() {
             </View>
           ))}
         </Swiper>
+
+        {/* 🔥 TITLE */}
+        <View style={styles.heroText}>
+          <Text style={styles.heroTitle}>Form Laporan</Text>
+        </View>
       </View>
 
       {/* 🔥 FORM */}
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={styles.content}>
-          
+        <ScrollView contentContainerStyle={styles.content}>
           <Text style={styles.sectionTitle}>Data Diri</Text>
 
-          <TextInput placeholder="Nama Lengkap" style={styles.input} />
-          <TextInput placeholder="Usia" style={styles.input} />
-          <TextInput placeholder="Asal Daerah" style={styles.input} />
+          <TextInput
+            placeholder="Nama Lengkap"
+            style={styles.input}
+            value={nama}
+            onChangeText={setNama}
+          />
+
+          <TextInput
+            placeholder="Usia"
+            style={styles.input}
+            keyboardType="numeric"
+            value={usia}
+            onChangeText={setUsia}
+          />
+
+          <TextInput
+            placeholder="Asal Daerah"
+            style={styles.input}
+            value={asal}
+            onChangeText={setAsal}
+          />
 
           <Text style={styles.sectionTitle}>Detail Laporan</Text>
 
-          <TextInput placeholder="Nama Donasi" style={styles.input} />
-          <TextInput placeholder="Lokasi" style={styles.input} />
+          <TextInput
+            placeholder="Nama Donasi"
+            style={styles.input}
+            value={donasi}
+            onChangeText={setDonasi}
+          />
+
+          <TextInput
+            placeholder="Lokasi"
+            style={styles.input}
+            value={lokasi}
+            onChangeText={setLokasi}
+          />
 
           <TextInput
             placeholder="Deskripsi"
             multiline
             style={[styles.input, { height: 100 }]}
+            value={deskripsi}
+            onChangeText={setDeskripsi}
           />
 
           {/* 🔥 UPLOAD BUKTI */}
@@ -122,17 +179,14 @@ export default function LaporPage() {
             )}
           </TouchableOpacity>
 
-          {/* BUTTON */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setModalVisible(true)}
-          >
+          {/* 🔥 BUTTON */}
+          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
             <Text style={styles.buttonText}>Laporkan</Text>
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
 
-      {/* 🔥 MODAL */}
+      {/* 🔥 MODAL SUCCESS */}
       <Modal transparent visible={modalVisible} animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
@@ -160,7 +214,7 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 260, // 🔥 SAMA KAYAK LANDING
+    height: 260,
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
@@ -178,19 +232,11 @@ const styles = StyleSheet.create({
     height: "100%",
   },
 
-  navWrapper: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-  },
-
   slide: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 55,
+    paddingTop: 60,
   },
 
   logo: {
@@ -199,8 +245,21 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
 
+  heroText: {
+    position: "absolute",
+    bottom: 10,
+    alignSelf: "center",
+  },
+
+  heroTitle: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+
   content: {
     padding: 16,
+    paddingBottom: 40,
   },
 
   sectionTitle: {
