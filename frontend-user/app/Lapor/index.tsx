@@ -11,18 +11,42 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
+import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
+import * as ImagePicker from "expo-image-picker";
 
 import Navbar from "../../components/Navbar";
 
 export default function LaporPage() {
   const [modalVisible, setModalVisible] = useState(false);
 
+  const [bukti, setBukti] = useState<any>(null);
+  const [ktp, setKtp] = useState<any>(null);
+
+  // 🔥 FUNCTION PICK IMAGE
+  const pickImage = async (setImage: any) => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permission.granted) {
+      alert("Izin akses galeri dibutuhkan!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* 🔥 HERO (SAMA SEPERTI LANDING) */}
+      {/* 🔥 HERO (SAMA PERSIS KAYAK LANDING) */}
       <View style={styles.hero}>
         <Image
           source={require("../../assets/images/bg.jpeg")}
@@ -38,42 +62,63 @@ export default function LaporPage() {
           <Navbar name="Lapor" />
         </View>
 
-        <View style={styles.heroTextWrapper}>
-          <Text style={styles.heroTitle}>Form Laporan</Text>
-        </View>
+        {/* 🔥 SWIPER */}
+        <Swiper autoplay height={260} showsPagination>
+          {[
+            require("../../assets/images/sosmas.png"),
+            require("../../assets/images/1.png"),
+            require("../../assets/images/2.png"),
+          ].map((img, index) => (
+            <View key={index} style={styles.slide}>
+              <Image source={img} style={styles.logo} />
+            </View>
+          ))}
+        </Swiper>
       </View>
 
       {/* 🔥 FORM */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
           
-          {/* DATA DIRI */}
           <Text style={styles.sectionTitle}>Data Diri</Text>
 
           <TextInput placeholder="Nama Lengkap" style={styles.input} />
           <TextInput placeholder="Usia" style={styles.input} />
           <TextInput placeholder="Asal Daerah" style={styles.input} />
 
-          {/* DETAIL LAPORAN */}
           <Text style={styles.sectionTitle}>Detail Laporan</Text>
 
           <TextInput placeholder="Nama Donasi" style={styles.input} />
           <TextInput placeholder="Lokasi" style={styles.input} />
-          
+
           <TextInput
             placeholder="Deskripsi"
             multiline
-            numberOfLines={4}
             style={[styles.input, { height: 100 }]}
           />
 
-          {/* UPLOAD */}
-          <TouchableOpacity style={styles.uploadBox}>
-            <Text style={styles.uploadText}>Upload Foto Bukti</Text>
+          {/* 🔥 UPLOAD BUKTI */}
+          <TouchableOpacity
+            style={styles.uploadBox}
+            onPress={() => pickImage(setBukti)}
+          >
+            {bukti ? (
+              <Image source={{ uri: bukti }} style={styles.preview} />
+            ) : (
+              <Text style={styles.uploadText}>Upload Foto Bukti</Text>
+            )}
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.uploadBox}>
-            <Text style={styles.uploadText}>Upload KTP</Text>
+          {/* 🔥 UPLOAD KTP */}
+          <TouchableOpacity
+            style={styles.uploadBox}
+            onPress={() => pickImage(setKtp)}
+          >
+            {ktp ? (
+              <Image source={{ uri: ktp }} style={styles.preview} />
+            ) : (
+              <Text style={styles.uploadText}>Upload KTP</Text>
+            )}
           </TouchableOpacity>
 
           {/* BUTTON */}
@@ -86,7 +131,7 @@ export default function LaporPage() {
         </ScrollView>
       </SafeAreaView>
 
-      {/* 🔥 MODAL POPUP */}
+      {/* 🔥 MODAL */}
       <Modal transparent visible={modalVisible} animationType="fade">
         <View style={styles.modalContainer}>
           <View style={styles.modalBox}>
@@ -114,7 +159,7 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 200,
+    height: 260, // 🔥 SAMA KAYAK LANDING
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
     overflow: "hidden",
@@ -137,18 +182,20 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     right: 0,
+    zIndex: 10,
   },
 
-  heroTextWrapper: {
+  slide: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    paddingTop: 55,
   },
 
-  heroTitle: {
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
+  logo: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
   },
 
   content: {
@@ -179,6 +226,12 @@ const styles = StyleSheet.create({
 
   uploadText: {
     color: "#555",
+  },
+
+  preview: {
+    width: "100%",
+    height: 120,
+    borderRadius: 10,
   },
 
   button: {
