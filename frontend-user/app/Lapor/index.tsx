@@ -16,8 +16,9 @@ import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
 
-import Navbar from "../../components/Navbar";
-import NavbarBottom from "../../components/BottomNavbar";
+// ❌ HAPUS NAVBAR & BOTTOM NAVBAR
+// import Navbar from "../../components/Navbar";
+// import NavbarBottom from "../../components/BottomNavbar";
 
 export default function LaporPage() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -32,8 +33,7 @@ export default function LaporPage() {
   const [bukti, setBukti] = useState("");
   const [ktp, setKtp] = useState("");
 
-  // ✅ FIX (hapus TypeScript)
-  const pickImage = async (setImage: { (value: React.SetStateAction<string>): void; (value: React.SetStateAction<string>): void; (arg0: string): void; }) => {
+  const pickImage = async (setImage: any) => {
     const permission =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -74,11 +74,6 @@ export default function LaporPage() {
     <View style={styles.container}>
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* ✅ NAVBAR (MODE TITLE) */}
-      <View style={styles.navWrapper}>
-        <Navbar title="Lapor" isTitle />
-      </View>
-
       {/* 🔥 HERO */}
       <View style={styles.hero}>
         <Image
@@ -107,13 +102,12 @@ export default function LaporPage() {
       {/* 🔥 FORM */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.content}>
-          {/* ✅ CARD HEADER */}
-          <View style={styles.cardHeader}>
-            <Text style={styles.cardTitle}>Form Laporan</Text>
-            <Text style={styles.cardSubtitle}>
-              Silakan isi data dengan benar
-            </Text>
-          </View>
+          
+          {/* ✅ TANPA CARD PUTIH */}
+          <Text style={styles.title}>Form Laporan</Text>
+          <Text style={styles.subtitle}>
+            Silakan isi data dengan benar
+          </Text>
 
           <Text style={styles.sectionTitle}>Data Diri</Text>
 
@@ -194,9 +188,6 @@ export default function LaporPage() {
         </ScrollView>
       </SafeAreaView>
 
-      {/* ✅ BOTTOM NAVBAR */}
-      <NavbarBottom />
-
       {/* MODAL */}
       <Modal transparent visible={modalVisible} animationType="fade">
         <View style={styles.modalContainer}>
@@ -224,14 +215,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
 
-  navWrapper: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
-  },
-
   hero: {
     height: 220,
     borderBottomLeftRadius: 25,
@@ -255,7 +238,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 60,
+    paddingTop: 40,
   },
 
   logo: {
@@ -266,26 +249,18 @@ const styles = StyleSheet.create({
 
   content: {
     padding: 16,
-    paddingBottom: 120,
+    paddingBottom: 40,
   },
 
-  cardHeader: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 20,
-    marginTop: -10,
-    marginBottom: 15,
-  
-  },
-
-  cardTitle: {
-    fontSize: 18,
+  title: {
+    fontSize: 20,
     fontWeight: "bold",
+    marginBottom: 5,
   },
 
-  cardSubtitle: {
+  subtitle: {
     color: "#666",
-    marginTop: 5,
+    marginBottom: 15,
   },
 
   sectionTitle: {
