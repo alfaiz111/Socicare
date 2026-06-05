@@ -1,24 +1,26 @@
-import VerificationTable from "@/components/verifikasi/verification-table"
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/layout/sidebar"
+"use client";
+
+import VerificationTable from "@/components/verifikasi/verification-table";
+import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/sidebar";
+import TopBar from "@/components/layout/topbar";
 
 export default function VerifikasiDonasiPage() {
   return (
     <SidebarProvider>
-      <div className="p-6 space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-[#800000]">
-            Verifikasi Donasi
-          </h1>
-
-          <p className="text-gray-500 mt-1">
-            Kelola dan verifikasi pembayaran donasi dari donatur.
-          </p>
-        </div>
-
-        <VerificationTable />
+      <div className="flex min-h-screen w-full bg-gray-100">
+        
         <AppSidebar />
+
+        <SidebarInset className="flex-1">
+          <TopBar />
+
+          <main className="p-6">
+            <VerificationTable />
+          </main>
+        </SidebarInset>
+
       </div>
     </SidebarProvider>
-  )
+  );
 }
