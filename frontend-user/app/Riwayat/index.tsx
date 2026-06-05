@@ -129,29 +129,44 @@ export default function RiwayatPage() {
         </ScrollView>
       </SafeAreaView>
 
-      {/* MODAL DETAIL */}
-      <Modal visible={modalVisible} transparent animationType="slide">
+      {/* 🔥 MODAL TIKET */}
+      <Modal visible={modalVisible} transparent animationType="fade">
         <View style={styles.modalOverlay}>
-          <View style={styles.modalBox}>
-            {selected && (
-              <>
-                <Text style={styles.modalTitle}>{selected.nama}</Text>
-                <Text>📅 {selected.tanggal}</Text>
-                <Text>📍 {selected.lokasi}</Text>
+          <View style={styles.ticket}>
 
-                <Text style={{ marginTop: 10, fontWeight: "bold" }}>
-                  Donasi:
-                </Text>
-                <Text>💰 {selected.donasi}</Text>
-                <Text>📦 {selected.barang}</Text>
+            {/* HEADER */}
+            <View style={styles.ticketHeader}>
+              <Text style={styles.ticketTitle}>
+                {selected?.nama}
+              </Text>
+            </View>
+
+            {/* SOBEKAN */}
+            <View style={styles.leftCircle} />
+            <View style={styles.rightCircle} />
+
+            {/* CONTENT */}
+            {selected && (
+              <View style={styles.ticketBody}>
+                <Text style={styles.label}>Tanggal</Text>
+                <Text style={styles.value}>📅 {selected.tanggal}</Text>
+
+                <Text style={styles.label}>Lokasi</Text>
+                <Text style={styles.value}>📍 {selected.lokasi}</Text>
+
+                <Text style={styles.label}>Donasi</Text>
+                <Text style={styles.value}>💰 {selected.donasi}</Text>
+
+                <Text style={styles.label}>Barang</Text>
+                <Text style={styles.value}>📦 {selected.barang}</Text>
 
                 <TouchableOpacity
                   style={styles.closeBtn}
                   onPress={closeModal}
                 >
-                  <Text style={styles.closeText}>Close</Text>
+                  <Text style={styles.closeText}>Tutup</Text>
                 </TouchableOpacity>
-              </>
+              </View>
             )}
           </View>
         </View>
@@ -259,23 +274,66 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  modalBox: {
+  /* 🔥 TICKET STYLE */
+  ticket: {
     width: "85%",
     backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 15,
+    borderRadius: 20,
+    overflow: "hidden",
   },
 
-  modalTitle: {
-    fontSize: 18,
+  ticketHeader: {
+    backgroundColor: "#800000",
+    padding: 15,
+    alignItems: "center",
+  },
+
+  ticketTitle: {
+    color: "#fff",
     fontWeight: "bold",
-    marginBottom: 10,
+    fontSize: 16,
+  },
+
+  ticketBody: {
+    padding: 20,
+  },
+
+  label: {
+    fontSize: 12,
+    color: "#888",
+    marginTop: 10,
+  },
+
+  value: {
+    fontSize: 14,
+    fontWeight: "500",
+    marginTop: 2,
+  },
+
+  leftCircle: {
+    position: "absolute",
+    left: -10,
+    top: "45%",
+    width: 20,
+    height: 20,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 10,
+  },
+
+  rightCircle: {
+    position: "absolute",
+    right: -10,
+    top: "45%",
+    width: 20,
+    height: 20,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 10,
   },
 
   closeBtn: {
-    marginTop: 15,
+    marginTop: 20,
     backgroundColor: "#800000",
-    padding: 10,
+    padding: 12,
     borderRadius: 10,
     alignItems: "center",
   },
