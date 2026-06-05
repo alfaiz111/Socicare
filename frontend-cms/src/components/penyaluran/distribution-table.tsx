@@ -50,7 +50,7 @@ export default function DistributionTable() {
     <div className="space-y-6">
       {/* STATISTIK */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-5">
+        <div className="bg-linear-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-5">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white rounded-xl">
               <HandCoins className="text-blue-600" size={24} />
@@ -64,7 +64,7 @@ export default function DistributionTable() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-2xl p-5">
+        <div className="bg-linear-to-r from-green-50 to-green-100 border border-green-200 rounded-2xl p-5">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white rounded-xl">
               <CheckCircle className="text-green-500" size={24} />
@@ -80,7 +80,7 @@ export default function DistributionTable() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-5">
+        <div className="bg-linear-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-5">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white rounded-xl">
               <Clock className="text-yellow-500" size={24} />
