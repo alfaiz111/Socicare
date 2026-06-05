@@ -21,6 +21,7 @@ import {
   PieChart,
   Settings,
   LogOut,
+  AlertTriangle,
 } from "lucide-react";
 
 const menu = [
