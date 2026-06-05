@@ -1,21 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Campaign } from "@/types/campaign"
+import * as React from "react";
+import { Campaign } from "@/types/campaign";
+import Image from "next/image";
 
 type Props = {
-  data: Campaign[]
-  onEdit: (item: Campaign) => void
-  onDelete: (id: number) => void
-}
+  data: Campaign[];
+  onEdit: (item: Campaign) => void;
+  onDelete: (id: number) => void;
+};
 
 export function CampaignTable({ data, onEdit, onDelete }: Props) {
   return (
     <div className="bg-white/70 backdrop-blur-xl border border-gray-200 rounded-2xl overflow-hidden">
-
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-
           {/* HEADER */}
           <thead>
             <tr className="text-left text-xs text-gray-400 uppercase tracking-wider border-b">
@@ -40,20 +39,17 @@ export function CampaignTable({ data, onEdit, onDelete }: Props) {
 
             {data.map((item) => {
               const progress =
-                item.target > 0
-                  ? (item.terkumpul / item.target) * 100
-                  : 0
+                item.target > 0 ? (item.terkumpul / item.target) * 100 : 0;
 
               return (
                 <tr
                   key={item.id}
                   className="group border-b last:border-0 hover:bg-gray-50/60 transition"
                 >
-
                   {/* CAMPAIGN */}
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-4">
-                      <img
+                      <Image
                         src={item.image}
                         alt={item.title}
                         className="w-12 h-12 rounded-xl object-cover shadow-sm"
@@ -91,7 +87,7 @@ export function CampaignTable({ data, onEdit, onDelete }: Props) {
                     <div className="flex items-center gap-3">
                       <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                         <div
-                          className="h-full bg-gradient-to-r from-[#800000] to-[#b91c1c] rounded-full transition-all"
+                          className="h-full bg-linear-to-r from-[#800000] to-[#b91c1c] rounded-full transition-all"
                           style={{ width: `${progress}%` }}
                         />
                       </div>
@@ -104,7 +100,6 @@ export function CampaignTable({ data, onEdit, onDelete }: Props) {
                   {/* ACTION */}
                   <td className="px-6 py-5 text-right">
                     <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition">
-
                       <button
                         onClick={() => onEdit(item)}
                         className="px-3 py-1.5 text-xs rounded-lg border border-gray-200 hover:bg-gray-100 text-gray-600"
@@ -118,17 +113,14 @@ export function CampaignTable({ data, onEdit, onDelete }: Props) {
                       >
                         Delete
                       </button>
-
                     </div>
                   </td>
-
                 </tr>
-              )
+              );
             })}
           </tbody>
-
         </table>
       </div>
     </div>
-  )
+  );
 }

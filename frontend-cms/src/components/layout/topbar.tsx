@@ -20,13 +20,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function TopBar() {
   const [dark, setDark] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-white shadow-sm">
-      <div className="flex h-16 items-center justify-end px-6">
+      <div className="flex h-16 items-center justify-between px-6">
+
+        {/* LEFT - SIDEBAR TOGGLE */}
+        <div className="flex items-center gap-2">
+          <SidebarTrigger />
+        </div>
 
         {/* RIGHT */}
         <div className="flex items-center gap-2">
@@ -78,6 +84,7 @@ export default function TopBar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+
         </div>
       </div>
     </header>
