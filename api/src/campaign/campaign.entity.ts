@@ -6,27 +6,27 @@ export class Campaign {
   id: number;
 
   @Column()
-  title: string;
+  title: string | undefined;
 
   @Column('text')
-  description: string;
+  description: string | undefined;
 
   // 🔥 GANTI decimal → float (biar gak error)
   @Column('float')
-  targetAmount: number;
+  targetAmount: number | undefined;
 
   @Column({ default: 0 })
-  currentAmount: number;
+  currentAmount: number | undefined;
 
   @Column()
-  imageUrl: string;
+  imageUrl: string | undefined;
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive: boolean | undefined;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: Date | undefined;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: Date | undefined;
 }
