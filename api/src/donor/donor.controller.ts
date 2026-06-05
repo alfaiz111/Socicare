@@ -14,7 +14,7 @@ export class CampaignController {
   constructor(private service: CampaignService) {}
 
   @Post()
-  create(@Body() body) {
+  create(@Body() body: any) {
     return this.service.create(body);
   }
 
@@ -29,8 +29,8 @@ export class CampaignController {
   }
 
   @Put(':id')
-  update(@Param('id') id: number, @Body() body) {
-    return this.service.update(id, body);
+  update(@Param('id') id: string, @Body() body: any) {
+    return this.service.update(Number(id), body);
   }
 
   @Delete(':id')
