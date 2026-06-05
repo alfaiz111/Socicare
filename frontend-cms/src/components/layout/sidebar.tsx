@@ -86,7 +86,7 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar className="w-64 border-none">
+    <Sidebar collapsible="icon" className="w-64 border-none">
       <div className="h-full flex flex-col bg-[#2a0b0f] text-white border-r border-white/5">
         {/* HEADER */}
         <SidebarHeader className="p-4 border-b border-white/10">
