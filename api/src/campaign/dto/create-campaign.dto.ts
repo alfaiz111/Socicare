@@ -3,14 +3,14 @@ import { IsString, IsNotEmpty, IsNumber, IsUrl, IsOptional } from 'class-validat
 export class CreateCampaignDto {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title: string | undefined;
 
   @IsString()
   @IsNotEmpty()
-  description: string;
+  description: string | undefined;
 
   @IsNumber()
-  targetAmount: number;
+  targetAmount: number | undefined;
 
   @IsUrl()import { IsString, IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
