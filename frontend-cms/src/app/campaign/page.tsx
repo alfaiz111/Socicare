@@ -65,9 +65,7 @@ export default function CampaignPage() {
     setCampaigns((prev) => {
       if (editData) {
         return prev.map((item) =>
-          item.id === editData.id
-            ? { ...values, id: item.id }
-            : item
+          item.id === editData.id ? { ...values, id: item.id } : item,
         );
       }
 
@@ -81,9 +79,7 @@ export default function CampaignPage() {
   const handleDelete = () => {
     if (deleteId === null) return;
 
-    setCampaigns((prev) =>
-      prev.filter((item) => item.id !== deleteId)
-    );
+    setCampaigns((prev) => prev.filter((item) => item.id !== deleteId));
 
     setDeleteId(null);
   };
@@ -98,24 +94,14 @@ export default function CampaignPage() {
           <TopBar />
 
           <main className="p-6">
-            {/* HEADER */}
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">
-                  Manajemen Campaign
-                </h1>
-                <p className="text-sm text-gray-500 mt-1">
-                  Kelola campaign donasi yang tersedia
-                </p>
-              </div>
-
-              <button
-                onClick={handleCreate}
-                className="px-4 py-2 rounded-xl bg-[#800000] text-white text-sm font-medium shadow hover:bg-[#660000] transition"
-              >
-                + Tambah Campaign
-              </button>
-            </div>
+           <div className="flex items-center justify-end mb-6">
+  <button
+    onClick={handleCreate}
+    className="px-4 py-2 rounded-xl bg-[#800000] text-white text-sm font-medium shadow hover:bg-[#660000] transition"
+  >
+    + Tambah Campaign
+  </button>
+</div>
 
             {/* CARD */}
             <Card className="rounded-2xl shadow-sm border-0">
