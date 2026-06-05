@@ -1,5 +1,4 @@
 import { DataSource } from 'typeorm';
-import { Campaign } from './campaign/campaign.entity';
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
@@ -9,6 +8,6 @@ export const AppDataSource = new DataSource({
   password: '',
   database: 'campaign_db',
 
-  entities: [Campaign],
+  entities: ['src/**/*.entity.ts'], // 🔥 AUTO LOAD
   migrations: ['src/migrations/*.ts'],
 });
