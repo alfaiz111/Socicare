@@ -11,7 +11,8 @@ export class Campaign {
   @Column('text')
   description: string;
 
-  @Column('decimal')
+  // 🔥 GANTI decimal → float (biar gak error)
+  @Column('float')
   targetAmount: number;
 
   @Column({ default: 0 })
