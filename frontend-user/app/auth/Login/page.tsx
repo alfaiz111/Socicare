@@ -16,16 +16,24 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+
   const handleLogin = () => {
-    // VALIDASI
-    if (!email || !password) {
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    // DEBUG (lihat di console)
+    console.log("Email:", cleanEmail);
+    console.log("Password:", cleanPassword);
+
+    if (!cleanEmail || !cleanPassword) {
       Alert.alert("Error", "Email dan Password wajib diisi!");
       return;
     }
 
-    // DUMMY LOGIN (bisa kamu ganti API nanti)
-    if (email === "admin@gmail.com" && password === "123456") {
-      router.replace("/landing"); // 🔥 redirect ke landing
+    // DUMMY USER
+    if (cleanEmail === "admin@gmail.com" && cleanPassword === "123456") {
+      Alert.alert("Sukses", "Login berhasil!");
+      router.replace("/landing"); // pastikan folder ada
     } else {
       Alert.alert("Login Gagal", "Email atau password salah!");
     }
@@ -46,16 +54,17 @@ export default function Login() {
 
         <Text style={styles.or}>OR</Text>
 
-        {/* INPUT EMAIL */}
+        {/* EMAIL */}
         <TextInput
           placeholder="Email"
           placeholderTextColor="#aaa"
           style={styles.input}
           value={email}
           onChangeText={setEmail}
+          autoCapitalize="none"
         />
 
-        {/* INPUT PASSWORD */}
+        {/* PASSWORD */}
         <TextInput
           placeholder="Password"
           placeholderTextColor="#aaa"
@@ -73,7 +82,8 @@ export default function Login() {
         {/* FOOTER */}
         <View style={styles.footer}>
           <Text style={{ color: "#aaa" }}>Forgot password</Text>
-          <TouchableOpacity onPress={() => router.push("../Sign/page")}>
+
+          <TouchableOpacity onPress={() => router.push("/auth/Sign/page")}>
             <Text style={{ color: "#fff" }}>Sign up</Text>
           </TouchableOpacity>
         </View>
