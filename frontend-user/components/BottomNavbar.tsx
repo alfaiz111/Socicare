@@ -38,7 +38,7 @@ export default function NavbarBottom({ active = "home" }: Props) {
         icon="user"
         label="Profile"
         active={active === "profile"}
-        onPress={() => router.replace("../profile")}
+        onPress={() => router.replace("../Profile")}
       />
 
     </View>
