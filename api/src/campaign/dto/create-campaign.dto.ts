@@ -1,28 +1,31 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import {
   IsString,
   IsNotEmpty,
   IsNumber,
   IsUrl,
   IsOptional,
+  IsBoolean,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateCampaignDto {
   @IsString()
   @IsNotEmpty()
-  title: string | undefined;
+  title!: string;
 
   @IsString()
   @IsNotEmpty()
-  description: string | undefined;
+  description!: string;
 
   @Type(() => Number)
   @IsNumber()
-  targetAmount: number | undefined;
+  targetAmount!: number;
 
   @IsUrl()
-  imageUrl: string | undefined;
+  imageUrl!: string;
 
   @IsOptional()
+  @IsBoolean()
   isActive?: boolean;
 }
