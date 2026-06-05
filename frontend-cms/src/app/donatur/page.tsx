@@ -16,9 +16,7 @@ export default function DonaturPage() {
 
           <main className="p-6 space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-[#800000]">
-                Donatur
-              </h1>
+              <h1 className="text-3xl font-bold text-[#800000]">Donatur</h1>
 
               <p className="mt-1 text-gray-500">
                 Kelola data donatur yang terdaftar pada platform.
