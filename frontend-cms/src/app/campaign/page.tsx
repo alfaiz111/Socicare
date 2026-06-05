@@ -94,14 +94,14 @@ export default function CampaignPage() {
           <TopBar />
 
           <main className="p-6">
-           <div className="flex items-center justify-end mb-6">
-  <button
-    onClick={handleCreate}
-    className="px-4 py-2 rounded-xl bg-[#800000] text-white text-sm font-medium shadow hover:bg-[#660000] transition"
-  >
-    + Tambah Campaign
-  </button>
-</div>
+            <div className="flex items-center justify-end mb-6">
+              <button
+                onClick={handleCreate}
+                className="px-4 py-2 rounded-xl bg-[#800000] text-white text-sm font-medium shadow hover:bg-[#660000] transition"
+              >
+                + Tambah Campaign
+              </button>
+            </div>
 
             {/* CARD */}
             <Card className="rounded-2xl shadow-sm border-0">
