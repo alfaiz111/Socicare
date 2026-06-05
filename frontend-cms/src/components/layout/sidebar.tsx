@@ -43,6 +43,11 @@ const menu = [
         href: "/campaign",
         icon: Megaphone,
       },
+       {
+      title: "Kelola Bencana",
+      href: "/bencana",
+      icon: AlertTriangle,
+    },
       {
         title: "Verifikasi Donasi",
         href: "/verifikasi-donasi", // halaman verifikasi
