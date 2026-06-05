@@ -22,3 +22,12 @@ import { Distribution } from './distribution/distribution.entity';
   ],
 })
 export class AppModule {}
+
+import { CampaignModule } from './campaign/campaign.module';
+
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({...}),
+    CampaignModule,
+  ],
+})
