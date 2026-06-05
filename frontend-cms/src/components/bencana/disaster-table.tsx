@@ -9,7 +9,7 @@ import BencanaFormModal from "./bencana-form-modal";
 import BencanaDeleteDialog from "./bencana-delete-dialog";
 import BencanaDetailDialog from "./bencana-detail-dialog";
 
-const disasterData: Bencana[] = [
+const initialData: Bencana[] = [
   {
     id: 1,
     nama: "Banjir Bandar Lampung",
@@ -27,7 +27,7 @@ const disasterData: Bencana[] = [
 ];
 
 export default function DisasterTable() {
-  const [data, setData] = useState<Bencana[]>(disasterData);
+  const [data, setData] = useState<Bencana[]>(initialData);
 
   const [openForm, setOpenForm] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -42,6 +42,7 @@ export default function DisasterTable() {
     status: "Aktif",
   });
 
+  // OPEN ACTIONS
   const handleAdd = () => {
     setSelected(null);
     setForm({ nama: "", lokasi: "", tanggal: "", status: "Aktif" });
@@ -64,24 +65,23 @@ export default function DisasterTable() {
     setOpenDelete(true);
   };
 
+  // SAVE
   const saveData = () => {
     if (selected) {
       setData((prev) =>
-        prev.map((d) =>
-          d.id === selected.id ? { ...d, ...form } : d
-        )
+        prev.map((d) => (d.id === selected.id ? { ...d, ...form } : d))
       );
     } else {
-      const newItem: Bencana = {
-        id: Date.now(),
-        ...form,
-      };
-      setData((prev) => [...prev, newItem]);
+      setData((prev) => [
+        ...prev,
+        { id: Date.now(), ...form },
+      ]);
     }
 
     setOpenForm(false);
   };
 
+  // DELETE
   const confirmDelete = () => {
     if (!selected) return;
     setData((prev) => prev.filter((d) => d.id !== selected.id));
@@ -91,7 +91,7 @@ export default function DisasterTable() {
   return (
     <div className="w-full space-y-6">
 
-      {/* HEADER (TIDAK DIUBAH) */}
+      {/* HEADER (UNCHANGED UI) */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <h1 className="text-4xl font-bold text-[#800000]">Kelola Bencana</h1>
@@ -109,7 +109,7 @@ export default function DisasterTable() {
         </button>
       </div>
 
-      {/* STATISTIK (TIDAK DIUBAH) */}
+      {/* STATISTIC (UNCHANGED) */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         <div className="bg-white rounded-2xl border shadow-sm p-6">
           <p className="text-gray-500 text-sm">Total Bencana</p>
@@ -127,13 +127,14 @@ export default function DisasterTable() {
         </div>
       </div>
 
-      {/* SEARCH (TIDAK DIUBAH) */}
+      {/* SEARCH (UNCHANGED) */}
       <div className="bg-white rounded-2xl border shadow-sm p-5">
         <div className="relative w-full">
           <Search
             size={18}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
           />
+
           <input
             type="text"
             placeholder="Cari bencana..."
@@ -142,7 +143,7 @@ export default function DisasterTable() {
         </div>
       </div>
 
-      {/* TABLE (UI TIDAK DIUBAH) */}
+      {/* TABLE (UNCHANGED UI) */}
       <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -157,7 +158,7 @@ export default function DisasterTable() {
             </thead>
 
             <tbody>
-              {data.map((item: Bencana) => (
+              {data.map((item) => (
                 <tr
                   key={item.id}
                   className="group border-b hover:bg-gray-50 transition"
@@ -167,9 +168,7 @@ export default function DisasterTable() {
                       <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
                         <AlertTriangle size={20} className="text-red-600" />
                       </div>
-                      <p className="font-medium text-gray-800">
-                        {item.nama}
-                      </p>
+                      <p className="font-medium text-gray-800">{item.nama}</p>
                     </div>
                   </td>
 
