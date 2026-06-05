@@ -67,13 +67,10 @@ export default function DisasterTable() {
   const saveData = () => {
     if (selected) {
       setData((prev) =>
-        prev.map((d) => (d.id === selected.id ? { ...d, ...form } : d))
+        prev.map((d) => (d.id === selected.id ? { ...d, ...form } : d)),
       );
     } else {
-      setData((prev) => [
-        ...prev,
-        { id: Date.now(), ...form },
-      ]);
+      setData((prev) => [...prev, { id: Date.now(), ...form }]);
     }
 
     setOpenForm(false);
@@ -87,7 +84,6 @@ export default function DisasterTable() {
 
   return (
     <div className="w-full space-y-6">
-
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
@@ -101,7 +97,7 @@ export default function DisasterTable() {
 
         <button
           onClick={handleAdd}
-          className="flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-5 py-3 rounded-xl shadow-sm transition"
+          className="flex items-center gap-2 bg-[#800000] hover:bg-[#650000] text-white px-5 py-3 rounded-xl shadow-sm transition"
         >
           <PlusCircle size={18} />
           Tambah Bencana
@@ -146,7 +142,6 @@ export default function DisasterTable() {
       {/* TABLE */}
       <div className="bg-white border rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
-
           <table className="w-full text-sm">
             <thead className="bg-gray-50">
               <tr className="text-xs uppercase tracking-wider text-gray-500">
@@ -164,7 +159,6 @@ export default function DisasterTable() {
                   key={item.id}
                   className="border-b last:border-0 hover:bg-gray-50 transition"
                 >
-
                   {/* NAME */}
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-3">
@@ -172,9 +166,7 @@ export default function DisasterTable() {
                         <AlertTriangle size={18} className="text-red-500" />
                       </div>
 
-                      <p className="font-medium text-gray-900">
-                        {item.nama}
-                      </p>
+                      <p className="font-medium text-gray-900">{item.nama}</p>
                     </div>
                   </td>
 
@@ -187,9 +179,7 @@ export default function DisasterTable() {
                   </td>
 
                   {/* DATE */}
-                  <td className="px-6 py-5 text-gray-600">
-                    {item.tanggal}
-                  </td>
+                  <td className="px-6 py-5 text-gray-600">{item.tanggal}</td>
 
                   {/* STATUS */}
                   <td className="px-6 py-5">
@@ -207,7 +197,6 @@ export default function DisasterTable() {
                   {/* ACTIONS */}
                   <td className="px-6 py-5 text-right">
                     <div className="flex justify-end gap-2">
-
                       <button
                         onClick={() => handleDetail(item)}
                         className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 hover:bg-gray-200 transition"
@@ -228,14 +217,11 @@ export default function DisasterTable() {
                       >
                         Hapus
                       </button>
-
                     </div>
                   </td>
-
                 </tr>
               ))}
             </tbody>
-
           </table>
         </div>
       </div>
@@ -262,7 +248,6 @@ export default function DisasterTable() {
         setOpen={setOpenDetail}
         data={selected}
       />
-
     </div>
   );
 }
