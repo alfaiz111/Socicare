@@ -3,17 +3,17 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity()
 export class Disaster {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: number | undefined;
 
   @Column()
-  nama_bencana: string;
+  nama_bencana: string | undefined;
 
   @Column()
-  lokasi: string;
+  lokasi: string | undefined;
 
   @Column('date')
-  tanggal: Date;
+  tanggal: Date | undefined;
 
   @Column()
-  status: string;
+  status: string | undefined;
 }
