@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, CheckCircle, XCircle, Clock, Eye } from "lucide-react";
+import { Search, CheckCircle, XCircle, Clock } from "lucide-react";
 
 type DonationStatus = "Pending" | "Disetujui" | "Ditolak";
 
@@ -12,7 +12,6 @@ interface Donation {
   nominal: string;
   tanggal: string;
   status: DonationStatus;
-  bukti: string;
 }
 
 const initialData: Donation[] = [
@@ -23,8 +22,6 @@ const initialData: Donation[] = [
     nominal: "Rp 100.000",
     tanggal: "05 Juni 2026",
     status: "Pending",
-    bukti:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d",
   },
   {
     id: 2,
@@ -33,8 +30,6 @@ const initialData: Donation[] = [
     nominal: "Rp 250.000",
     tanggal: "04 Juni 2026",
     status: "Pending",
-    bukti:
-      "https://images.unsplash.com/photo-1579621970795-87facc2f976d",
   },
   {
     id: 3,
@@ -43,8 +38,6 @@ const initialData: Donation[] = [
     nominal: "Rp 500.000",
     tanggal: "03 Juni 2026",
     status: "Disetujui",
-    bukti:
-      "https://images.unsplash.com/photo-1563013544-824ae1b704d3",
   },
 ];
 
@@ -56,20 +49,16 @@ export default function VerifikasiDonasiPage() {
   const handleApprove = (id: number) => {
     setData((prev) =>
       prev.map((item) =>
-        item.id === id
-          ? { ...item, status: "Disetujui" }
-          : item
-      )
+        item.id === id ? { ...item, status: "Disetujui" } : item,
+      ),
     );
   };
 
   const handleReject = (id: number) => {
     setData((prev) =>
       prev.map((item) =>
-        item.id === id
-          ? { ...item, status: "Ditolak" }
-          : item
-      )
+        item.id === id ? { ...item, status: "Ditolak" } : item,
+      ),
     );
   };
 
@@ -78,23 +67,18 @@ export default function VerifikasiDonasiPage() {
       item.nama.toLowerCase().includes(search.toLowerCase()) ||
       item.campaign.toLowerCase().includes(search.toLowerCase());
 
-    const matchFilter =
-      filter === "Semua" || item.status === filter;
+    const matchFilter = filter === "Semua" || item.status === filter;
 
     return matchSearch && matchFilter;
   });
 
-  const totalPending = data.filter(
-    (item) => item.status === "Pending"
-  ).length;
+  const totalPending = data.filter((item) => item.status === "Pending").length;
 
   const totalApproved = data.filter(
-    (item) => item.status === "Disetujui"
+    (item) => item.status === "Disetujui",
   ).length;
 
-  const totalRejected = data.filter(
-    (item) => item.status === "Ditolak"
-  ).length;
+  const totalRejected = data.filter((item) => item.status === "Ditolak").length;
 
   return (
     <main className="p-6 space-y-6">
@@ -113,7 +97,7 @@ export default function VerifikasiDonasiPage() {
 
       {/* STATISTIK */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-5">
+        <div className="bg-linear-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-5">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white rounded-xl">
               <Clock className="text-yellow-500" size={24} />
@@ -121,26 +105,19 @@ export default function VerifikasiDonasiPage() {
 
             <div>
               <p className="text-sm text-gray-500">Pending</p>
-              <h2 className="text-3xl font-bold">
-                {totalPending}
-              </h2>
+              <h2 className="text-3xl font-bold">{totalPending}</h2>
             </div>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-2xl p-5">
+        <div className="bg-linear-to-r from-green-50 to-green-100 border border-green-200 rounded-2xl p-5">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white rounded-xl">
-              <CheckCircle
-                className="text-green-500"
-                size={24}
-              />
+              <CheckCircle className="text-green-500" size={24} />
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">
-                Disetujui
-              </p>
+              <p className="text-sm text-gray-500">Disetujui</p>
 
               <h2 className="text-3xl font-bold text-green-600">
                 {totalApproved}
@@ -149,19 +126,14 @@ export default function VerifikasiDonasiPage() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-red-50 to-red-100 border border-red-200 rounded-2xl p-5">
+        <div className="bg-linear-to-r from-red-50 to-red-100 border border-red-200 rounded-2xl p-5">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white rounded-xl">
-              <XCircle
-                className="text-red-500"
-                size={24}
-              />
+              <XCircle className="text-red-500" size={24} />
             </div>
 
             <div>
-              <p className="text-sm text-gray-500">
-                Ditolak
-              </p>
+              <p className="text-sm text-gray-500">Ditolak</p>
 
               <h2 className="text-3xl font-bold text-red-600">
                 {totalRejected}
@@ -216,36 +188,20 @@ export default function VerifikasiDonasiPage() {
 
         {filteredData.length === 0 ? (
           <div className="py-16 text-center">
-            <p className="text-gray-500">
-              Tidak ada data ditemukan
-            </p>
+            <p className="text-gray-500">Tidak ada data ditemukan</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
-                  <th className="px-6 py-4 text-left">
-                    Donatur
-                  </th>
-                  <th className="px-6 py-4 text-left">
-                    Campaign
-                  </th>
-                  <th className="px-6 py-4 text-left">
-                    Nominal
-                  </th>
-                  <th className="px-6 py-4 text-left">
-                    Tanggal
-                  </th>
-                  <th className="px-6 py-4 text-left">
-                    Bukti
-                  </th>
-                  <th className="px-6 py-4 text-left">
-                    Status
-                  </th>
-                  <th className="px-6 py-4 text-right">
-                    Aksi
-                  </th>
+                  <th className="px-6 py-4 text-left">Donatur</th>
+                  <th className="px-6 py-4 text-left">Campaign</th>
+                  <th className="px-6 py-4 text-left">Nominal</th>
+                  <th className="px-6 py-4 text-left">Tanggal</th>
+                  <th className="px-6 py-4 text-left">Bukti</th>
+                  <th className="px-6 py-4 text-left">Status</th>
+                  <th className="px-6 py-4 text-right">Aksi</th>
                 </tr>
               </thead>
 
@@ -255,33 +211,15 @@ export default function VerifikasiDonasiPage() {
                     key={item.id}
                     className="border-b hover:bg-gray-50 transition"
                   >
-                    <td className="px-6 py-5 font-medium">
-                      {item.nama}
-                    </td>
+                    <td className="px-6 py-5 font-medium">{item.nama}</td>
 
-                    <td className="px-6 py-5">
-                      {item.campaign}
-                    </td>
+                    <td className="px-6 py-5">{item.campaign}</td>
 
                     <td className="px-6 py-5 font-semibold text-[#800000]">
                       {item.nominal}
                     </td>
 
-                    <td className="px-6 py-5">
-                      {item.tanggal}
-                    </td>
-
-                    <td className="px-6 py-5">
-                      <a
-                        href={item.bukti}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200"
-                      >
-                        <Eye size={16} />
-                        Lihat
-                      </a>
-                    </td>
+                    <td className="px-6 py-5">{item.tanggal}</td>
 
                     <td className="px-6 py-5">
                       <span
@@ -289,8 +227,8 @@ export default function VerifikasiDonasiPage() {
                           item.status === "Pending"
                             ? "bg-yellow-100 text-yellow-700"
                             : item.status === "Disetujui"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                              ? "bg-green-100 text-green-700"
+                              : "bg-red-100 text-red-700"
                         }`}
                       >
                         {item.status}
@@ -301,18 +239,14 @@ export default function VerifikasiDonasiPage() {
                       {item.status === "Pending" ? (
                         <div className="flex justify-end gap-2">
                           <button
-                            onClick={() =>
-                              handleApprove(item.id)
-                            }
+                            onClick={() => handleApprove(item.id)}
                             className="px-4 py-2 rounded-lg bg-green-100 text-green-700 hover:bg-green-200"
                           >
                             Approve
                           </button>
 
                           <button
-                            onClick={() =>
-                              handleReject(item.id)
-                            }
+                            onClick={() => handleReject(item.id)}
                             className="px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200"
                           >
                             Reject
