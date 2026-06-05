@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import { useState } from "react";
+import { useState } from "react"
 import {
   PlusCircle,
   Search,
   AlertTriangle,
   MapPin,
-} from "lucide-react";
+} from "lucide-react"
 
 const disasterData = [
   {
@@ -23,196 +23,226 @@ const disasterData = [
     tanggal: "10 Mei 2026",
     status: "Selesai",
   },
-];
+]
 
 export default function DisasterTable() {
-  const [data] = useState(disasterData);
+  const [data] = useState(disasterData)
 
   return (
-    <div className="space-y-6">
+    <div className="w-full space-y-6">
+
       {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
         <div>
-          <h1 className="text-3xl font-bold text-[#800000]">
+          <h1 className="text-4xl font-bold text-[#800000]">
             Kelola Bencana
           </h1>
 
-          <p className="text-gray-500 mt-1">
+          <p className="text-gray-500 mt-2">
             Kelola data bencana yang menjadi dasar campaign donasi.
           </p>
         </div>
 
-        <button className="w-full md:w-auto flex items-center justify-center gap-2 bg-[#800000] text-white px-5 py-3 rounded-xl hover:bg-[#650000] transition">
+        <button className="flex items-center justify-center gap-2 bg-[#800000] hover:bg-[#650000] text-white px-5 py-3 rounded-xl transition">
           <PlusCircle size={18} />
           Tambah Bencana
         </button>
+
       </div>
 
       {/* STATISTIK */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-        <div className="bg-white rounded-2xl border shadow-sm p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+
+        <div className="bg-white rounded-2xl border shadow-sm p-6">
           <p className="text-gray-500 text-sm">
             Total Bencana
           </p>
 
-          <h2 className="text-3xl font-bold mt-2">
+          <h2 className="text-4xl font-bold mt-2">
             25
           </h2>
         </div>
 
-        <div className="bg-white rounded-2xl border shadow-sm p-5">
+        <div className="bg-white rounded-2xl border shadow-sm p-6">
           <p className="text-gray-500 text-sm">
             Bencana Aktif
           </p>
 
-          <h2 className="text-3xl font-bold text-red-600 mt-2">
+          <h2 className="text-4xl font-bold text-red-600 mt-2">
             8
           </h2>
         </div>
 
-        <div className="bg-white rounded-2xl border shadow-sm p-5">
+        <div className="bg-white rounded-2xl border shadow-sm p-6">
           <p className="text-gray-500 text-sm">
             Bencana Selesai
           </p>
 
-          <h2 className="text-3xl font-bold text-green-600 mt-2">
+          <h2 className="text-4xl font-bold text-green-600 mt-2">
             17
           </h2>
         </div>
+
       </div>
 
       {/* SEARCH */}
-      <div className="bg-white rounded-2xl border p-4 shadow-sm">
-        <div className="relative w-full md:max-w-md">
+      <div className="bg-white rounded-2xl border shadow-sm p-5">
+
+        <div className="relative w-full">
+
           <Search
             size={18}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
           />
 
           <input
             type="text"
             placeholder="Cari bencana..."
-            className="w-full pl-10 pr-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-[#800000]"
+            className="w-full pl-11 pr-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-[#800000]"
           />
+
         </div>
+
       </div>
 
-  {/* TABLE */}
-<div className="bg-white/70 backdrop-blur-xl border border-gray-200 rounded-2xl overflow-hidden">
+      {/* TABLE */}
+      <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
 
-  <div className="overflow-x-auto">
-    <table className="w-full text-sm min-w-[850px]">
+        <div className="overflow-x-auto">
 
-      {/* HEADER */}
-      <thead>
-        <tr className="text-left text-xs text-gray-400 uppercase tracking-wider border-b">
-          <th className="px-6 py-4 font-medium">Nama Bencana</th>
-          <th className="px-6 py-4 font-medium">Lokasi</th>
-          <th className="px-6 py-4 font-medium">Tanggal</th>
-          <th className="px-6 py-4 font-medium">Status</th>
-          <th className="px-6 py-4 text-right font-medium">Aksi</th>
-        </tr>
-      </thead>
+          <table className="w-full text-sm">
 
-      {/* BODY */}
-      <tbody>
+            <thead>
+              <tr className="border-b text-xs uppercase tracking-wider text-gray-400">
 
-        {data.length === 0 && (
-          <tr>
-            <td
-              colSpan={5}
-              className="py-16 text-center text-gray-400"
-            >
-              Tidak ada data bencana
-            </td>
-          </tr>
-        )}
+                <th className="px-6 py-4 text-left">
+                  Nama Bencana
+                </th>
 
-        {data.map((item) => (
-          <tr
-            key={item.id}
-            className="group border-b last:border-0 hover:bg-gray-50/60 transition"
-          >
+                <th className="px-6 py-4 text-left">
+                  Lokasi
+                </th>
 
-            {/* NAMA BENCANA */}
-            <td className="px-6 py-5">
-              <div className="flex items-center gap-4">
+                <th className="px-6 py-4 text-left">
+                  Tanggal
+                </th>
 
-                <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
-                  <AlertTriangle
-                    size={20}
-                    className="text-red-600"
-                  />
-                </div>
+                <th className="px-6 py-4 text-left">
+                  Status
+                </th>
 
-                <div className="min-w-0">
-                  <p className="font-medium text-gray-800 truncate">
-                    {item.nama}
-                  </p>
-                </div>
+                <th className="px-6 py-4 text-right">
+                  Aksi
+                </th>
 
-              </div>
-            </td>
+              </tr>
+            </thead>
 
-            {/* LOKASI */}
-            <td className="px-6 py-5">
-              <div className="flex items-center gap-2 text-gray-600">
-                <MapPin
-                  size={16}
-                  className="text-gray-400"
-                />
-                <span className="whitespace-nowrap">
-                  {item.lokasi}
-                </span>
-              </div>
-            </td>
+            <tbody>
 
-            {/* TANGGAL */}
-            <td className="px-6 py-5 text-gray-700 whitespace-nowrap">
-              {item.tanggal}
-            </td>
+              {data.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="py-16 text-center text-gray-400"
+                  >
+                    Tidak ada data bencana
+                  </td>
+                </tr>
+              )}
 
-            {/* STATUS */}
-            <td className="px-6 py-5">
-              <span
-                className={`px-3 py-1 text-xs rounded-full font-medium ${
-                  item.status === "Aktif"
-                    ? "bg-red-100 text-red-700"
-                    : "bg-green-100 text-green-700"
-                }`}
-              >
-                {item.status}
-              </span>
-            </td>
+              {data.map((item) => (
+                <tr
+                  key={item.id}
+                  className="group border-b last:border-0 hover:bg-gray-50 transition"
+                >
 
-            {/* ACTION */}
-            <td className="px-6 py-5 text-right">
-              <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition">
+                  <td className="px-6 py-5">
 
-                <button className="px-3 py-1.5 text-xs rounded-lg border border-gray-200 hover:bg-gray-100 text-gray-600">
-                  Detail
-                </button>
+                    <div className="flex items-center gap-4">
 
-                <button className="px-3 py-1.5 text-xs rounded-lg bg-yellow-50 text-yellow-700 hover:bg-yellow-100">
-                  Edit
-                </button>
+                      <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
+                        <AlertTriangle
+                          size={20}
+                          className="text-red-600"
+                        />
+                      </div>
 
-                <button className="px-3 py-1.5 text-xs rounded-lg bg-red-50 text-red-600 hover:bg-red-100">
-                  Hapus
-                </button>
+                      <div>
+                        <p className="font-medium text-gray-800">
+                          {item.nama}
+                        </p>
+                      </div>
 
-              </div>
-            </td>
+                    </div>
 
-          </tr>
-        ))}
+                  </td>
 
-      </tbody>
+                  <td className="px-6 py-5">
 
-    </table>
-  </div>
+                    <div className="flex items-center gap-2 text-gray-600">
 
-</div>
+                      <MapPin
+                        size={16}
+                        className="text-gray-400"
+                      />
+
+                      {item.lokasi}
+
+                    </div>
+
+                  </td>
+
+                  <td className="px-6 py-5 whitespace-nowrap text-gray-600">
+                    {item.tanggal}
+                  </td>
+
+                  <td className="px-6 py-5">
+
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${
+                        item.status === "Aktif"
+                          ? "bg-red-100 text-red-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                    >
+                      {item.status}
+                    </span>
+
+                  </td>
+
+                  <td className="px-6 py-5 text-right">
+
+                    <div className="flex justify-end gap-2">
+
+                      <button className="px-3 py-2 text-xs rounded-lg border hover:bg-gray-100">
+                        Detail
+                      </button>
+
+                      <button className="px-3 py-2 text-xs rounded-lg bg-yellow-100 text-yellow-700 hover:bg-yellow-200">
+                        Edit
+                      </button>
+
+                      <button className="px-3 py-2 text-xs rounded-lg bg-red-100 text-red-700 hover:bg-red-200">
+                        Hapus
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
     </div>
-  );
+  )
 }
