@@ -31,7 +31,7 @@ export default function NavbarBottom({ active = "home" }: Props) {
         icon="file-text"
         label="Riwayat"
         active={active === "riwayat"}
-        onPress={() => router.replace("../riwayat")}
+        onPress={() => router.replace("../Riwayat")}
       />
 
       <NavItem
