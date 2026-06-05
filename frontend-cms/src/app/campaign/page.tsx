@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Campaign } from "@/types/campaign";
 
 import { AppSidebar } from "@/components/layout/sidebar";
+import TopBar from "@/components/layout/topbar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 import { CampaignTable } from "@/components/campaign/campaign-table";
@@ -13,9 +14,9 @@ import { CampaignDeleteDialog } from "@/components/campaign/campaign-delete-dial
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from "@/components/ui/card";
 
 import { Loader2 } from "lucide-react";
@@ -30,7 +31,6 @@ export default function CampaignPage() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
 
   /* ================= FETCH ================= */
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -38,6 +38,7 @@ export default function CampaignPage() {
 
         const res = await fetch("/api/campaign");
         const data = await res.json();
+
         setCampaigns(data);
       } catch (err) {
         console.error(err);
@@ -64,9 +65,12 @@ export default function CampaignPage() {
     setCampaigns((prev) => {
       if (editData) {
         return prev.map((item) =>
-          item.id === editData.id ? { ...values, id: item.id } : item,
+          item.id === editData.id
+            ? { ...values, id: item.id }
+            : item
         );
       }
+
       return [...prev, { ...values, id: Date.now() }];
     });
 
@@ -77,7 +81,10 @@ export default function CampaignPage() {
   const handleDelete = () => {
     if (deleteId === null) return;
 
-    setCampaigns((prev) => prev.filter((item) => item.id !== deleteId));
+    setCampaigns((prev) =>
+      prev.filter((item) => item.id !== deleteId)
+    );
+
     setDeleteId(null);
   };
 
@@ -85,31 +92,33 @@ export default function CampaignPage() {
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-gray-100">
-        {/* SIDEBAR */}
         <AppSidebar />
 
-        {/* CONTENT */}
         <SidebarInset className="flex-1">
-          <main className="p-6 space-y-6">
+          <TopBar />
+
+          <main className="p-6">
             {/* HEADER */}
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-semibold text-gray-800">
+                <h1 className="text-2xl font-bold text-gray-900">
                   Manajemen Campaign
-                </h2>
-                <p className="text-sm text-gray-500">Kelola campaign donasi</p>
+                </h1>
+                <p className="text-sm text-gray-500 mt-1">
+                  Kelola campaign donasi yang tersedia
+                </p>
               </div>
 
               <button
                 onClick={handleCreate}
-                className="px-4 py-2 rounded-xl bg-[#800000] text-white text-sm font-medium shadow hover:bg-[#660000]"
+                className="px-4 py-2 rounded-xl bg-[#800000] text-white text-sm font-medium shadow hover:bg-[#660000] transition"
               >
                 + Tambah Campaign
               </button>
             </div>
 
             {/* CARD */}
-            <Card className="rounded-2xl shadow-sm">
+            <Card className="rounded-2xl shadow-sm border-0">
               <CardHeader className="border-b">
                 <CardTitle>Daftar Campaign</CardTitle>
                 <CardDescription>
@@ -120,8 +129,10 @@ export default function CampaignPage() {
               <CardContent className="p-0">
                 {loading ? (
                   <div className="flex items-center justify-center py-12">
-                    <Loader2 className="h-6 w-6 animate-spin text-[#800000] mr-2" />
-                    <p className="text-gray-500">Memuat data...</p>
+                    <Loader2 className="w-6 h-6 mr-2 animate-spin text-[#800000]" />
+                    <span className="text-gray-500">
+                      Memuat data campaign...
+                    </span>
                   </div>
                 ) : (
                   <CampaignTable
@@ -135,7 +146,7 @@ export default function CampaignPage() {
           </main>
         </SidebarInset>
 
-        {/* MODALS */}
+        {/* MODAL FORM */}
         <CampaignFormModal
           open={openForm}
           onClose={() => {
@@ -146,6 +157,7 @@ export default function CampaignPage() {
           initialData={editData}
         />
 
+        {/* DELETE DIALOG */}
         <CampaignDeleteDialog
           open={deleteId !== null}
           onClose={() => setDeleteId(null)}
