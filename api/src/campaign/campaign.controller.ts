@@ -14,33 +14,33 @@ import { UpdateCampaignDto } from './dto/update-campaign.dto';
 
 @Controller('campaign')
 export class CampaignController {
-  constructor(private readonly campaignService: CampaignService) {}
+  constructor(private readonly service: CampaignService) {}
 
   @Post()
-  create(@Body() createDto: CreateCampaignDto) {
-    return this.campaignService.create(createDto);
+  create(@Body() dto: CreateCampaignDto) {
+    return this.service.create(dto);
   }
 
   @Get()
   findAll() {
-    return this.campaignService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.campaignService.findOne(id);
+    return this.service.findOne(id);
   }
 
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updateDto: UpdateCampaignDto,
+    @Body() dto: UpdateCampaignDto,
   ) {
-    return this.campaignService.update(id, updateDto);
+    return this.service.update(id, dto);
   }
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
-    return this.campaignService.remove(id);
+    return this.service.remove(id);
   }
 }
