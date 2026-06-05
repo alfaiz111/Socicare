@@ -12,22 +12,22 @@ export class CreateCampaignDto {
   @IsNumber()
   targetAmount: number | undefined;
 
-  @IsUrl()import { IsString, IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
+  @IsUrl()import: any { IsString, IsNotEmpty, IsNumber, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateCampaignDto {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title: string | undefined;
 
   @IsString()
   @IsNotEmpty()
-  description: string;
+  description: string | undefined;
 
   // 🔥 penting biar string → number
   @Type(() => Number)
   @IsNumber()
-  targetAmount: number;
+  targetAmount: number | undefined;
 
   @IsUrl()
   imageUrl: string;
