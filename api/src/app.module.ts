@@ -4,16 +4,20 @@ import { CampaignModule } from './campaign/campaign.module';
 
 @Module({
   imports: [
+    // ✅ CONFIG DATABASE
     TypeOrmModule.forRoot({
-      type: 'mysql', // bisa diganti postgres
+      type: 'mysql', // ganti 'postgres' kalau pakai postgres
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: '',
+      password: '', // isi sesuai DB kamu
       database: 'campaign_db',
-      autoLoadEntities: true,
-      synchronize: true,
+
+      autoLoadEntities: true, // auto detect entity
+      synchronize: true, // ⚠️ hanya untuk development
     }),
+
+    // ✅ MODULE
     CampaignModule,
   ],
 })
