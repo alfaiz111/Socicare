@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar"; // 🔥 TAMBAHAN
+import { StatusBar } from "expo-status-bar";
 import Swiper from "react-native-swiper";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,10 +22,10 @@ export default function Landing() {
 
   return (
     <View style={styles.container}>
-      {/* 🔥 STATUS BAR TRANSPARAN */}
+      {/* STATUS BAR */}
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* 🔥 HERO FULL SAMPAI ATAS */}
+      {/* HERO */}
       <View style={styles.hero}>
         <Image
           source={require("../../assets/images/bg.jpeg")}
@@ -37,12 +37,12 @@ export default function Landing() {
           style={styles.overlay}
         />
 
-        {/* 🔥 NAVBAR DI ATAS HERO */}
+        {/* NAVBAR */}
         <View style={styles.navWrapper}>
           <Navbar name="M. Arif Alfaiz" />
         </View>
 
-        {/* 🔥 SLIDER LOGO */}
+        {/* SLIDER */}
         <Swiper autoplay height={260} showsPagination>
           {[
             require("../../assets/images/sosmas.png"),
@@ -56,7 +56,7 @@ export default function Landing() {
         </Swiper>
       </View>
 
-      {/* 🔥 CONTENT AMAN (PAKAI SAFE AREA) */}
+      {/* CONTENT */}
       <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
         <ScrollView
           style={styles.content}
@@ -72,20 +72,24 @@ export default function Landing() {
               <TouchableOpacity
                 key={index}
                 style={styles.card}
+                activeOpacity={0.85}
                 onPress={() =>
                   router.push({
                     pathname: "../Donasi/page",
                     params: {
                       title: item.title,
                       location: item.location,
-                      image: item.title,
                     },
                   })
                 }
               >
                 <Image source={item.image} style={styles.cardImage} />
 
-                <View style={styles.cardOverlay}>
+                {/* OVERLAY GRADIENT */}
+                <LinearGradient
+                  colors={["transparent", "rgba(0,0,0,0.7)"]}
+                  style={styles.cardOverlay}
+                >
                   <Text style={styles.cardTitle}>{item.title}</Text>
 
                   <View style={styles.locationRow}>
@@ -98,14 +102,14 @@ export default function Landing() {
                       {item.location}
                     </Text>
                   </View>
-                </View>
+                </LinearGradient>
               </TouchableOpacity>
             ))}
           </View>
         </ScrollView>
       </SafeAreaView>
 
-      {/* 🔥 BOTTOM NAVBAR */}
+      {/* BOTTOM NAVBAR */}
       <NavbarBottom active="home" />
     </View>
   );
@@ -134,7 +138,7 @@ const data = [
   },
 ];
 
-// 🎨 STYLE
+// STYLE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -142,9 +146,9 @@ const styles = StyleSheet.create({
   },
 
   hero: {
-    height: 260, // 🔥 FULL HEIGHT KE ATAS
-    borderBottomLeftRadius: 25,
-    borderBottomRightRadius: 25,
+    height: 270,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
     overflow: "hidden",
   },
 
@@ -162,7 +166,7 @@ const styles = StyleSheet.create({
 
   navWrapper: {
     position: "absolute",
-    top: 0, // 🔥 biar turun dari status bar
+    top: 0,
     left: 0,
     right: 0,
     zIndex: 10,
@@ -172,7 +176,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    paddingTop: 55, // 🔥 kasih jarak ke bawah biar logo gak nempel
+    paddingTop: 55,
   },
 
   logo: {
@@ -183,13 +187,13 @@ const styles = StyleSheet.create({
 
   content: {
     paddingHorizontal: 16,
-    marginTop: 10,
+    marginTop: 12,
   },
 
   sectionHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 12,
+    marginBottom: 14,
   },
 
   title: {
@@ -209,39 +213,50 @@ const styles = StyleSheet.create({
 
   card: {
     width: "48%",
-    height: 230,
-    borderRadius: 15,
+    height: 220,
+    borderRadius: 18,
     overflow: "hidden",
-    marginBottom: 12,
+    marginBottom: 14,
     backgroundColor: "#fff",
+
+    // SHADOW IOS
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+
+    // SHADOW ANDROID
+    elevation: 5,
   },
 
   cardImage: {
     width: "100%",
     height: "100%",
+    resizeMode: "cover",
   },
 
   cardOverlay: {
     position: "absolute",
     bottom: 0,
     width: "100%",
-    padding: 10,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    padding: 12,
   },
 
   cardTitle: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 14,
   },
 
   locationRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
+    marginTop: 4,
   },
 
   cardLocation: {
-    color: "#fff",
+    color: "#ddd",
     fontSize: 11,
+    marginLeft: 4,
   },
 });

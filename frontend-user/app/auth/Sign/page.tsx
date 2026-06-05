@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -15,6 +16,35 @@ export default function Sign() {
   const [nama, setNama] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSignUp = () => {
+    const cleanNama = nama.trim();
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanPassword = password.trim();
+
+    // VALIDASI
+    if (!cleanNama || !cleanEmail || !cleanPassword) {
+      Alert.alert("Error", "Semua field wajib diisi!");
+      return;
+    }
+
+    if (cleanPassword.length < 6) {
+      Alert.alert("Error", "Password minimal 6 karakter!");
+      return;
+    }
+
+    // SIMPAN SEMENTARA (dummy)
+    console.log("USER BARU:", {
+      nama: cleanNama,
+      email: cleanEmail,
+      password: cleanPassword,
+    });
+
+    Alert.alert("Sukses", "Akun berhasil dibuat!");
+
+    // PINDAH KE LOGIN
+    router.replace("/auth/Login/page");
+  };
 
   return (
     <LinearGradient
@@ -27,6 +57,7 @@ export default function Sign() {
           Daftar untuk mulai menggunakan aplikasi
         </Text>
 
+        {/* NAMA */}
         <TextInput
           placeholder="Nama"
           placeholderTextColor="#aaa"
@@ -35,14 +66,17 @@ export default function Sign() {
           onChangeText={setNama}
         />
 
+        {/* EMAIL */}
         <TextInput
           placeholder="Email"
           placeholderTextColor="#aaa"
           style={styles.input}
           value={email}
           onChangeText={setEmail}
+          autoCapitalize="none"
         />
 
+        {/* PASSWORD */}
         <TextInput
           placeholder="Password"
           placeholderTextColor="#aaa"
@@ -52,13 +86,15 @@ export default function Sign() {
           onChangeText={setPassword}
         />
 
-        <TouchableOpacity style={styles.button}>
+        {/* BUTTON */}
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
 
+        {/* LINK LOGIN */}
         <TouchableOpacity
           style={{ marginTop: 15 }}
-          onPress={() => router.push("../Login/page")}
+          onPress={() => router.push("/auth/Login/page")}
         >
           <Text style={{ color: "#aaa", textAlign: "center" }}>
             Sudah punya akun? Login
