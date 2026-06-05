@@ -12,15 +12,16 @@ export default function BencanaPage() {
 
         <AppSidebar />
 
-        <div className="flex-1 flex flex-col">
+        <div className="flex flex-col flex-1 min-w-0">
 
           <TopBar />
 
-          <main className="p-6">
+          <main className="flex-1 w-full p-6">
             <DisasterTable />
           </main>
 
         </div>
+
       </div>
     </SidebarProvider>
   )
