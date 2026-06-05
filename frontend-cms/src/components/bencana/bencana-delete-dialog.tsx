@@ -20,10 +20,7 @@ export default function BencanaDeleteDialog({
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white w-100 p-6 rounded-xl space-y-4">
-
-        <h2 className="text-xl font-bold text-red-600">
-          Hapus Bencana
-        </h2>
+        <h2 className="text-xl font-bold text-red-600">Hapus Bencana</h2>
 
         <p>
           Yakin ingin menghapus <b>{data?.nama}</b>?
@@ -38,7 +35,6 @@ export default function BencanaDeleteDialog({
             Hapus
           </button>
         </div>
-
       </div>
     </div>
   );

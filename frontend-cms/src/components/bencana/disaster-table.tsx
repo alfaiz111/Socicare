@@ -42,7 +42,6 @@ export default function DisasterTable() {
     status: "Aktif",
   });
 
-  // OPEN ACTIONS
   const handleAdd = () => {
     setSelected(null);
     setForm({ nama: "", lokasi: "", tanggal: "", status: "Aktif" });
@@ -65,7 +64,6 @@ export default function DisasterTable() {
     setOpenDelete(true);
   };
 
-  // SAVE
   const saveData = () => {
     if (selected) {
       setData((prev) =>
@@ -81,7 +79,6 @@ export default function DisasterTable() {
     setOpenForm(false);
   };
 
-  // DELETE
   const confirmDelete = () => {
     if (!selected) return;
     setData((prev) => prev.filter((d) => d.id !== selected.id));
@@ -91,64 +88,68 @@ export default function DisasterTable() {
   return (
     <div className="w-full space-y-6">
 
-      {/* HEADER (UNCHANGED UI) */}
+      {/* HEADER */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-bold text-[#800000]">Kelola Bencana</h1>
-          <p className="text-gray-500 mt-2">
-            Kelola data bencana yang menjadi dasar campaign donasi.
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+            Kelola Bencana
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Kelola data bencana untuk campaign donasi secara terpusat.
           </p>
         </div>
 
         <button
           onClick={handleAdd}
-          className="flex items-center justify-center gap-2 bg-[#800000] hover:bg-[#650000] text-white px-5 py-3 rounded-xl transition"
+          className="flex items-center gap-2 bg-gray-900 hover:bg-black text-white px-5 py-3 rounded-xl shadow-sm transition"
         >
           <PlusCircle size={18} />
           Tambah Bencana
         </button>
       </div>
 
-      {/* STATISTIC (UNCHANGED) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        <div className="bg-white rounded-2xl border shadow-sm p-6">
-          <p className="text-gray-500 text-sm">Total Bencana</p>
-          <h2 className="text-4xl font-bold mt-2">25</h2>
+      {/* STATS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="bg-white border rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+          <p className="text-sm text-gray-500">Total Bencana</p>
+          <h2 className="text-3xl font-semibold mt-2 text-gray-900">25</h2>
         </div>
 
-        <div className="bg-white rounded-2xl border shadow-sm p-6">
-          <p className="text-gray-500 text-sm">Bencana Aktif</p>
-          <h2 className="text-4xl font-bold text-red-600 mt-2">8</h2>
+        <div className="bg-white border rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+          <p className="text-sm text-gray-500">Bencana Aktif</p>
+          <h2 className="text-3xl font-semibold mt-2 text-red-600">8</h2>
         </div>
 
-        <div className="bg-white rounded-2xl border shadow-sm p-6">
-          <p className="text-gray-500 text-sm">Bencana Selesai</p>
-          <h2 className="text-4xl font-bold text-green-600 mt-2">17</h2>
+        <div className="bg-white border rounded-2xl p-6 shadow-sm hover:shadow-md transition">
+          <p className="text-sm text-gray-500">Bencana Selesai</p>
+          <h2 className="text-3xl font-semibold mt-2 text-emerald-600">17</h2>
         </div>
       </div>
 
-      {/* SEARCH (UNCHANGED) */}
-      <div className="bg-white rounded-2xl border shadow-sm p-5">
-        <div className="relative w-full">
+      {/* SEARCH */}
+      <div className="bg-white border rounded-2xl p-4 shadow-sm">
+        <div className="relative">
           <Search
             size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
           />
 
           <input
             type="text"
-            placeholder="Cari bencana..."
-            className="w-full pl-11 pr-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-[#800000]"
+            placeholder="Cari bencana, lokasi, atau status..."
+            className="w-full pl-10 pr-4 py-3 rounded-xl bg-gray-50 border border-gray-200
+                       focus:bg-white focus:ring-2 focus:ring-gray-900 outline-none transition"
           />
         </div>
       </div>
 
-      {/* TABLE (UNCHANGED UI) */}
-      <div className="bg-white rounded-2xl border shadow-sm overflow-hidden">
+      {/* TABLE */}
+      <div className="bg-white border rounded-2xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
+
           <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b text-xs uppercase tracking-wider text-gray-400">
+            <thead className="bg-gray-50">
+              <tr className="text-xs uppercase tracking-wider text-gray-500">
                 <th className="px-6 py-4 text-left">Nama Bencana</th>
                 <th className="px-6 py-4 text-left">Lokasi</th>
                 <th className="px-6 py-4 text-left">Tanggal</th>
@@ -161,50 +162,80 @@ export default function DisasterTable() {
               {data.map((item) => (
                 <tr
                   key={item.id}
-                  className="group border-b hover:bg-gray-50 transition"
+                  className="border-b last:border-0 hover:bg-gray-50 transition"
                 >
+
+                  {/* NAME */}
                   <td className="px-6 py-5">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center">
-                        <AlertTriangle size={20} className="text-red-600" />
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center">
+                        <AlertTriangle size={18} className="text-red-500" />
                       </div>
-                      <p className="font-medium text-gray-800">{item.nama}</p>
+
+                      <p className="font-medium text-gray-900">
+                        {item.nama}
+                      </p>
                     </div>
                   </td>
 
-                  <td className="px-6 py-5 flex items-center gap-2 text-gray-600">
-                    <MapPin size={16} />
-                    {item.lokasi}
+                  {/* LOCATION */}
+                  <td className="px-6 py-5 text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <MapPin size={15} className="text-gray-400" />
+                      {item.lokasi}
+                    </div>
                   </td>
 
-                  <td className="px-6 py-5">{item.tanggal}</td>
+                  {/* DATE */}
+                  <td className="px-6 py-5 text-gray-600">
+                    {item.tanggal}
+                  </td>
 
+                  {/* STATUS */}
                   <td className="px-6 py-5">
                     <span
-                      className={`px-3 py-1 rounded-full text-xs ${
+                      className={`px-3 py-1 rounded-full text-xs font-medium border ${
                         item.status === "Aktif"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-green-100 text-green-700"
+                          ? "bg-red-50 text-red-600 border-red-100"
+                          : "bg-emerald-50 text-emerald-600 border-emerald-100"
                       }`}
                     >
                       {item.status}
                     </span>
                   </td>
 
-                  <td className="px-6 py-5 text-right space-x-2">
-                    <button onClick={() => handleDetail(item)}>
-                      Detail
-                    </button>
-                    <button onClick={() => handleEdit(item)}>
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(item)}>
-                      Hapus
-                    </button>
+                  {/* ACTIONS */}
+                  <td className="px-6 py-5 text-right">
+                    <div className="flex justify-end gap-2">
+
+                      <button
+                        onClick={() => handleDetail(item)}
+                        className="px-3 py-1.5 text-xs rounded-lg bg-gray-100 hover:bg-gray-200 transition"
+                      >
+                        Detail
+                      </button>
+
+                      <button
+                        onClick={() => handleEdit(item)}
+                        className="px-3 py-1.5 text-xs rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 transition"
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(item)}
+                        className="px-3 py-1.5 text-xs rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition"
+                      >
+                        Hapus
+                      </button>
+
+                    </div>
                   </td>
+
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       </div>
@@ -231,6 +262,7 @@ export default function DisasterTable() {
         setOpen={setOpenDetail}
         data={selected}
       />
+
     </div>
   );
 }
