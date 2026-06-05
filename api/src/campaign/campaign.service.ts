@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Campaign } from './campaign.entity';
 import { Repository } from 'typeorm';
+import { Campaign } from './campaign.entity';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
 
@@ -9,43 +9,34 @@ import { UpdateCampaignDto } from './dto/update-campaign.dto';
 export class CampaignService {
   constructor(
     @InjectRepository(Campaign)
-    private readonly campaignRepository: Repository<Campaign>,
+    private campaignRepository: Repository<Campaign>,
   ) {}
 
-  async create(createDto: CreateCampaignDto) {
-    const data = this.campaignRepository.create({
-      ...createDto,
-      collected: 0,
-      progress: 0,
-    });
-
-    return this.campaignRepository.save(data);
-  }
-
-  async findAll() {
-    return this.campaignRepository.find();
-  }
-
-  async findOne(id: number) {
-    const data = await this.campaignRepository.findOneBy({ id });
-
-    if (!data) {
-      throw new NotFoundException('Campaign tidak ditemukan');
-    }
-
-    return data;
-  }
-
-  async update(id: number, updateDto: UpdateCampaignDto) {
-    const campaign = await this.findOne(id);
-
-    Object.assign(campaign, updateDto);
-
+  async create(createDto: CreateCampaignDto): Promise<Campaign> {
+    const campaign = this.campaignRepository.create(createDto);
     return this.campaignRepository.save(campaign);
   }
 
-  async remove(id: number) {
+  async findAll(): Promise<Campaign[]> {
+    return this.campaignRepository.find();
+  }
+
+  async findOne(id: number): Promise<Campaign> {
+    const campaign = await this.campaignRepository.findOne({ where: { id } });
+    if (!campaign) {
+      throw new NotFoundException('Campaign tidak ditemukan');
+    }
+    return campaign;
+  }
+
+  async update(id: number, updateDto: UpdateCampaignDto): Promise<Campaign> {
     const campaign = await this.findOne(id);
-    return this.campaignRepository.remove(campaign);
+    Object.assign(campaign, updateDto);
+    return this.campaignRepository.save(campaign);
+  }
+
+  async remove(id: number): Promise<void> {
+    const campaign = await this.findOne(id);
+    await this.campaignRepository.remove(campaign);
   }
 }

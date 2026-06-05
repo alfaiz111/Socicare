@@ -8,6 +8,5 @@ import { CampaignController } from './campaign.controller';
   imports: [TypeOrmModule.forFeature([Campaign])],
   controllers: [CampaignController],
   providers: [CampaignService],
-  exports: [CampaignService],
 })
 export class CampaignModule {}
