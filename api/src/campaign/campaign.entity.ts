@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class Campaign {
@@ -6,17 +6,26 @@ export class Campaign {
   id: number;
 
   @Column()
-  campaign: string;
+  title: string;
 
-  @Column()
-  category: string;
+  @Column('text')
+  description: string;
 
   @Column('decimal')
-  target: number;
-
-  @Column('decimal', { default: 0 })
-  collected: number;
+  targetAmount: number;
 
   @Column({ default: 0 })
-  progress: number;
+  currentAmount: number;
+
+  @Column()
+  imageUrl: string;
+
+  @Column({ default: true })
+  isActive: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

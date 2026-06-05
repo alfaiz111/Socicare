@@ -1,21 +1,20 @@
-import { IsString, IsNumber, IsOptional, Min } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsUrl, IsOptional } from 'class-validator';
 
 export class CreateCampaignDto {
   @IsString()
-  campaign: string;
+  @IsNotEmpty()
+  title: string;
 
   @IsString()
-  category: string;
+  @IsNotEmpty()
+  description: string;
 
   @IsNumber()
-  @Min(1)
-  target: number;
+  targetAmount: number;
+
+  @IsUrl()
+  imageUrl: string;
 
   @IsOptional()
-  @IsNumber()
-  collected?: number;
-
-  @IsOptional()
-  @IsNumber()
-  progress?: number;
+  isActive?: boolean;
 }
