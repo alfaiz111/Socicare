@@ -3,20 +3,20 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 @Entity()
 export class Campaign {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  campaign: string;
+  campaign!: string;
 
   @Column()
-  category: string;
+  category!: string;
 
   @Column('decimal')
-  target: number;
+  target!: number;
 
   @Column('decimal', { default: 0 })
-  collected: number;
+  collected!: number;
 
   @Column({ default: 0 })
-  progress: number;
+  progress!: number;
 }

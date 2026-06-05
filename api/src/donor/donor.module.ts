@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Campaign } from './campaign.entity';
+// Entity import adjusted to match actual entity filename/location
+import { Campaign } from '../campaign/campaign.entity';
 import { CampaignService } from './donor.service';
 import { CampaignController } from './donor.controller';
 
@@ -9,4 +10,4 @@ import { CampaignController } from './donor.controller';
   providers: [CampaignService],
   controllers: [CampaignController],
 })
-export class CampaignModule {}
+export class DonorModule {}
