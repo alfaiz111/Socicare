@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   Image,
   ScrollView,
   StyleSheet,
+  TouchableOpacity,
+  Modal,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
@@ -15,28 +17,48 @@ import Navbar from "../../components/Navbar";
 import NavbarBottom from "../../components/BottomNavbar";
 
 export default function RiwayatPage() {
-
-  // 🔥 DATA DUMMY RIWAYAT
-  const data = [
+  const [data, setData] = useState([
     {
       id: 1,
       nama: "Donasi Bencana Alam",
       lokasi: "Bandung",
       status: "Diproses",
+      tanggal: "10 Juni 2026",
+      donasi: "Rp 200.000",
+      barang: "Pakaian layak & Obat-obatan",
     },
     {
       id: 2,
       nama: "Donasi Panti Asuhan",
       lokasi: "Jakarta",
       status: "Selesai",
+      tanggal: "5 Juni 2026",
+      donasi: "Rp 500.000",
+      barang: "Makanan & Buku",
     },
-  ];
+  ]);
+
+  const [selected, setSelected] = useState<any>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openDetail = (item: any) => {
+    setSelected(item);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
+  const clearHistory = () => {
+    setData([]);
+  };
 
   return (
     <View style={styles.container}>
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* 🔥 HERO + NAVBAR */}
+      {/* HERO */}
       <View style={styles.hero}>
         <Image
           source={require("../../assets/images/bg.jpeg")}
@@ -48,7 +70,6 @@ export default function RiwayatPage() {
           style={styles.overlay}
         />
 
-        {/* ✅ NAVBAR SAMA SEPERTI LAPOR */}
         <Navbar name="M. Arif Alfaiz" />
 
         <Swiper autoplay showsPagination dotColor="#ccc" activeDotColor="#fff">
@@ -64,46 +85,85 @@ export default function RiwayatPage() {
         </Swiper>
       </View>
 
-      {/* 🔥 CONTENT */}
+      {/* CONTENT */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView contentContainerStyle={styles.content}>
+          <Text style={styles.title}>Riwayat Donasi</Text>
 
-          <Text style={styles.title}>Riwayat Laporan</Text>
-          <Text style={styles.subtitle}>
-            Daftar laporan yang telah kamu kirim
-          </Text>
+          {data.length === 0 ? (
+            <Text style={styles.empty}>
+              Belum ada aktivitas donasi
+            </Text>
+          ) : (
+            <>
+              {data.map((item) => (
+                <TouchableOpacity
+                  key={item.id}
+                  style={styles.card}
+                  onPress={() => openDetail(item)}
+                >
+                  <Text style={styles.cardTitle}>{item.nama}</Text>
+                  <Text style={styles.cardText}>📍 {item.lokasi}</Text>
+                  <Text
+                    style={[
+                      styles.status,
+                      item.status === "Selesai"
+                        ? styles.done
+                        : styles.process,
+                    ]}
+                  >
+                    {item.status}
+                  </Text>
+                </TouchableOpacity>
+              ))}
 
-          {/* LIST RIWAYAT */}
-          {data.map((item) => (
-            <View key={item.id} style={styles.card}>
-              <Text style={styles.cardTitle}>{item.nama}</Text>
-              <Text style={styles.cardText}>📍 {item.lokasi}</Text>
-              <Text
-                style={[
-                  styles.status,
-                  item.status === "Selesai"
-                    ? styles.done
-                    : styles.process,
-                ]}
+              {/* BUTTON CLEAR */}
+              <TouchableOpacity
+                style={styles.clearBtn}
+                onPress={clearHistory}
               >
-                {item.status}
-              </Text>
-            </View>
-          ))}
+                <Text style={styles.clearText}>Bersihkan Riwayat</Text>
+              </TouchableOpacity>
+            </>
+          )}
         </ScrollView>
       </SafeAreaView>
 
-      {/* 🔥 BOTTOM NAVBAR */}
+      {/* MODAL DETAIL */}
+      <Modal visible={modalVisible} transparent animationType="slide">
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalBox}>
+            {selected && (
+              <>
+                <Text style={styles.modalTitle}>{selected.nama}</Text>
+                <Text>📅 {selected.tanggal}</Text>
+                <Text>📍 {selected.lokasi}</Text>
+
+                <Text style={{ marginTop: 10, fontWeight: "bold" }}>
+                  Donasi:
+                </Text>
+                <Text>💰 {selected.donasi}</Text>
+                <Text>📦 {selected.barang}</Text>
+
+                <TouchableOpacity
+                  style={styles.closeBtn}
+                  onPress={closeModal}
+                >
+                  <Text style={styles.closeText}>Close</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </View>
+        </View>
+      </Modal>
+
       <NavbarBottom active="riwayat" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
-  },
+  container: { flex: 1, backgroundColor: "#f5f5f5" },
 
   hero: {
     height: 260,
@@ -145,12 +205,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 5,
+    marginBottom: 10,
   },
 
-  subtitle: {
-    color: "#666",
-    marginBottom: 15,
+  empty: {
+    textAlign: "center",
+    marginTop: 50,
+    color: "#888",
   },
 
   card: {
@@ -175,11 +236,52 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  process: {
-    color: "#FFA500",
+  process: { color: "#FFA500" },
+  done: { color: "green" },
+
+  clearBtn: {
+    marginTop: 10,
+    backgroundColor: "#800000",
+    padding: 12,
+    borderRadius: 10,
+    alignItems: "center",
   },
 
-  done: {
-    color: "green",
+  clearText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalBox: {
+    width: "85%",
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 15,
+  },
+
+  modalTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+
+  closeBtn: {
+    marginTop: 15,
+    backgroundColor: "#800000",
+    padding: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+
+  closeText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 });
