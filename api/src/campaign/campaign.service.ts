@@ -1,33 +1,51 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Campaign } from './campaign.entity';
 import { Repository } from 'typeorm';
+import { CreateCampaignDto } from './dto/create-campaign.dto';
+import { UpdateCampaignDto } from './dto/update-campaign.dto';
 
 @Injectable()
 export class CampaignService {
   constructor(
     @InjectRepository(Campaign)
-    private repo: Repository<Campaign>,
+    private readonly campaignRepository: Repository<Campaign>,
   ) {}
 
-  create(data: Partial<Campaign>) {
-    const campaign = this.repo.create(data);
-    return this.repo.save(campaign);
+  async create(createDto: CreateCampaignDto) {
+    const data = this.campaignRepository.create({
+      ...createDto,
+      collected: 0,
+      progress: 0,
+    });
+
+    return this.campaignRepository.save(data);
   }
 
-  findAll() {
-    return this.repo.find();
+  async findAll() {
+    return this.campaignRepository.find();
   }
 
-  findOne(id: number) {
-    return this.repo.findOneBy({ id });
+  async findOne(id: number) {
+    const data = await this.campaignRepository.findOneBy({ id });
+
+    if (!data) {
+      throw new NotFoundException('Campaign tidak ditemukan');
+    }
+
+    return data;
   }
 
-  update(id: number, data: Partial<Campaign>) {
-    return this.repo.update(id, data);
+  async update(id: number, updateDto: UpdateCampaignDto) {
+    const campaign = await this.findOne(id);
+
+    Object.assign(campaign, updateDto);
+
+    return this.campaignRepository.save(campaign);
   }
 
-  delete(id: number) {
-    return this.repo.delete(id);
+  async remove(id: number) {
+    const campaign = await this.findOne(id);
+    return this.campaignRepository.remove(campaign);
   }
 }
