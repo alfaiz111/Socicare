@@ -43,7 +43,7 @@ export default function Sign() {
     Alert.alert("Sukses", "Akun berhasil dibuat!");
 
     // PINDAH KE LOGIN
-    router.replace("/auth/login/page");
+    router.replace("/auth/Login/page");
   };
 
   return (
@@ -94,7 +94,7 @@ export default function Sign() {
         {/* LINK LOGIN */}
         <TouchableOpacity
           style={{ marginTop: 15 }}
-          onPress={() => router.push("/auth/login/page")}
+          onPress={() => router.push("/auth/Login/page")}
         >
           <Text style={{ color: "#aaa", textAlign: "center" }}>
             Sudah punya akun? Login
