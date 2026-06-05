@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
@@ -15,11 +16,23 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleLogin = () => {
+    // VALIDASI
+    if (!email || !password) {
+      Alert.alert("Error", "Email dan Password wajib diisi!");
+      return;
+    }
+
+    // DUMMY LOGIN (bisa kamu ganti API nanti)
+    if (email === "admin@gmail.com" && password === "123456") {
+      router.replace("/landing"); // 🔥 redirect ke landing
+    } else {
+      Alert.alert("Login Gagal", "Email atau password salah!");
+    }
+  };
+
   return (
-    <LinearGradient
-      colors={["#3b0000", "#000000"]}
-      style={styles.container}
-    >
+    <LinearGradient colors={["#3b0000", "#000000"]} style={styles.container}>
       <View style={styles.card}>
         <Text style={styles.title}>Selamat Datang</Text>
         <Text style={styles.subtitle}>
@@ -33,7 +46,7 @@ export default function Login() {
 
         <Text style={styles.or}>OR</Text>
 
-        {/* INPUT */}
+        {/* INPUT EMAIL */}
         <TextInput
           placeholder="Email"
           placeholderTextColor="#aaa"
@@ -42,6 +55,7 @@ export default function Login() {
           onChangeText={setEmail}
         />
 
+        {/* INPUT PASSWORD */}
         <TextInput
           placeholder="Password"
           placeholderTextColor="#aaa"
@@ -51,8 +65,8 @@ export default function Login() {
           onChangeText={setPassword}
         />
 
-        {/* BUTTON */}
-        <TouchableOpacity style={styles.button}>
+        {/* BUTTON LOGIN */}
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
 
