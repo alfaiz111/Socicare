@@ -17,7 +17,6 @@ export class Campaign {
   @Column('text')
   description: string | undefined;
 
-  // 🔥 GANTI decimal → float (biar gak error)
   @Column('float')
   targetAmount: number | undefined;
 
