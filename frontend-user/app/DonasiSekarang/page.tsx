@@ -44,7 +44,7 @@ export default function DonasiSekarang() {
     "Hygiene Kit",
   ];
 
-  const toggleItem = (item) => {
+  const toggleItem = (item: string) => {
     if (selectedItems.includes(item)) {
       setSelectedItems(selectedItems.filter((i) => i !== item));
     } else {
