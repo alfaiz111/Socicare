@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: "#fff",
+    color: "#ffff",
     fontWeight: "bold",
   },
 });
