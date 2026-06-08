@@ -34,8 +34,8 @@ export default function DonasiSekarang() {
 
   const [nama, setNama] = useState("");
   const [jumlah, setJumlah] = useState("");
-  const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [selectedNominal, setSelectedNominal] = useState(null);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const pilihanBarang = [
     "Pakaian Layak Pakai",
@@ -44,11 +44,11 @@ export default function DonasiSekarang() {
     "Hygiene Kit",
   ];
 
-  const toggleItem = (item: string) => {
+  const toggleItem = (item) => {
     if (selectedItems.includes(item)) {
-      setSelectedItems((prevItems) => prevItems.filter((i) => i !== item));
+      setSelectedItems(selectedItems.filter((i) => i !== item));
     } else {
-      setSelectedItems((prevItems) => [...prevItems, item]);
+      setSelectedItems([...selectedItems, item]);
     }
   };
 
@@ -58,7 +58,6 @@ export default function DonasiSekarang() {
     image: getImage(imageParam),
   };
 
-  // ✅ NOMINAL LENGKAP
   const quickAmounts = [
     10000,
     25000,
@@ -96,7 +95,10 @@ export default function DonasiSekarang() {
 
       {/* CONTENT */}
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={styles.content}>
+        <ScrollView
+          style={styles.content}
+          contentContainerStyle={{ paddingBottom: 120 }} // 🔥 FIX BUTTON KE POTONG
+        >
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.location}>{data.location}</Text>
 
@@ -221,7 +223,7 @@ export default function DonasiSekarang() {
 }
 
 // IMAGE
-const getImage = (name: string) => {
+const getImage = (name) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");
@@ -285,12 +287,12 @@ const styles = StyleSheet.create({
 
   quickButton: {
     width: "48%",
-    paddingVertical: 14,
+    paddingVertical: 16,
     borderRadius: 14,
     borderWidth: 1,
     borderColor: "#ddd",
     backgroundColor: "#fff",
-    marginBottom: 10,
+    marginBottom: 12,
     alignItems: "center",
     elevation: 2,
   },
@@ -315,17 +317,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
-    marginTop: 10,
+    marginTop: 12,
   },
 
   optionItem: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 25,
+    width: "45%",
+    paddingVertical: 14,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: "#ddd",
-    margin: 5,
+    margin: 6,
     backgroundColor: "#fff",
+    alignItems: "center",
   },
 
   optionItemActive: {
@@ -334,8 +337,9 @@ const styles = StyleSheet.create({
   },
 
   optionText: {
-    fontSize: 12,
+    fontSize: 13,
     color: "#333",
+    textAlign: "center",
   },
 
   optionTextActive: {
@@ -362,6 +366,7 @@ const styles = StyleSheet.create({
   /* BUTTON */
   button: {
     marginTop: 30,
+    marginBottom: 20,
     backgroundColor: "#1976D2",
     padding: 16,
     borderRadius: 25,
