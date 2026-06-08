@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar } from "expo-status-bar";
@@ -21,7 +22,24 @@ export default function DonasiPage() {
   const params = useLocalSearchParams();
   const router = useRouter();
 
-  // 🔥 FIX PARAM (BIAR GAK ERROR)
+  // 🔥 STATE PILIHAN DONASI
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  const pilihanDonasi = [
+    "Baju Layak Pakai",
+    "Obat-obatan",
+    "Sembako",
+  ];
+
+  const toggleItem = (item: string) => {
+    if (selectedItems.includes(item)) {
+      setSelectedItems(selectedItems.filter((i) => i !== item));
+    } else {
+      setSelectedItems([...selectedItems, item]);
+    }
+  };
+
+  // 🔥 FIX PARAM
   const imageParam = Array.isArray(params.image)
     ? params.image[0]
     : params.image;
@@ -35,12 +53,29 @@ export default function DonasiPage() {
     kebutuhan: ["Makanan & Air Bersih", "Pakaian & Selimut", "Obat-obatan"],
   };
 
+  // 🔥 HANDLE DONASI
+  const handleDonasi = () => {
+    if (selectedItems.length === 0) {
+      Alert.alert("Peringatan", "Pilih minimal 1 jenis donasi!");
+      return;
+    }
+
+    router.push({
+      pathname: "../DonasiSekarang/page",
+      params: {
+        title: data.title,
+        location: data.location,
+        image: imageParam,
+        items: JSON.stringify(selectedItems),
+      },
+    });
+  };
+
   return (
     <View style={styles.container}>
-      {/* 🔥 STATUS BAR */}
       <StatusBar style="light" translucent backgroundColor="transparent" />
 
-      {/* 🔥 HERO */}
+      {/* HERO */}
       <View style={styles.hero}>
         <Image source={data.image} style={styles.bgImage} />
 
@@ -51,7 +86,6 @@ export default function DonasiPage() {
 
         <Navbar name="M. Arif Alfaiz" />
 
-        {/* 🔥 SWIPER */}
         <Swiper autoplay height={260} showsPagination>
           {[
             require("../../assets/images/sosmas.png"),
@@ -65,7 +99,7 @@ export default function DonasiPage() {
         </Swiper>
       </View>
 
-      {/* 🔥 CONTENT */}
+      {/* CONTENT */}
       <SafeAreaView edges={["bottom"]} style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
           <Text style={styles.title}>{data.title}</Text>
@@ -95,20 +129,37 @@ export default function DonasiPage() {
             </Text>
           ))}
 
-          {/* 🔥 BUTTON NAVIGASI (FIXED) */}
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() =>
-              router.push({
-                pathname: "../DonasiSekarang/page",
-                params: {
-                  title: data.title,
-                  location: data.location,
-                  image: imageParam,
-                },
-              })
-            }
-          >
+          {/* 🔥 FORM PILIH DONASI */}
+          <Text style={styles.section}>Pilih Jenis Donasi</Text>
+
+          <View style={styles.formDonasi}>
+            {pilihanDonasi.map((item, index) => {
+              const selected = selectedItems.includes(item);
+
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.optionItem,
+                    selected && styles.optionItemActive,
+                  ]}
+                  onPress={() => toggleItem(item)}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      selected && styles.optionTextActive,
+                    ]}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
+          {/* BUTTON */}
+          <TouchableOpacity style={styles.button} onPress={handleDonasi}>
             <Text style={styles.btnText}>Donasi Sekarang</Text>
           </TouchableOpacity>
         </ScrollView>
@@ -119,7 +170,7 @@ export default function DonasiPage() {
   );
 }
 
-// 🔥 IMAGE MAPPING
+// IMAGE MAPPING
 const getImage = (name?: string) => {
   switch (name) {
     case "Banjir":
@@ -135,7 +186,7 @@ const getImage = (name?: string) => {
   }
 };
 
-// 🎨 STYLE (TIDAK DIUBAH)
+// STYLE
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -227,15 +278,38 @@ const styles = StyleSheet.create({
     color: "#333",
   },
 
+  formDonasi: {
+    marginTop: 10,
+    gap: 8,
+  },
+
+  optionItem: {
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+
+  optionItemActive: {
+    backgroundColor: "#1976D2",
+    borderColor: "#1976D2",
+  },
+
+  optionText: {
+    color: "#333",
+  },
+
+  optionTextActive: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
+
   button: {
     marginTop: 20,
     backgroundColor: "#1976D2",
     padding: 14,
     borderRadius: 25,
-    flexDirection: "row",
-    justifyContent: "center",
     alignItems: "center",
-    gap: 6,
   },
 
   btnText: {
