@@ -9,7 +9,16 @@ import {
   HandCoins,
 } from "lucide-react";
 
-const initialData = [
+import type {
+  Distribution,
+  DistributionForm,
+} from "../../types/distribution-types";
+
+import DistributionFormModal from "./distribution-form-modal";
+import DistributionDetailDialog from "./distribution-detail-dialog";
+import DistributionDeleteDialog from "./distribution-delete-dialog";
+
+const initialData: Distribution[] = [
   {
     id: 1,
     campaign: "Bantu Korban Banjir",
@@ -29,8 +38,22 @@ const initialData = [
 ];
 
 export default function DistributionTable() {
-  const [data] = useState(initialData);
+  const [data, setData] = useState<Distribution[]>(initialData);
   const [search, setSearch] = useState("");
+
+  const [openForm, setOpenForm] = useState(false);
+  const [openDetail, setOpenDetail] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+
+  const [selected, setSelected] = useState<Distribution | null>(null);
+
+  const [form, setForm] = useState<DistributionForm>({
+    campaign: "",
+    penerima: "",
+    nominal: "",
+    tanggal: "",
+    status: "Pending",
+  });
 
   const filteredData = data.filter(
     (item) =>
@@ -45,6 +68,50 @@ export default function DistributionTable() {
   ).length;
 
   const totalPending = data.filter((item) => item.status === "Pending").length;
+
+  const handleAdd = () => {
+    setSelected(null);
+
+    setForm({
+      campaign: "",
+      penerima: "",
+      nominal: "",
+      tanggal: "",
+      status: "Pending",
+    });
+
+    setOpenForm(true);
+  };
+
+  const handleDetail = (item: Distribution) => {
+    setSelected(item);
+    setOpenDetail(true);
+  };
+
+  const handleDelete = (item: Distribution) => {
+    setSelected(item);
+    setOpenDelete(true);
+  };
+
+  const saveData = () => {
+    setData((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        ...form,
+      },
+    ]);
+
+    setOpenForm(false);
+  };
+
+  const confirmDelete = () => {
+    if (!selected) return;
+
+    setData((prev) => prev.filter((item) => item.id !== selected.id));
+
+    setOpenDelete(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -115,7 +182,10 @@ export default function DistributionTable() {
             />
           </div>
 
-          <button className="flex items-center justify-center gap-2 bg-[#800000] hover:bg-[#6b0000] text-white px-5 py-2.5 rounded-xl transition">
+          <button
+            onClick={handleAdd}
+            className="flex items-center justify-center gap-2 bg-[#800000] hover:bg-[#6b0000] text-white px-5 py-2.5 rounded-xl transition"
+          >
             <PlusCircle size={18} />
             Tambah Penyaluran
           </button>
@@ -187,11 +257,17 @@ export default function DistributionTable() {
 
                     <td className="px-6 py-5">
                       <div className="flex justify-end gap-2">
-                        <button className="px-4 py-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition">
+                        <button
+                          onClick={() => handleDetail(item)}
+                          className="px-4 py-2 rounded-lg bg-blue-100 text-blue-700 hover:bg-blue-200 transition"
+                        >
                           Detail
                         </button>
 
-                        <button className="px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition">
+                        <button
+                          onClick={() => handleDelete(item)}
+                          className="px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition"
+                        >
                           Hapus
                         </button>
                       </div>
@@ -203,6 +279,27 @@ export default function DistributionTable() {
           </div>
         )}
       </div>
+
+      <DistributionFormModal
+        open={openForm}
+        setOpen={setOpenForm}
+        form={form}
+        setForm={setForm}
+        onSave={saveData}
+      />
+
+      <DistributionDetailDialog
+        open={openDetail}
+        setOpen={setOpenDetail}
+        data={selected}
+      />
+
+      <DistributionDeleteDialog
+        open={openDelete}
+        setOpen={setOpenDelete}
+        data={selected}
+        onConfirm={confirmDelete}
+      />
     </div>
   );
 }
