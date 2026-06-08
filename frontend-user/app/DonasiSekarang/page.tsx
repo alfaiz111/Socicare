@@ -32,15 +32,9 @@ export default function DonasiSekarang() {
     ? params.location[0]
     : params.location || "";
 
-  const [nama, setNama] = useState(
-    Array.isArray(params.nama) ? params.nama[0] : params.nama || ""
-  );
-
-  const [jumlah, setJumlah] = useState(
-    Array.isArray(params.jumlah) ? params.jumlah[0] : params.jumlah || ""
-  );
-
-  // 🔥 STATE BARANG DONASI
+  const [nama, setNama] = useState("");
+  const [jumlah, setJumlah] = useState("");
+  const [selectedNominal, setSelectedNominal] = useState(null);
   const [selectedItems, setSelectedItems] = useState([]);
 
   const pilihanBarang = [
@@ -68,7 +62,7 @@ export default function DonasiSekarang() {
 
   return (
     <View style={styles.container}>
-      {/* 🔥 HERO */}
+      {/* HERO */}
       <View style={styles.hero}>
         <Image source={data.image} style={styles.bgImage} />
 
@@ -92,13 +86,13 @@ export default function DonasiSekarang() {
         </Swiper>
       </View>
 
-      {/* 🔥 CONTENT */}
+      {/* CONTENT */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.location}>{data.location}</Text>
 
-          {/* 🔥 FORM */}
+          {/* FORM */}
           <Text style={styles.label}>Nama Donatur</Text>
           <TextInput
             placeholder="Masukkan nama anda"
@@ -113,26 +107,44 @@ export default function DonasiSekarang() {
             style={styles.input}
             keyboardType="numeric"
             value={jumlah}
-            onChangeText={setJumlah}
+            onChangeText={(text) => {
+              setJumlah(text);
+              setSelectedNominal(null);
+            }}
           />
 
-          {/* 🔥 NOMINAL CEPAT */}
+          {/* NOMINAL CLEAN */}
           <Text style={styles.label}>Pilih Nominal Cepat</Text>
           <View style={styles.quickContainer}>
-            {quickAmounts.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.quickButton}
-                onPress={() => setJumlah(item.toString())}
-              >
-                <Text style={styles.quickText}>
-                  Rp {item.toLocaleString("id-ID")}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {quickAmounts.map((item, index) => {
+              const active = selectedNominal === item;
+
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.quickButton,
+                    active && styles.quickButtonActive,
+                  ]}
+                  onPress={() => {
+                    setJumlah(item.toString());
+                    setSelectedNominal(item);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.quickText,
+                      active && styles.quickTextActive,
+                    ]}
+                  >
+                    Rp {item.toLocaleString("id-ID")}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
 
-          {/* 🔥 PILIH BARANG */}
+          {/* BARANG CLEAN */}
           <Text style={styles.label}>Pilih Barang Donasi</Text>
           <View style={styles.formDonasi}>
             {pilihanBarang.map((item, index) => {
@@ -160,12 +172,12 @@ export default function DonasiSekarang() {
             })}
           </View>
 
-          {/* 🔥 RINGKASAN */}
+          {/* RINGKASAN */}
           <View style={styles.summaryBox}>
             <Text style={styles.summaryTitle}>Ringkasan Donasi</Text>
             <Text>Program: {data.title}</Text>
             <Text>Lokasi: {data.location}</Text>
-            <Text>Nama: {nama}</Text>
+            <Text>Nama: {nama || "-"}</Text>
             <Text>
               Jumlah: Rp{" "}
               {jumlah ? Number(jumlah).toLocaleString("id-ID") : "0"}
@@ -178,7 +190,7 @@ export default function DonasiSekarang() {
             </Text>
           </View>
 
-          {/* 🔥 BUTTON */}
+          {/* BUTTON */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
@@ -187,10 +199,7 @@ export default function DonasiSekarang() {
                 return;
               }
 
-              Alert.alert(
-                "Berhasil 🎉",
-                "Donasi kamu sedang diproses (simulasi pembayaran)"
-              );
+              Alert.alert("Berhasil 🎉", "Donasi berhasil diproses!");
             }}
           >
             <Text style={styles.buttonText}>Bayar Sekarang</Text>
@@ -203,7 +212,7 @@ export default function DonasiSekarang() {
   );
 }
 
-// 🔥 IMAGE
+// IMAGE
 const getImage = (name) => {
   switch (name) {
     case "Banjir":
@@ -219,7 +228,7 @@ const getImage = (name) => {
   }
 };
 
-// 🎨 STYLE
+// STYLE
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5" },
 
@@ -247,7 +256,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 20, fontWeight: "bold" },
   location: { color: "#555", marginBottom: 10 },
 
-  label: { marginTop: 10, fontWeight: "bold" },
+  label: { marginTop: 15, fontWeight: "bold" },
 
   input: {
     backgroundColor: "#fff",
@@ -258,35 +267,58 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
+  /* NOMINAL */
   quickContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
+    justifyContent: "space-between",
     marginTop: 10,
   },
 
   quickButton: {
-    backgroundColor: "#eee",
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
+    width: "48%",
+    paddingVertical: 12,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+    marginBottom: 10,
+    alignItems: "center",
+
+    elevation: 2,
+  },
+
+  quickButtonActive: {
+    backgroundColor: "#1976D2",
+    borderColor: "#1976D2",
   },
 
   quickText: {
-    fontSize: 12,
-    fontWeight: "bold",
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#333",
   },
 
+  quickTextActive: {
+    color: "#fff",
+  },
+
+  /* BARANG */
   formDonasi: {
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: 10,
-    gap: 8,
   },
 
   optionItem: {
-    padding: 12,
-    borderRadius: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: "#ccc",
+    marginRight: 8,
+    marginBottom: 8,
+    backgroundColor: "#fff",
   },
 
   optionItemActive: {
@@ -295,14 +327,16 @@ const styles = StyleSheet.create({
   },
 
   optionText: {
+    fontSize: 12,
     color: "#333",
   },
 
   optionTextActive: {
     color: "#fff",
-    fontWeight: "bold",
+    fontWeight: "600",
   },
 
+  /* RINGKASAN */
   summaryBox: {
     marginTop: 20,
     backgroundColor: "#fff",
@@ -310,6 +344,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#eee",
+
+    elevation: 2,
   },
 
   summaryTitle: {
@@ -317,6 +353,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 
+  /* BUTTON */
   button: {
     marginTop: 30,
     backgroundColor: "#1976D2",
