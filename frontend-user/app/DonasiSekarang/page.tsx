@@ -223,7 +223,7 @@ export default function DonasiSekarang() {
 }
 
 // IMAGE
-const getImage = (name) => {
+const getImage = (name: string) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");
