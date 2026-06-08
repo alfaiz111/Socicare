@@ -40,6 +40,24 @@ export default function DonasiSekarang() {
     Array.isArray(params.jumlah) ? params.jumlah[0] : params.jumlah || ""
   );
 
+  // 🔥 STATE BARANG DONASI
+  const [selectedItems, setSelectedItems] = useState([]);
+
+  const pilihanBarang = [
+    "Pakaian Layak Pakai",
+    "Obat-obatan",
+    "Sembako",
+    "Hygiene Kit",
+  ];
+
+  const toggleItem = (item) => {
+    if (selectedItems.includes(item)) {
+      setSelectedItems(selectedItems.filter((i) => i !== item));
+    } else {
+      setSelectedItems([...selectedItems, item]);
+    }
+  };
+
   const data = {
     title,
     location,
@@ -77,7 +95,6 @@ export default function DonasiSekarang() {
       {/* 🔥 CONTENT */}
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView style={styles.content}>
-          {/* ✅ PINDAHAN JUDUL */}
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.location}>{data.location}</Text>
 
@@ -115,6 +132,34 @@ export default function DonasiSekarang() {
             ))}
           </View>
 
+          {/* 🔥 PILIH BARANG */}
+          <Text style={styles.label}>Pilih Barang Donasi</Text>
+          <View style={styles.formDonasi}>
+            {pilihanBarang.map((item, index) => {
+              const selected = selectedItems.includes(item);
+
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.optionItem,
+                    selected && styles.optionItemActive,
+                  ]}
+                  onPress={() => toggleItem(item)}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      selected && styles.optionTextActive,
+                    ]}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
           {/* 🔥 RINGKASAN */}
           <View style={styles.summaryBox}>
             <Text style={styles.summaryTitle}>Ringkasan Donasi</Text>
@@ -125,14 +170,20 @@ export default function DonasiSekarang() {
               Jumlah: Rp{" "}
               {jumlah ? Number(jumlah).toLocaleString("id-ID") : "0"}
             </Text>
+            <Text>
+              Barang:{" "}
+              {selectedItems.length > 0
+                ? selectedItems.join(", ")
+                : "Belum dipilih"}
+            </Text>
           </View>
 
           {/* 🔥 BUTTON */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              if (!nama || !jumlah) {
-                Alert.alert("Error", "Lengkapi data dulu ya!");
+              if (!nama || !jumlah || selectedItems.length === 0) {
+                Alert.alert("Error", "Lengkapi semua data ya!");
                 return;
               }
 
@@ -152,8 +203,8 @@ export default function DonasiSekarang() {
   );
 }
 
-// 🔥 IMAGE MAPPING
-const getImage = (name: string) => {
+// 🔥 IMAGE
+const getImage = (name) => {
   switch (name) {
     case "Banjir":
       return require("../../assets/images/banjir.jpg");
@@ -193,21 +244,10 @@ const styles = StyleSheet.create({
 
   content: { padding: 16, marginTop: -20 },
 
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 0,
-  },
+  title: { fontSize: 20, fontWeight: "bold" },
+  location: { color: "#555", marginBottom: 10 },
 
-  location: {
-    color: "#555",
-    marginBottom: 10,
-  },
-
-  label: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
+  label: { marginTop: 10, fontWeight: "bold" },
 
   input: {
     backgroundColor: "#fff",
@@ -234,6 +274,32 @@ const styles = StyleSheet.create({
 
   quickText: {
     fontSize: 12,
+    fontWeight: "bold",
+  },
+
+  formDonasi: {
+    marginTop: 10,
+    gap: 8,
+  },
+
+  optionItem: {
+    padding: 12,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+
+  optionItemActive: {
+    backgroundColor: "#1976D2",
+    borderColor: "#1976D2",
+  },
+
+  optionText: {
+    color: "#333",
+  },
+
+  optionTextActive: {
+    color: "#fff",
     fontWeight: "bold",
   },
 
