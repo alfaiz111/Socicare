@@ -32,13 +32,31 @@ export default function DonasiSekarang() {
     ? params.location[0]
     : params.location || "";
 
-  const [nama, setNama] = useState(
-    Array.isArray(params.nama) ? params.nama[0] : params.nama || ""
-  );
+  const [nama, setNama] = useState("");
+  const [jumlah, setJumlah] = useState("");
+  const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const [jumlah, setJumlah] = useState(
-    Array.isArray(params.jumlah) ? params.jumlah[0] : params.jumlah || ""
-  );
+  const pilihanBarang = [
+    "Pakaian Layak Pakai",
+    "Obat-obatan",
+    "Sembako",
+    "Hygiene Kit",
+  ];
+
+  const toggleItem = (item: string) => {
+    setSelectedItems((prevItems) =>
+      prevItems.includes(item)
+        ? prevItems.filter((i) => i !== item)
+        : [...prevItems, item]
+    );
+  };
+
+  // 🔥 FORMAT RUPIAH
+  const formatRupiah = (value: string) => {
+    const number = value.replace(/[^0-9]/g, "");
+    return number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
 
   const data = {
     title,
@@ -46,11 +64,18 @@ export default function DonasiSekarang() {
     image: getImage(imageParam),
   };
 
-  const quickAmounts = [10000, 25000, 50000, 100000];
+  const quickAmounts = [
+    10000,
+    25000,
+    50000,
+    100000,
+    500000,
+    1000000,
+  ];
 
   return (
     <View style={styles.container}>
-      {/* 🔥 HERO */}
+      {/* HERO */}
       <View style={styles.hero}>
         <Image source={data.image} style={styles.bgImage} />
 
@@ -74,14 +99,16 @@ export default function DonasiSekarang() {
         </Swiper>
       </View>
 
-      {/* 🔥 CONTENT */}
+      {/* CONTENT */}
       <SafeAreaView style={{ flex: 1 }}>
-        <ScrollView style={styles.content}>
-          {/* ✅ PINDAHAN JUDUL */}
+        <ScrollView
+          style={styles.content}
+          contentContainerStyle={{ paddingBottom: 120 }}
+        >
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.location}>{data.location}</Text>
 
-          {/* 🔥 FORM */}
+          {/* FORM */}
           <Text style={styles.label}>Nama Donatur</Text>
           <TextInput
             placeholder="Masukkan nama anda"
@@ -90,56 +117,107 @@ export default function DonasiSekarang() {
             onChangeText={setNama}
           />
 
+          {/* INPUT JUMLAH DENGAN FORMAT RP */}
           <Text style={styles.label}>Jumlah Donasi</Text>
           <TextInput
-            placeholder="Masukkan jumlah"
+            placeholder="Rp 0"
             style={styles.input}
             keyboardType="numeric"
-            value={jumlah}
-            onChangeText={setJumlah}
+            value={jumlah ? `Rp ${formatRupiah(jumlah)}` : ""}
+            onChangeText={(text) => {
+              const clean = text.replace(/[^0-9]/g, "");
+              setJumlah(clean);
+              setSelectedNominal(null);
+            }}
           />
 
-          {/* 🔥 NOMINAL CEPAT */}
+          {/* NOMINAL */}
           <Text style={styles.label}>Pilih Nominal Cepat</Text>
           <View style={styles.quickContainer}>
-            {quickAmounts.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.quickButton}
-                onPress={() => setJumlah(item.toString())}
-              >
-                <Text style={styles.quickText}>
-                  Rp {item.toLocaleString("id-ID")}
-                </Text>
-              </TouchableOpacity>
-            ))}
+            {quickAmounts.map((item, index) => {
+              const active = selectedNominal === item;
+
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.quickButton,
+                    active && styles.quickButtonActive,
+                  ]}
+                  onPress={() => {
+                    setJumlah(item.toString());
+                    setSelectedNominal(item);
+                  }}
+                >
+                  <Text
+                    style={[
+                      styles.quickText,
+                      active && styles.quickTextActive,
+                    ]}
+                  >
+                    Rp {item.toLocaleString("id-ID")}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
           </View>
 
-          {/* 🔥 RINGKASAN */}
+          {/* BARANG */}
+          <Text style={styles.label}>Pilih Barang Donasi</Text>
+          <View style={styles.formDonasi}>
+            {pilihanBarang.map((item, index) => {
+              const selected = selectedItems.includes(item);
+
+              return (
+                <TouchableOpacity
+                  key={index}
+                  style={[
+                    styles.optionItem,
+                    selected && styles.optionItemActive,
+                  ]}
+                  onPress={() => toggleItem(item)}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      selected && styles.optionTextActive,
+                    ]}
+                  >
+                    {item}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+
+          {/* RINGKASAN */}
           <View style={styles.summaryBox}>
             <Text style={styles.summaryTitle}>Ringkasan Donasi</Text>
             <Text>Program: {data.title}</Text>
             <Text>Lokasi: {data.location}</Text>
-            <Text>Nama: {nama}</Text>
+            <Text>Nama: {nama || "-"}</Text>
             <Text>
               Jumlah: Rp{" "}
               {jumlah ? Number(jumlah).toLocaleString("id-ID") : "0"}
             </Text>
+            <Text>
+              Barang:{" "}
+              {selectedItems.length > 0
+                ? selectedItems.join(", ")
+                : "Belum dipilih"}
+            </Text>
           </View>
 
-          {/* 🔥 BUTTON */}
+          {/* BUTTON */}
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              if (!nama || !jumlah) {
-                Alert.alert("Error", "Lengkapi data dulu ya!");
+              if (!nama || !jumlah || selectedItems.length === 0) {
+                Alert.alert("Error", "Lengkapi semua data ya!");
                 return;
               }
 
-              Alert.alert(
-                "Berhasil 🎉",
-                "Donasi kamu sedang diproses (simulasi pembayaran)"
-              );
+              Alert.alert("Berhasil 🎉", "Donasi berhasil diproses!");
             }}
           >
             <Text style={styles.buttonText}>Bayar Sekarang</Text>
@@ -152,7 +230,7 @@ export default function DonasiSekarang() {
   );
 }
 
-// 🔥 IMAGE MAPPING
+// IMAGE
 const getImage = (name: string) => {
   switch (name) {
     case "Banjir":
@@ -168,7 +246,7 @@ const getImage = (name: string) => {
   }
 };
 
-// 🎨 STYLE
+// STYLE
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5f5f5" },
 
@@ -187,32 +265,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
+    
   },
 
   logo: { width: 180, height: 180, resizeMode: "contain" },
 
   content: { padding: 16, marginTop: -20 },
 
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 0,
-  },
+  title: { fontSize: 20, fontWeight: "bold" },
+  location: { color: "#555", marginBottom: 10 },
 
-  location: {
-    color: "#555",
-    marginBottom: 10,
-  },
-
-  label: {
-    marginTop: 10,
-    fontWeight: "bold",
-  },
+  label: { marginTop: 15, fontWeight: "bold" },
 
   input: {
     backgroundColor: "#fff",
     padding: 12,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: "#ddd",
     marginTop: 5,
@@ -221,29 +289,79 @@ const styles = StyleSheet.create({
   quickContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
+    justifyContent: "space-between",
     marginTop: 10,
   },
 
   quickButton: {
-    backgroundColor: "#eee",
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 20,
+    width: "48%",
+    paddingVertical: 16,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    backgroundColor: "#fff",
+    marginBottom: 12,
+    alignItems: "center",
+    elevation: 2,
+  },
+
+  quickButtonActive: {
+    backgroundColor: "#1976D2",
+    borderColor: "#1976D2",
   },
 
   quickText: {
-    fontSize: 12,
-    fontWeight: "bold",
+    fontSize: 13,
+    fontWeight: "600",
+    color: "#333",
+  },
+
+  quickTextActive: {
+    color: "#fff",
+  },
+
+  formDonasi: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    marginTop: 12,
+  },
+
+  optionItem: {
+    width: "45%",
+    paddingVertical: 14,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    margin: 6,
+    backgroundColor: "#fff",
+    alignItems: "center",
+  },
+
+  optionItemActive: {
+    backgroundColor: "#1976D2",
+    borderColor: "#1976D2",
+  },
+
+  optionText: {
+    fontSize: 13,
+    color: "#333",
+    textAlign: "center",
+  },
+
+  optionTextActive: {
+    color: "#fff",
+    fontWeight: "600",
   },
 
   summaryBox: {
     marginTop: 20,
     backgroundColor: "#fff",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: "#eee",
+    elevation: 2,
   },
 
   summaryTitle: {
@@ -253,8 +371,9 @@ const styles = StyleSheet.create({
 
   button: {
     marginTop: 30,
+    marginBottom: 20,
     backgroundColor: "#1976D2",
-    padding: 15,
+    padding: 16,
     borderRadius: 25,
     alignItems: "center",
   },
