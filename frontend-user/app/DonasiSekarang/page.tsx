@@ -265,6 +265,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 50,
+    
   },
 
   logo: { width: 180, height: 180, resizeMode: "contain" },
