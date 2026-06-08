@@ -58,7 +58,15 @@ export default function DonasiSekarang() {
     image: getImage(imageParam),
   };
 
-  const quickAmounts = [10000, 25000, 50000, 100000];
+  // ✅ NOMINAL LENGKAP
+  const quickAmounts = [
+    10000,
+    25000,
+    50000,
+    100000,
+    500000,
+    1000000,
+  ];
 
   return (
     <View style={styles.container}>
@@ -113,7 +121,7 @@ export default function DonasiSekarang() {
             }}
           />
 
-          {/* NOMINAL CLEAN */}
+          {/* NOMINAL */}
           <Text style={styles.label}>Pilih Nominal Cepat</Text>
           <View style={styles.quickContainer}>
             {quickAmounts.map((item, index) => {
@@ -144,7 +152,7 @@ export default function DonasiSekarang() {
             })}
           </View>
 
-          {/* BARANG CLEAN */}
+          {/* BARANG */}
           <Text style={styles.label}>Pilih Barang Donasi</Text>
           <View style={styles.formDonasi}>
             {pilihanBarang.map((item, index) => {
@@ -261,7 +269,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: "#fff",
     padding: 12,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: "#ddd",
     marginTop: 5,
@@ -277,14 +285,13 @@ const styles = StyleSheet.create({
 
   quickButton: {
     width: "48%",
-    paddingVertical: 12,
-    borderRadius: 12,
+    paddingVertical: 14,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: "#ddd",
     backgroundColor: "#fff",
     marginBottom: 10,
     alignItems: "center",
-
     elevation: 2,
   },
 
@@ -307,17 +314,17 @@ const styles = StyleSheet.create({
   formDonasi: {
     flexDirection: "row",
     flexWrap: "wrap",
+    justifyContent: "center",
     marginTop: 10,
   },
 
   optionItem: {
-    paddingVertical: 8,
-    paddingHorizontal: 14,
-    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 25,
     borderWidth: 1,
-    borderColor: "#ccc",
-    marginRight: 8,
-    marginBottom: 8,
+    borderColor: "#ddd",
+    margin: 5,
     backgroundColor: "#fff",
   },
 
@@ -341,10 +348,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: "#fff",
     padding: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: "#eee",
-
     elevation: 2,
   },
 
@@ -357,7 +363,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 30,
     backgroundColor: "#1976D2",
-    padding: 15,
+    padding: 16,
     borderRadius: 25,
     alignItems: "center",
   },
