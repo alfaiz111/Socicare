@@ -52,6 +52,12 @@ export default function DonasiSekarang() {
     );
   };
 
+  // 🔥 FORMAT RUPIAH
+  const formatRupiah = (value: string) => {
+    const number = value.replace(/[^0-9]/g, "");
+    return number.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+
   const data = {
     title,
     location,
@@ -97,7 +103,7 @@ export default function DonasiSekarang() {
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView
           style={styles.content}
-          contentContainerStyle={{ paddingBottom: 120 }} // 🔥 FIX BUTTON KE POTONG
+          contentContainerStyle={{ paddingBottom: 120 }}
         >
           <Text style={styles.title}>{data.title}</Text>
           <Text style={styles.location}>{data.location}</Text>
@@ -111,14 +117,16 @@ export default function DonasiSekarang() {
             onChangeText={setNama}
           />
 
+          {/* INPUT JUMLAH DENGAN FORMAT RP */}
           <Text style={styles.label}>Jumlah Donasi</Text>
           <TextInput
-            placeholder="Masukkan jumlah"
+            placeholder="Rp 0"
             style={styles.input}
             keyboardType="numeric"
-            value={jumlah}
+            value={jumlah ? `Rp ${formatRupiah(jumlah)}` : ""}
             onChangeText={(text) => {
-              setJumlah(text);
+              const clean = text.replace(/[^0-9]/g, "");
+              setJumlah(clean);
               setSelectedNominal(null);
             }}
           />
@@ -277,7 +285,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  /* NOMINAL */
   quickContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -312,7 +319,6 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 
-  /* BARANG */
   formDonasi: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -347,7 +353,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  /* RINGKASAN */
   summaryBox: {
     marginTop: 20,
     backgroundColor: "#fff",
@@ -363,7 +368,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 
-  /* BUTTON */
   button: {
     marginTop: 30,
     marginBottom: 20,
