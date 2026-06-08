@@ -34,8 +34,8 @@ export default function DonasiSekarang() {
 
   const [nama, setNama] = useState("");
   const [jumlah, setJumlah] = useState("");
-  const [selectedNominal, setSelectedNominal] = useState(null);
-  const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedNominal, setSelectedNominal] = useState<number | null>(null);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const pilihanBarang = [
     "Pakaian Layak Pakai",
@@ -46,9 +46,9 @@ export default function DonasiSekarang() {
 
   const toggleItem = (item: string) => {
     if (selectedItems.includes(item)) {
-      setSelectedItems(selectedItems.filter((i) => i !== item));
+      setSelectedItems((prevItems) => prevItems.filter((i) => i !== item));
     } else {
-      setSelectedItems([...selectedItems, item]);
+      setSelectedItems((prevItems) => [...prevItems, item]);
     }
   };
 
