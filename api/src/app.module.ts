@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CampaignModule } from './campaign/campaign.module';
+import { ReportModule } from './report/report.module';
 
 @Module({
   imports: [
@@ -19,6 +20,8 @@ import { CampaignModule } from './campaign/campaign.module';
 
     // ✅ MODULE
     CampaignModule,
+
+    ReportModule,
   ],
 })
 export class AppModule {}
